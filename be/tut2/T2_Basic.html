@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ECOM30001/90001 Basic Econometrics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Chin Yong Quek" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ECOM30001/90001 Basic Econometrics
+## Tutorial 2: Basic Linear Model in R
+### Chin Yong Quek
+### Department of Economics <br> University of Melbourne
+### March 2022
+
+---
+
+# Objectives
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+/******************
+ * Slide scrolling
+ * (non-functional)
+ * not sure if it is a good idea anyway
+slides &gt; slide {
+  overflow: scroll;
+ padding: 5px 40px;
+}
+.scrollable-slide .remark-slide {
+  height: 400px;
+  overflow: scroll !important;
+}
+ ******************/
+
+.scroll-output {
+  height: 90%;
+  overflow-y: scroll;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+&lt;/style&gt;
+
+
+- Run OLS regression in R
+
+- Plot data values and fitted values
+
+- Run OLS regression on a sub-sample of data in R
+
+- Data transformation (natural logarithm)
+
+- Calculate marginal effects
+
+---
+class: inverse, center, middle
+
+# Question
+
+---
+
+## Load R packages and Import data file
+
+.tiny[
+
+```r
+#---------------------------------------
+# set your working directory here
+setwd("...")
+#----------------------------------------
+options(scipen=999)               # Do not use scientific notation
+library(ggplot2)                  # Flexible graphic facility for R
+library(stargazer)                # For producing good quality output from R 
+library(scales)                   # package to display thousands with commas in graphs
+#---------------------------------------
+# (1) Import Data File from Excel and Save as R Data File
+tut2 &lt;- read.csv("houseprices_2017.csv")
+```
+]
+
+---
+
+## Data background
+
+The `tut2.csv` file contains data contains on the selling prices of houses in metropolitan Melbourne during the 2017 calendar year. There are several variables of interest:
+
+- `price` = Selling price, in thousands of dollars
+- `distance` = Distance from the C.B.D.,in kilometres
+- `bld_area` = Dwelling size, metres squared
+- `landsize` = Land size, metres squared
+
+--
+
+Note that:
+
+`$$\texttt{large} = 
+  \begin{cases}
+    	1 &amp; \text{property on a large lot, land size } \geq 650 \text{ square metres}\\
+    	0 &amp; \text{property not on a large lot, land size } &lt; 650 \text{ square metres}\\
+    \end{cases}$$`
+
+---
+
+
+
+### Summary of data and View data
+
+.tiny[
+
+```r
+summary(tut2)
+```
+
+```
+##       day            month             year          price         distance    
+##  Min.   : 1.00   Min.   : 2.000   Min.   :2017   Min.   : 290   Min.   : 2.00  
+##  1st Qu.: 9.00   1st Qu.: 5.000   1st Qu.:2017   1st Qu.: 695   1st Qu.: 8.00  
+##  Median :17.00   Median : 7.000   Median :2017   Median : 955   Median :13.00  
+##  Mean   :16.43   Mean   : 7.428   Mean   :2017   Mean   :1125   Mean   :14.08  
+##  3rd Qu.:24.00   3rd Qu.:10.000   3rd Qu.:2017   3rd Qu.:1390   3rd Qu.:18.00  
+##  Max.   :30.00   Max.   :12.000   Max.   :2017   Max.   :4750   Max.   :47.00  
+##     landsize         bld_area         large       
+##  Min.   :  60.0   Min.   : 58.0   Min.   :0.0000  
+##  1st Qu.: 402.0   1st Qu.:116.0   1st Qu.:0.0000  
+##  Median : 568.0   Median :145.0   Median :0.0000  
+##  Mean   : 545.9   Mean   :164.2   Mean   :0.3188  
+##  3rd Qu.: 673.0   3rd Qu.:190.0   3rd Qu.:1.0000  
+##  Max.   :2000.0   Max.   :934.0   Max.   :1.0000
+```
+
+```r
+head(tut2)
+```
+
+```
+##   day month year price distance landsize bld_area large
+## 1  29     4 2017  1165        3       92      114     0
+## 2  12     8 2017  1635        3      142      130     0
+## 3  25     2 2017  1290        3      168      124     0
+## 4   7    10 2017  1240        3      159       93     0
+## 5  29     4 2017  1050        3      129      128     0
+## 6  24     6 2017   855        3       92      116     0
+```
+]
+
+---
+
+### Interpretation of `\(\beta_0\)` and `\(\beta_1\)`
+
+a) Consider the following econometric model:
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i} + \varepsilon_{i}$$`
+What is the interpretation of the parameter `\(\beta_{0}\)`? What is the interpretation of the parameter `\(\beta_{1}\)`?
+
+--
+
+- `price` = Selling price, in thousands of dollars
+
+- `bld_area` = Dwelling size, metres squared
+
+--
+
+&amp;nbsp;
+
+`$$E(\mbox{price}_{i}\,|\,\mbox{bld_area}_{i}) = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i}$$`
+`\(\beta_0\)` represents `\(\dots\)`
+
+&amp;nbsp;
+
+`\(\beta_1\)` represents `\(\dots\)`
+
+---
+
+### Estimate model
+
+b) Estimate this model in R and provide a brief description of the point estimates. Produce a scatter plot of both `price` and the fitted values against `bld_area`. Comment on how well the estimated model fits the data.
+
+--
+
+.tiny[
+
+```r
+# (2)  Estimate the econometric model by OLS
+reg1 &lt;- lm(price ~ bld_area, data=tut2)        # estimate model by OLS, save as reg1
+print(summary(reg1), digits=3)                 # print the results on screen
+```
+
+```
+## 
+## Call:
+## lm(formula = price ~ bld_area, data = tut2)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -2603   -403   -131    280   3496 
+## 
+## Coefficients:
+##             Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept)  685.836     27.727    24.7 &lt;0.0000000000000002 ***
+## bld_area       2.674      0.152    17.6 &lt;0.0000000000000002 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 565 on 2219 degrees of freedom
+## Multiple R-squared:  0.122,	Adjusted R-squared:  0.122 
+## F-statistic:  308 on 1 and 2219 DF,  p-value: &lt;0.0000000000000002
+```
+]
+
+---
+
+.tiny[
+
+```r
+# Stargazer package produces `print-ready` output
+stargazer(reg1, type="html", dep.var.labels=c("Selling Price"),
+          covariate.labels=c("Intercept","Building Area (msq)"),
+          digits=4,
+          single.row=FALSE,
+          intercept.bottom=FALSE,
+          out= "tut2_reg1.htm")
+```
+]
+
+
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;Selling Price&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;685.8360&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(27.7273)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Building Area (msq)&lt;/td&gt;&lt;td&gt;2.6743&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.1523)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;2,221&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1220&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1216&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;565.3385 (df = 2219)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;308.4236&lt;sup&gt;***&lt;/sup&gt; (df = 1; 2219)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.1; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.01&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+---
+#### RSS, residuals, fitted values
+
+.tiny[
+
+```r
+RSS1 &lt;- deviance(reg1)                        # save the RSS for the model
+print(RSS1)                                   # print the RSS on the screen
+```
+
+```
+## [1] 709209196
+```
+
+```r
+resids1 &lt;- reg1$residuals                     # create a series for the OLS residuals
+yhat1 &lt;- reg1$fitted.values                   # create a series for the fitted values
+
+head(resids1)
+```
+
+```
+##         1         2         3         4         5         6 
+##  174.2970  601.5087  272.5543  305.4567   21.8572 -141.0515
+```
+
+```r
+head(yhat1)
+```
+
+```
+##         1         2         3         4         5         6 
+##  990.7030 1033.4913 1017.4457  934.5433 1028.1428  996.0515
+```
+]
+
+---
+### Construct scatter plot
+
+.tiny[
+
+```r
+ggplot(tut2, aes(x=bld_area)) +
+geom_point(aes(y=price, colour="Actual Data")) +
+geom_line(aes(y=yhat1, colour="Fitted Values: Linear Model"), size=1) +  
+labs(x = "Building Area, square metres", y = "Selling Price, in thousands of dollars") + 
+  scale_colour_manual("", breaks = c("Actual Data", 
+                                     "Fitted Values: Linear Model"),
+                      values = c("blue", "red")) +
+  scale_y_continuous(labels = comma) +
+  theme_classic() +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=12)) 
+ggsave("tut2_graph1.pdf")
+```
+]
+
+--
+
+.tiny[
+&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-11-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+
+### Quadratic model
+
+c) Consider the following econometric model:
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i} +  \beta_{2}\,\mbox{bld_area}_{i}^2 + \varepsilon_{i}$$`
+
+What is the marginal (or partial) effect of an additional square meter of dwelling size (`bld_area`) on the selling price?
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+--
+
+Estimate this equation in R. What is the estimated marginal effect of an additional square metre of dwelling size for a home with 300 square metres of building area?
+
+**Hint:** You will need to generate a new variable representing the squared value of the variable `bld_area`.
+
+
+
+```r
+tut2$bld_area2 = tut2$bld_area^2  # create bld_area squared variable
+```
+
+---
+#### Estimate quadratic model
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i} +  \beta_{2}\,\mbox{bld_area}_{i}^2 + \varepsilon_{i}$$`
+.tiny[
+
+```r
+reg2 &lt;- lm(price ~ bld_area + bld_area2, data=tut2)       # estimate model by OLS, save as reg2
+print(summary(reg2, digits=3))
+```
+
+```
+## 
+## Call:
+## lm(formula = price ~ bld_area + bld_area2, data = tut2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1402.4  -390.1  -106.4   293.7  3398.6 
+## 
+## Coefficients:
+##               Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 287.891616  47.691552   6.037        0.00000000184 ***
+## bld_area      6.419578   0.398159  16.123 &lt; 0.0000000000000002 ***
+## bld_area2    -0.006542   0.000645 -10.142 &lt; 0.0000000000000002 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 552.8 on 2218 degrees of freedom
+## Multiple R-squared:  0.1609,	Adjusted R-squared:  0.1602 
+## F-statistic: 212.7 on 2 and 2218 DF,  p-value: &lt; 0.00000000000000022
+```
+]
+
+---
+.scroll-output[
+.tiny[
+
+```r
+# Stargazer package produces `print-ready` output
+stargazer(reg1, reg2, type="html", dep.var.labels=c("Selling Price"),
+          covariate.labels=c("Intercept","Building Area","Building Area (Squared)"),
+          digits=4,
+          single.row=FALSE,
+          intercept.bottom=FALSE,
+          out= "tut2_reg2.htm")
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="2"&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="2"&gt;Selling Price&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1)&lt;/td&gt;&lt;td&gt;(2)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;685.8360&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;287.8916&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(27.7273)&lt;/td&gt;&lt;td&gt;(47.6916)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Building Area&lt;/td&gt;&lt;td&gt;2.6743&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;6.4196&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.1523)&lt;/td&gt;&lt;td&gt;(0.3982)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Building Area (Squared)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;-0.0065&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0006)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;2,221&lt;/td&gt;&lt;td&gt;2,221&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1220&lt;/td&gt;&lt;td&gt;0.1609&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1216&lt;/td&gt;&lt;td&gt;0.1602&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;565.3385 (df = 2219)&lt;/td&gt;&lt;td&gt;552.7921 (df = 2218)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;308.4236&lt;sup&gt;***&lt;/sup&gt; (df = 1; 2219)&lt;/td&gt;&lt;td&gt;212.7259&lt;sup&gt;***&lt;/sup&gt; (df = 2; 2218)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td colspan="2" style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.1; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.01&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+]
+
+---
+#### Estimated marginal effect
+
+.tiny[
+
+```
+##   (Intercept)      bld_area     bld_area2 
+## 287.891615956   6.419577835  -0.006541766
+```
+]
+
+`bld_area` = 300
+
+$$\frac{\partial \, \widehat{\text{price}}}{\partial \, \text{bld_area}}=b_1+2\,b_2\, \text{bld_area} = \$2.4945$$
+&gt; Interpretation?
+
+&amp;nbsp;
+
+--
+
+Given that the estimated `\(b_2=-0.006541766\)`, can we say that houses with sufficiently large dwelling areas, an additional square metre of dwelling area is estimated to **reduce** the selling price?
+
+-----
+
+.tiny[
+
+```r
+# Calculate the  marginal effect for 300 square metres building area
+b1 &lt;- coef(reg2)[["bld_area"]]           # coefficient on bld_area
+b2 &lt;- coef(reg2)[["bld_area2"]]          # coefficient on bld_area squared
+me &lt;- b1 + (2*b2*300)
+print(me) 
+```
+
+```
+## [1] 2.494518
+```
+]
+
+---
+
+#### RSS, residuals, fitted values
+
+.tiny[
+
+```r
+RSS2 &lt;- deviance(reg2)                     # save the RSS for the model
+print(RSS2)                                # print the RSS on the screen
+```
+
+```
+## [1] 677774520
+```
+
+```r
+resids2 &lt;- reg2$residuals                  # create a series for the OLS residuals
+yhat2 &lt;- reg2$fitted.values                # create a series for the fitted values
+```
+]
+
+---
+
+Produce a scatter plot of price against `bld_area`. On the same graph, produce a line plot of the fitted values for the linear model (from part b) and the quadratic model (from part c). `\(\dots\)`
+
+.tiny[
+
+```r
+ggplot(tut2, aes(x=bld_area)) +
+  geom_point(aes(y=price, colour = "Actual Data")) +
+  geom_line(aes(y=yhat1, colour="Fitted Values: Linear Model"), size=1) +
+  geom_line(aes(y=yhat2, colour="Fitted Values: Quadratic Model"), size=1) +
+  labs(x = "Building Area, square metres", y = "Selling Price, in thousands of dollars") +
+  scale_colour_manual("", breaks = c("Actual Data", "Fitted Values: Linear Model", 
+                                     "Fitted Values: Quadratic Model"),
+                      values = c("blue", "red", "darkgreen")) +
+  scale_y_continuous(labels = comma) +
+  theme_classic() +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=12)) 
+ggsave("tut2_graph2.pdf")
+```
+]
+
+&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+`\(\dots\)` Based upon a visual inspection of the fitted values, which model do you think fits the data better? Why? Compare the Sum of Squared Residuals (RSS) for the two models. Which is smaller? Based upon the value for the RSS, which model fits the data better?
+
+--
+
+&amp;nbsp;
+
+Model | RSS | `\(R^2\)`
+:-----:|:-----:|:-----:
+Linear |709,209,196 | 0.1220
+Quadratic |677,774,520 | 0.1609
+
+&gt; Are the RSS values consistent with your expectations?
+
+---
+
+### Estimate econometric model based on subsets
+
+d) Estimate the econometric model (2), restricting the sample to houses that are on large lots. Now repeat the estimation for houses not on large lots. Comment on how the estimated results differ.
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i} +  \beta_{2}\,\mbox{bld_area}_{i}^2 + \varepsilon_{i}$$`
+
+**Hint:** You will need to restrict the samples using the variable `large`.
+
+
+
+```r
+reg3 &lt;- lm(price ~ bld_area + bld_area2, 
+           data=subset(tut2, large==1))
+
+reg4 &lt;- lm(price ~ bld_area + bld_area2, 
+           data=subset(tut2, large==0))
+```
+
+
+---
+
+.scroll-output[.tiny[
+
+```r
+print(summary(reg3, digits=3))
+```
+
+```
+## 
+## Call:
+## lm(formula = price ~ bld_area + bld_area2, data = subset(tut2, 
+##     large == 1))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1371.8  -404.5  -113.2   278.4  2659.9 
+## 
+## Coefficients:
+##              Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 10.051372  98.614101   0.102                0.919    
+## bld_area     8.331051   0.747539  11.145 &lt; 0.0000000000000002 ***
+## bld_area2   -0.008309   0.001111  -7.479    0.000000000000223 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 606.3 on 705 degrees of freedom
+## Multiple R-squared:  0.2265,	Adjusted R-squared:  0.2243 
+## F-statistic: 103.2 on 2 and 705 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+RSS3 &lt;- deviance(reg3)
+print(RSS3)
+```
+
+```
+## [1] 259161339
+```
+
+```r
+resids3 &lt;- reg3$residuals
+yhat3 &lt;- reg3$fitted.values
+
+# Calculate the  marginal effect for 300 square metres building area
+b1_lge &lt;- coef(reg3)[["bld_area"]]
+b2_lge &lt;- coef(reg3)[["bld_area2"]]
+me_lge &lt;- b1_lge + (2*b2_lge*300)
+print(me_lge)   # print the estimated marginal effect for large lots
+```
+
+```
+## [1] 3.345367
+```
+
+```r
+print(summary(reg4, digits=3))
+```
+
+```
+## 
+## Call:
+## lm(formula = price ~ bld_area + bld_area2, data = subset(tut2, 
+##     large == 0))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1150.7  -401.1   -91.2   303.8  3437.3 
+## 
+## Coefficients:
+##                Estimate  Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 393.9104909  54.9577593   7.168   0.0000000000011904 ***
+## bld_area      5.6889778   0.4832344  11.773 &lt; 0.0000000000000002 ***
+## bld_area2    -0.0063903   0.0008319  -7.681   0.0000000000000281 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 521.6 on 1510 degrees of freedom
+## Multiple R-squared:  0.1167,	Adjusted R-squared:  0.1155 
+## F-statistic: 99.71 on 2 and 1510 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+RSS4 &lt;- deviance(reg4)
+print(RSS4)
+```
+
+```
+## [1] 410881760
+```
+
+```r
+resids4 &lt;- reg4$residuals
+yhat4 &lt;- reg4$fitted.values
+
+# Calculate the  marginal effect for 300 square metres building area
+b1_sml &lt;- coef(reg4)[["bld_area"]]
+b2_sml &lt;- coef(reg4)[["bld_area2"]]
+me_sml &lt;- b1_sml + (2*b2_sml*300)
+print(me_sml)   # print the estimated marginal effect for small lots
+```
+
+```
+## [1] 1.854769
+```
+]]
+
+---
+#### Comparison of the marginal effects of both models
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{bld_area}_{i} +  \beta_{2}\,\mbox{bld_area}_{i}^2 + \varepsilon_{i}$$`
+
+
+```
+## [1] "Large Lots"
+```
+
+```
+##  (Intercept)     bld_area    bld_area2 
+## 10.051372302  8.331051232 -0.008309473
+```
+
+```
+## [1] "Small Lots"
+```
+
+```
+##   (Intercept)      bld_area     bld_area2 
+## 393.910490908   5.688977812  -0.006390348
+```
+
+
+
+$$\frac{\partial \, \widehat{\text{price}}}{\partial \, \text{bld_area}}=b_1+2\,b_2\, \text{bld_area} $$
+
+--
+
+Marginal effect of an additional square metre of dwelling area for a house with `\(\text{bld_area} = 300\)`:
+
+Subset | Marginal effect
+:-----:|:-----:|:-----:
+Large lots | $3.345367
+Small lots | $1.854769
+
+
+
+---
+
+.scroll-output[
+.tiny[
+
+```r
+# Stargazer package produces `print-ready` output
+stargazer(reg3, reg4, type="html", dep.var.labels=c("Selling Price ($'000s)"),
+          covariate.labels=c("Intercept","Building Area", "Building Area (Squared)" ),
+          column.labels = c("Large Lots", "Small Lots"),
+          digits=4,
+          single.row=FALSE,
+          intercept.bottom=FALSE,
+          out= "tut2_reg3.htm")
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="2"&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="2"&gt;Selling Price ('000s)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;Large Lots&lt;/td&gt;&lt;td&gt;Small Lots&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1)&lt;/td&gt;&lt;td&gt;(2)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;10.0514&lt;/td&gt;&lt;td&gt;393.9105&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(98.6141)&lt;/td&gt;&lt;td&gt;(54.9578)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Building Area&lt;/td&gt;&lt;td&gt;8.3311&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;5.6890&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.7475)&lt;/td&gt;&lt;td&gt;(0.4832)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Building Area (Squared)&lt;/td&gt;&lt;td&gt;-0.0083&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;-0.0064&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0011)&lt;/td&gt;&lt;td&gt;(0.0008)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;708&lt;/td&gt;&lt;td&gt;1,513&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2265&lt;/td&gt;&lt;td&gt;0.1167&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2243&lt;/td&gt;&lt;td&gt;0.1155&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;606.3042 (df = 705)&lt;/td&gt;&lt;td&gt;521.6389 (df = 1510)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;103.2194&lt;sup&gt;***&lt;/sup&gt; (df = 2; 705)&lt;/td&gt;&lt;td&gt;99.7114&lt;sup&gt;***&lt;/sup&gt; (df = 2; 1510)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td colspan="2" style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.1; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.01&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]]
+
+---
+
+
+### Examine different functional forms
+
+e) Consider the following econometric models:
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{distance}_{i} + \varepsilon_{i} \qquad \text{Model I}$$`
+and:
+`$$\mbox{lnprice}_{i} = \beta_{0} + \beta_{1}\,\mbox{distance}_{i} + \varepsilon_{i} \qquad \text{Model II}$$`
+where `lnprice` represents the natural logarithm of the variable `price`.
+
+Estimate model I in R. Produce a scatter plot of `price` against `distance` and a line plot of the fitted values from Model I against `age`.
+
+--
+
+.tiny[
+
+```r
+reg5 &lt;- lm(price ~ distance, data=tut2)   # Estimate Model I by OLS
+print(summary(reg5, digits=3))            # Print OLS to screen
+RSS5 &lt;- deviance(reg5)                    # save the RSS for the model
+print(RSS5)                               # print the RSS on the screen
+resids5 &lt;- reg5$residuals                 # create a series for the OLS residuals
+yhat5 &lt;- reg5$fitted.values               # create a series for the fitted values
+```
+]
+
+---
+
+
+
+.tiny[
+
+```r
+ggplot(tut2, aes(x=distance)) +
+  geom_point(aes(y=price, colour="Actual Data")) +
+  geom_line(aes(y=yhat5, colour="Fitted Values: Linear Model"), size=1) +  
+  labs(x = "Distance from CBD, in kms", y = "Selling Price, in thousands of dollars") +
+  scale_colour_manual("", breaks = c("Actual Data", "Fitted Values: Linear Model"),
+                      values = c("blue", "red")) +
+  scale_y_continuous(labels = comma) +
+  theme_classic() +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=12)) 
+```
+
+&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+Now generate a new variable `lnprice`, as the natural logarithm of the selling price `price`.
+
+.tiny[
+
+```r
+tut2$lnprice = log(tut2$price)         # generate log(price) variable
+```
+]
+
+--
+
+&amp;nbsp;
+
+Estimate Model II in R. Produce a scatter plot of `lnprice` against `distance` and a line plot of the fitted values from Model II against `age`.
+
+.tiny[
+
+```r
+reg6 &lt;- lm(lnprice ~ distance, data=tut2)   # Estimate Model II by OLS  
+summary(reg6)                               # Print OLS results to screen
+RSS6 &lt;- deviance(reg6)                      # save the RSS for the model
+print(RSS6)                                 # Print the RSS to screen
+resids6 &lt;- reg6$residuals                   # create a series for the OLS residuals
+yhat6 &lt;- reg6$fitted.values                 # create a series for the fitted values
+```
+]
+
+---
+
+
+
+.tiny[
+
+```r
+ggplot(tut2, aes(x=distance)) +
+  geom_point(aes(y=lnprice, colour="Actual Data")) +
+  geom_line(aes(y=yhat6, colour="Fitted Values: Log-Linear Model"), size=1) +  
+  labs(x = "Distance from CBD, in kms", y = "(Log) Selling Price, in thousands  dollars") +
+  scale_colour_manual("", 
+                      breaks = c("Actual Data", "Fitted Values: Log-Linear Model"),
+                      values = c("blue", "red")) +
+  scale_y_continuous(labels = comma) +
+  theme_classic() +
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=12)) 
+```
+
+&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+Compare the scatter plots for each model (Model I and Model II). Which estimated model do you think fits the data better? Why?
+
+
+&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-31-1.png" width="50%" /&gt;&lt;img src="T2_Basic_files/figure-html/unnamed-chunk-31-2.png" width="50%" /&gt;
+
+---
+**OLS Estimation results for both models**
+
+.tiny[
+
+```r
+stargazer(reg5, reg6, type="html", dep.var.labels=c("Selling Price", "(Log) Selling Price"),
+          covariate.labels=c("Intercept","Distance" ),
+          digits=4,
+          single.row=FALSE,
+          intercept.bottom=FALSE,
+          out= "tut2_reg4.htm")
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="2"&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;Selling Price&lt;/td&gt;&lt;td&gt;(Log) Selling Price&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1)&lt;/td&gt;&lt;td&gt;(2)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;1,636.5080&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;7.3795&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(22.6233)&lt;/td&gt;&lt;td&gt;(0.0169)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Distance&lt;/td&gt;&lt;td&gt;-36.3471&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;-0.0337&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1.3961)&lt;/td&gt;&lt;td&gt;(0.0010)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;2,221&lt;/td&gt;&lt;td&gt;2,221&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2340&lt;/td&gt;&lt;td&gt;0.3189&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2336&lt;/td&gt;&lt;td&gt;0.3186&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error (df = 2219)&lt;/td&gt;&lt;td&gt;528.0688&lt;/td&gt;&lt;td&gt;0.3950&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic (df = 1; 2219)&lt;/td&gt;&lt;td&gt;677.7707&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;1,038.9910&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td colspan="2" style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.1; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.01&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+---
+class: inverse, center, middle
+
+# End
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
