@@ -1,0 +1,441 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage[marginal,bottom]{footmisc}
+\usepackage[para]{threeparttable}
+\usepackage{fancyhdr}
+\usepackage[a4paper, left= 1.0in, right = 1.0in, bottom = 1.0in, top = 1.0in,includefoot,nomarginpar,includemp]{geometry}
+\usepackage{bm}
+\usepackage{sectsty}
+\usepackage{lscape}
+\usepackage{color}
+\usepackage[sectionbib,comma]{natbib}
+%\usepackage{indentfirst}
+\sectionfont{\raggedright}
+\setlength{\bibhang}{0.5in} \DeclareMathOperator*{\VAR}{VAR}
+\DeclareMathOperator*{\COV}{COV} \DeclareMathOperator*{\corr}{corr}
+\DeclareMathOperator*{\s}{s} \DeclareMathOperator*{\se}{se}
+\setlength{\parindent}{0.5in} \interfootnotelinepenalty=10000
+\makeatletter
+\renewcommand*{\l@figure}{\@dottedtocline{1}{0em}{3.8em}}
+\makeatother \makeatletter
+\renewcommand*{\l@table}{\@dottedtocline{1}{0em}{3.8em}}
+\makeatother
+
+\singlespacing
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+\textbf{Department of Economics} \\
+\textsc{The University of Melbourne}
+\end{center}
+\vspace{0.1in}
+\begin{center}
+\textbf{ECOM30001/ECOM90001: Basic Econometrics} \\
+\textbf{Semester 1, 2022}
+\end{center}
+\vspace{0.1in}
+\begin{center}
+\textsc{Solutions: Tutorial 3}
+\end{center}
+\noindent \hrulefill
+
+
+\noindent This tutorial reviews some fundamental concepts for the basic linear model, including conducting hypothesis tests about a single coefficient, using the econometrics
+software package \textsc{R} that we will be using in this
+subject. \vspace{0.1in}
+
+\noindent This tutorial requires one data file:
+\begin{itemize}
+\item[-] \texttt{cocaine.csv}
+\end{itemize}
+This file can be obtained from the LMS subject page.  \vspace{0.1in}
+
+\noindent In addition the R script file \texttt{tut3.R} provides the program code necessary to complete the tutorial. This R script file uses the following package(s) which need to be installed prior to running the R script file:
+\begin{align*}
+\mbox{\texttt{stargazer}} & : \mbox{for easily generating summary statistics for an R data file} \\
+\end{align*}
+These can be installed directly in \textsc{RStudio} from the packages tab or by using the command \texttt{install.packages()} and inserting the name of the package in the brackets.
+
+ \newpage
+
+\subsubsection*{Question 1 (Hill, Griffiths \& Judge Exercise 5.5)}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii})}
+
+Consider the following econometric model for prices of owner-occupied homes in a metropolitan area surrounding a major city.
+\begin{align*}
+\mbox{ VALUE}_{i} & = \beta_{0} + \beta_{1}\,\mbox{ CRIME}_{i} +
+\beta_{2}\,\mbox{
+NITOX}_{i} \\
+ &+ \beta_{3}\,\mbox{ ROOMS}_{i} + \beta_{4}\,\mbox{ AGE}_{i} + \beta_{5}\,\mbox{ DIST}_{i}
+ \\
+ & + \beta_{6}\,\mbox{ ACCESS}_{i} + \beta_{7}\,\mbox{ TAX}_{i}
++ \beta_{8}\,\mbox{ PTRATIO}_{i} + \varepsilon_{i}
+\end{align*}
+
+These variables are defined as:
+\begin{align*}
+\mbox{ VALUE } & = \mbox{ median value of owner-occupied homes in \$'000's }\\
+\mbox{ CRIME } & = \mbox{ per-capita crime rate }\\
+\mbox{ NITOX } & = \mbox{ nitric oxides concentration (parts per million }\\
+\mbox{ ROOMS } & = \mbox{ average number of rooms per dwelling }\\
+\mbox{ AGE } & = \mbox{ proportion of owner-occupied dwelliingsbuilt prior to 1940 }\\
+\mbox{ DIST } & = \mbox{ weighted distance to five employment centres }\\
+\mbox{ ACCESS }& = \mbox{ index of accessability to radial highways } \\
+\mbox{ TAX } & = \mbox{ full-value property tax rate per \$10,000 }\\
+\mbox{ PTRATIO } & = \mbox{ pupil-teacher ratio by town  }\\
+\end{align*}
+
+\noindent Suppose you have data on 506 local census areas within the major city. An OLS regression provides the following estimates:
+\begin{center}
+\begin{tabular}{c c c c c}\\
+\multicolumn{5}{l}{Dependent Variable: VALUE}\\
+\multicolumn{5}{l}{Sample: 1 506}\\
+\multicolumn{5}{l}{Included Observations : 506}\\ \hline
+
+Variable & Coefficient & Std.Error & t-statistic & Prob. \\ \hline
+
+C & 28.40666 & 5.365948 & 5.293875 & 0.0000 \\
+
+CRIME & -0.183449 & 0.036489 & -5.027548 & 0.0000 \\
+
+NITOX & -22.81088 & 4.160741 & -5.482407 & 0.0000 \\
+
+ROOMS & 6.371512 & 0.392387 & 16.23784 & 0.0000 \\
+
+AGE & -0.047750 & 0.014102 & -3.386085 & 0.0008 \\
+
+DIST & -1.335269 & 0.200147 & -6.671448 & 0.0000 \\
+
+ACCESS & 0.272282 & 0.072276 & 3.376250 & 0.0002 \\
+
+TAX & -0.012592 & 0.003770 & -3.339939 & 0.0009 \\
+
+PTRATIO & -1.176787 & 0.139415 & -8.440868 & 0.0000 \\ \hline
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Report briefly how each of the explanatory variables affects
+the value of a home. \vspace{0.1in}
+
+\noindent \textbf{Solution} Recall that the dependent variable
+(median value of owner-occupied homes) is measured in \$'000's.
+\begin{itemize}
+\item $b_{1} = -0.184$---as the per-capita crime rate increases by one unit, the median
+home value falls by \$183.45.
+
+\item $b_{2} = -22.81088$---a one unit increase in the nitric oxide concentration leads
+to a decline in median value of \$22,810.
+
+\item $b_{3} = 6.371512$---increasing the average number of rooms by one unit raises the
+median value by \$6,372
+
+\item $b_{4} = -0.04775$---a one unit increase in the proportion of owner-occupied dwellings built prior to 1940 reduces the median home value by \$47.75
+
+\item $b_{5} = -1.335269$---for every unit of weighted distance from five employment centers, the median home value declines by \$1335.27
+
+\item $b_{6} = 0.272282$---a one unit increase in the index of accessability to radial
+highways raises median value by \$272.82
+
+\item $b_{7} = -0.012592$---a higher property tax rate per \$10,000 lowers the median home value
+
+\item $b_{8} = -1.176787$---a one unit increase in the pupil-teacher ratio lowers median  value
+by \$1176.78
+\end{itemize}
+
+\item Test the hypothesis that increasing the average number of rooms by one
+changes the median value of a house by $\$7,500$. Your answer should
+clearly state the null and alternative hypotheses, the distribution
+of the test statistic, and your decision. \vspace{0.1in}
+
+\noindent \textbf{Solution}: This hypothesis may be represented as
+$H_{0}: \beta_{3} = 7.5$ since the dependent variable is measured in
+\$1000. Consider a two-sided alternative:
+\begin{enumerate}
+\item specify $H_{0}$ and $H_{A}$:
+\begin{flalign*}
+& H_{0}: \beta_{3} = 7.5 & H_{A}: \beta_{3} \neq 7.5
+\end{flalign*}
+\item the test statistic :
+\[
+t = \frac{b_{3} - 7.5}{\se(b_{3})} \thicksim t(N-9)
+\]
+\item the level of significance:
+\begin{flalign*}
+& \alpha = 0.05 & t_{c} \thickapprox 1.96
+\end{flalign*}
+with degrees of freedom $N-9 = 497$. Reject $H_{0}$ if $t \geq 1.96$ or $t \leq -1.96$. Note that the file \texttt{tut3.R} provides an exact critical value of $t_{c} = 1.964749$ and $-t_{c} =-1.964749$.
+
+\item regression results
+\begin{flalign*}
+& b_{3} =6.371512 & \se(b_{3}) = 0.392387
+\end{flalign*}
+\item calculate the sample value of the test statistic
+\[
+t = \frac{b_{3} -7.5}{\se(b_{3})}  = \frac{-1.128488}{0.392387}
+=-2.87596
+\]
+\item apply the decision rule:
+\[
+t<-t_{c}
+\] so \textbf{reject the null hypothesis}.
+The data are not consistent with the hypothesis that changing the
+number of rooms raises the median value of a house by \$7,500. \vspace{0.1in}
+
+\noindent Alternatively, the p-value fore this test is given by $p=0.0042$. Since $p<0.05$, then reject $H_{0}$. Check the file
+\texttt{tut3.R} for the calculation of this p-value.
+\end{enumerate}
+
+\item Test the hypothesis that reducing the
+pupil-teacher ratio by 10 will increase the median value of a house by more
+than $\$10,000$. Your answer should clearly state the null and
+alternative hypotheses, the distribution of the test statistic, and
+your decision. \vspace{0.1in}
+
+\noindent \textbf{Solution}: We want to test $H_{A}: \beta_{8} <
+-1$:
+\begin{enumerate}
+\item specify $H_{0}$ and $H_{A}$:
+\begin{flalign*}
+& H_{0}: \beta_{8}\geq -1 & H_{A}: \beta_{8} < -1
+\end{flalign*}
+\item the test statistic :
+\[
+t = \frac{b_{8} -(-1)}{\se(b_{8})} \thicksim t(N-9)
+\]
+\item the level of significance:
+\begin{flalign*}
+& \alpha = 0.05 & t_{c} \thickapprox 1.645
+\end{flalign*}
+with degrees of freedom $N-9 = 497$. Reject $H_{0}$ if $t \leq
+-1.645$ since this is a one-tailed test. Note that the file \texttt{tut3.R} provides an exact critical value of $t_{c} = -1.647925$.
+
+ \item regression results
+\begin{flalign*}
+& b_{8} =-1.176787 & \se(b_{3}) = 0.139415
+\end{flalign*}
+\item calculate the sample value of the test statistic
+\[
+t = \frac{b_{8} + 1}{\se(b_{8})}  = \frac{ -0.17679}{0.139415}
+=-1.2681
+\]
+\item apply the decision rule. We will reject $H_{0}$ when $t<-t_{c}$. Since $t >
+-t_{c}$, \textbf{do not reject the null hypothesis}. The data are not
+consistent with the hypothesis that reducing the pupil-teacher
+ratio by 10 will increase the median home value by more than \$10,000. \vspace{0.1in}
+
+\noindent Alternatively, the p-value fore this test is given by $p=0.1027$. Since $p>0.05$, then do not reject $H_{0}$. Check the file \texttt{tut3.R} for the calculation of this p-value.
+\end{enumerate}
+\end{enumerate}
+
+\noindent \textbf{Note}: The hypothesis tests for parts (c) and (d)
+should be conducted at the 5\% level of significance.
+\newpage
+\subsubsection*{Question 2}
+
+
+Illicit drugs are increasingly being sold on crypto-markets on the `dark-web'. These markets facilitate anonymous buying and selling and are characterised by the following characteristics:
+\begin{itemize}
+\item [-] anonymous internet browsing
+\item [-] payments in virtual crypto-currencies (such as Bitcoin)
+\item [-] payments to third-party vendors (intermediaries)
+\item [-] vendor feedback systems (ratings)
+\end{itemize}
+
+\noindent This question examines the market for cocaine using a single platform on the dark-web, during July 2017. Consider the following econometric model:
+\[
+\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} + \beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} + \varepsilon_{i}
+\]
+where:
+\begin{align*}
+\mbox{price } & = \mbox{price per gram in \$USD for a cocaine sale}\\
+\mbox{quant} & = \mbox{number of grams of coccaine in a given sale}\\
+\mbox{qual} & = \mbox{quality of the coccaine expressed as a percentage purity}\\
+\mbox{rating} & = \mbox{rating of the seller on a five-hundred point scale, $0$ to $500$}
+\end{align*}
+The data required to complete this question are located on the
+subject page. The data file is called \texttt{cocaine.csv}. \vspace{0.1in}
+
+\noindent The hypothesis tests for parts (d), (e), and (f) should be conducted at the 5\% level of significance.
+\begin{enumerate}
+\item What signs do you expect for $\beta_{1}$, $\beta_{2}$ and
+$\beta_{3}$? \vspace{0.1in}
+
+\noindent \textbf{Solution}:We expect the following signs for the
+population coefficients:
+\begin{itemize}
+\item $\beta_{1} < 0$---as the number of grams in a given sale increases by one unit, the
+expected price per gram will fall (for a given quality and seller rating). This suggests that
+there is a quantity discount for large sales.
+
+\item $\beta_{2}  > 0$---as the quality index increases by one percentage point, the expected price will
+increase (for a given quantity and seller rating). We expect that, all else equal,
+relatively more pure cocaine should command a higher unit price.
+
+\item $\beta_{3} > 0$---as the seller rating increases by one unit, the expected price will increase (for a given
+quantity and quality). This suggests that the reputations of the sellers are important for buyers such that, all else equal,  they are
+willing to pay a premium to purchase from more reliable sellers.
+\end{itemize}
+\item Using \textsc{R} estimate the econometric model. Report
+and interpret the coefficient estimates. Do the signs of your
+estimated coefficients turn out as you expect? \vspace {0.1in}
+
+\noindent \textbf{Solution}: The estimated regression results are
+reported in Figure \ref{Fi:quest2}.
+\begin{figure}
+\begin{center}
+\setlength{\unitlength}{1mm}
+\includegraphics[scale = 0.75]{tut3_reg1}
+\end{center}
+\caption{Question 2: OLS Regression Results} \label{Fi:quest2}
+\end{figure}
+\begin{itemize}
+\item $b_{1}  = -0.0798$---as the number of grams in a given sale increases by one
+unit, the price per gram will fall by \$USD 0.0798. This marginal effect is relatively small, which might reflect the
+reduced risk faced by sellers on the `dark web'.
+
+\item $b_{2}  = 0.7636$---as the quality index increases by one percentage point, the price per gram
+will increase by \$USD 0.7636.
+
+\item $b_{3} = 0.2179$---as seller rating increases by one unit (on a 500-point scale), the price per gram increases by
+\$USD 0.2179.
+\end{itemize}
+
+\noindent The estimated coefficients have the signs that we would expect.
+
+\item What proportion of the variation in cocaine price is explained
+by variation in quantity, quality, and seller rating? \vspace{0.1in}
+
+\noindent \textbf{Solution}: Using the $R^{2} = 0.1307$ from the
+regression results in Figure \ref{Fi:quest2}, the proportion of the
+variation in the cocaine unit price that is explained by variation
+in the quantity, quality, and seller rating is 13.09\%.
+
+\item It is claimed that the greater the number of sales, the higher
+the risk of getting caught; and thus, sellers are willing to accept
+a lower price if they can make sales in greater quantities. Test
+this hypothesis. Your answer should clearly state the null and
+alternative hypotheses, the distribution of the test statistic, and
+your decision. \vspace{0.1in}
+ \newpage
+\noindent \textbf{Solution}: This hypothesis may be represented as
+a one-sided test:
+\begin{enumerate}
+\item specify $H_{0}$ and $H_{A}$:
+\begin{flalign*}
+& H_{0}: \beta_{1} \geq 0 & H_{A}: \beta_{1} < 0
+\end{flalign*}
+\item the test statistic :
+\[
+t = \frac{b_{1} - 0}{\se(b_{1})} \thicksim t(N-4)
+\]
+\item the level of significance:
+\begin{flalign*}
+& \alpha = 0.05 & t_{c} \thickapprox 1.6449
+\end{flalign*}
+with degrees of freedom $(N-4) = 1,405$. Reject $H_{0}$ if $t \leq
+-1.6449$. Note that the file \texttt{tut3.R} provides an exact critical value of $t_{c} = -1.6459$.
+
+\item regression results
+\begin{flalign*}
+& b_{1} =-0.0798 & \se(b_{1}) = 0.0071
+\end{flalign*}
+\item calculate the sample value of the test statistic
+\[
+t = \frac{b_{1} -0}{\se(b_{1})}  = -11.2844
+\]
+\item apply the decision rule:
+\[
+t < -t_{c} \] \textbf{reject the null hypothesis}. The data are
+consistent with the hypothesis that sellers are willing to accept a
+lower price if they can make sales in larger quantities. \vspace{0.1in}
+
+\noindent Alternatively, the p-value fore this test is given by $p=0.0000$. Since $p<0.05$, then reject $H_{0}$. Check the file \texttt{tut3.R} for the calculation of this p-value.
+\end{enumerate}
+
+\item Test the hypothesis that a premium is paid
+for better quality cocaine. Your answer should clearly state the
+null and alternative hypotheses, the distribution of the test
+statistic, and your decision. \vspace{0.1in}
+
+\noindent \textbf{Solution}: This hypothesis may be represented as
+a one-sided test.
+\begin{enumerate}
+\item specify $H_{0}$ and $H_{A}$:
+\begin{flalign*}
+& H_{0}: \beta_{2} \leq 0 & H_{A}: \beta_{2} > 0
+\end{flalign*}
+\item the test statistic :
+\[
+t = \frac{b_{2} - 0}{\se(b_{2})} \thicksim t(N-4)
+\]
+\item the level of significance:
+\begin{flalign*}
+& \alpha = 0.05 & t_{c} \thickapprox 1.6449
+\end{flalign*}
+with degrees of freedom $(N-4) = 1,405$. Reject $H_{0}$ if $t \geq
+1.6449$. Note that the file \texttt{tut3.R} provides an exact critical value of $t_{c} = 1.6459$.
+
+\item regression results
+\begin{flalign*}
+& b_{2} =0.7636 & \se(b_{2}) = 0.0965
+\end{flalign*}
+\item calculate the sample value of the test statistic
+\[
+t = \frac{b_{2} -0}{\se(b_{2})}  = 7.9143
+\]
+\item apply the decision rule:
+\[
+t > t_{c}
+\] \textbf{reject the null hypothesis}. The data are consistent with the hypothesis that a premium is paid for
+better quality cocaine. \vspace{0.1in}
+
+\noindent Alternatively, the p-value fore this test is given by $p=0.00000$. Since $p<0.05$, then reject $H_{0}$. Check the file \texttt{tut3.R} for the calculation of this p-value.
+\end{enumerate}
+
+\item Test the hypothesis that, controlling for quality and quantity, seller rating is an important
+determinant of price. Your answer should clearly state the
+null and alternative hypotheses, the distribution of the test
+statistic, and your decision.  \vspace{0.1in}
+
+\noindent \textbf{Solution}: This hypothesis may be represented as
+a one-sided test.
+\begin{enumerate}
+\item specify $H_{0}$ and $H_{A}$:
+\begin{flalign*}
+& H_{0}: \beta_{3}=  0 & H_{A}: \beta_{3} \ne = 0
+\end{flalign*}
+\item the test statistic :
+\[
+t = \frac{b_{3} - 0}{\se(b_{3})} \thicksim t(N-4)
+\]
+\item the level of significance:
+\begin{flalign*}
+& \alpha = 0.05 & t_{c} \thickapprox 1.96
+\end{flalign*}
+with degrees of freedom $(N-4) = 1,405$. Reject $H_{0}$ if $t \geq 1.96$ or $t \leq -1.96$. Note that the file \texttt{tut3.R} provides an exact critical value of $t_{c} = 1.9617$.
+
+\item regression results
+\begin{flalign*}
+& b_{3} =0.2179 & \se(b_{3}) = 0.0475
+\end{flalign*}
+\item calculate the sample value of the test statistic
+\[
+t = \frac{b_{3} -0}{\se(b_{3})}  = 4.5848
+\]
+\item apply the decision rule:
+\[
+t > t_{c}
+\] \textbf{reject the null hypothesis}. The data are consistent with the hypothesis that seller rating is an important determinant of price.\vspace{0.1in}
+
+\noindent Alternatively, the p-value fore this test is given by $p=0.00000$. Since $p<0.05$, then reject $H_{0}$. Check the file \texttt{tut3.R} for the calculation of this p-value.
+\end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}

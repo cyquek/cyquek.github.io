@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ECOM30001/90001 Basic Econometrics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Chin Yong Quek" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ECOM30001/90001 Basic Econometrics
+## Tutorial 3: Basic Linear Model and Hypothesis Tests about a single coefficient
+### Chin Yong Quek
+### Department of Economics <br> University of Melbourne
+### March 2022
+
+---
+
+
+
+
+# Objectives
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+/******************
+ * Slide scrolling
+ * (non-functional)
+ * not sure if it is a good idea anyway
+slides &gt; slide {
+  overflow: scroll;
+ padding: 5px 40px;
+}
+.scrollable-slide .remark-slide {
+  height: 400px;
+  overflow: scroll !important;
+}
+ ******************/
+
+.scroll-output {
+  height: 90%;
+  overflow-y: scroll;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+&lt;/style&gt;
+
+- General steps in hypothesis testing
+
+- Conducting an hypothesis test about a single coefficient: `\(t\)`-test
+
+- Interpretation and calculation of `\(p\)`-value
+
+---
+
+class: inverse, center, middle
+
+# Question 1
+
+---
+
+Consider the following econometric model for prices of owner-occupied homes in a metropolitan area surrounding a major city.
+
+`\begin{align*}
+\mbox{ VALUE}_{i} &amp; = \beta_{0} + \beta_{1}\,\mbox{ CRIME}_{i} +
+\beta_{2}\,\mbox{
+NITOX}_{i} \\
+ &amp;+ \beta_{3}\,\mbox{ ROOMS}_{i} + \beta_{4}\,\mbox{ AGE}_{i} + \beta_{5}\,\mbox{ DIST}_{i}
+ \\
+ &amp; + \beta_{6}\,\mbox{ ACCESS}_{i} + \beta_{7}\,\mbox{ TAX}_{i} + \beta_{8}\,\mbox{ PTRATIO}_{i} + \varepsilon_{i}
+\end{align*}`
+
+
+These variables are defined as:
+
+- VALUE  =  median value of owner-occupied homes in $'000's
+- CRIME  =  per-capita crime rate
+- NITOX  =  nitric oxides concentration (parts per million)
+- ROOMS  =  average number of rooms per dwelling
+- AGE  =  proportion of owner-occupied units built prior to 1940
+- DIST =  weighted distance to five employment centres 
+- ACCESS =  index of accessibility to radial highways 
+- TAX  =  full-value property tax rate per $10,000
+- PTRATIO  =  pupil-teacher ratio by town 
+
+---
+
+## Regression model
+
+`\begin{align*}
+\mbox{ VALUE}_{i} &amp; = \beta_{0} + \beta_{1}\,\mbox{ CRIME}_{i} +
+\beta_{2}\,\mbox{
+NITOX}_{i} \\
+ &amp;+ \beta_{3}\,\mbox{ ROOMS}_{i} + \beta_{4}\,\mbox{ AGE}_{i} + \beta_{5}\,\mbox{ DIST}_{i}
+ \\
+ &amp; + \beta_{6}\,\mbox{ ACCESS}_{i} + \beta_{7}\,\mbox{ TAX}_{i} + \beta_{8}\,\mbox{ PTRATIO}_{i} + \varepsilon_{i}
+\end{align*}`
+
+Suppose you have data on 506 local census areas within the major city. An OLS regression provides the following estimates:
+
+&lt;img src="reg1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+a) Report briefly how each of the explanatory variables affects the value of a home.
+
+---
+
+`\begin{align*}
+\mbox{ VALUE}_{i} &amp; = \beta_{0} + \beta_{1}\,\mbox{ CRIME}_{i} +
+\beta_{2}\,\mbox{
+NITOX}_{i} + \beta_{3}\,\mbox{ ROOMS}_{i} + \beta_{4}\,\mbox{ AGE}_{i} \\
+ &amp;+ \beta_{5}\,\mbox{ DIST}_{i} + \beta_{6}\,\mbox{ ACCESS}_{i} + \beta_{7}\,\mbox{ TAX}_{i} + \beta_{8}\,\mbox{ PTRATIO}_{i} + \varepsilon_{i}
+\end{align*}`
+
+&lt;img src="reg1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+b) Test the hypothesis that increasing the average number of rooms by one changes the median value of a house by $7,500. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+c) Test the hypothesis that reducing the pupil-teacher ratio by 10 will increase the median value of a house by more than $10,000. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+**Note:** The hypothesis tests for parts (b) and (c) should be conducted at the 5% level of significance.
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# Question 1 (b)
+#Two-sided test: # H0: beta3= 7.5 HA: beta3 ne 7.5
+b3&lt;-6.371512
+seb3 &lt;-0.392387
+t_1b = (b3-7.5)/seb3
+print(t_1b)
+```
+
+```
+## [1] -2.875957
+```
+
+```r
+df_1b &lt;- 506-9
+alpha &lt;-0.05
+tcr_1b &lt;- qt(1-alpha/2, df_1b)               # calculate critical value
+pval_1b &lt;- 2*(1-pt(abs(t_1b), df_1b))        # calculate p-value for 2 sided test
+print(t_1b)
+```
+
+```
+## [1] -2.875957
+```
+
+```r
+print(tcr_1b)
+```
+
+```
+## [1] 1.964749
+```
+
+```r
+print(pval_1b)
+```
+
+```
+## [1] 0.004201018
+```
+
+```r
+# Alternative method for p-value
+pval_1b_alt &lt;-2*pt(abs(t_1b),df_1b,lower.tail=FALSE)
+print(pval_1b_alt)
+```
+
+```
+## [1] 0.004201018
+```
+
+```r
+# Question 1(c)
+# One-sided test: # H0: beta8 &gt;=-1 HA: beta8 &lt; -1
+b8&lt;- -1.176787
+seb8 &lt;-0.139415
+t_1c = (b8+1)/seb8
+print(t_1c)
+```
+
+```
+## [1] -1.268063
+```
+
+```r
+df_1c &lt;- 506-9
+tcr_1c &lt;- qt(alpha, df_1b)               # calculate critical value
+pval_1c &lt;-pt(t_1c, df_1c)           # calculate p-value for 1 sided test
+print(t_1c)
+```
+
+```
+## [1] -1.268063
+```
+
+```r
+print(tcr_1c)
+```
+
+```
+## [1] -1.647925
+```
+
+```r
+print(pval_1c)
+```
+
+```
+## [1] 0.1026846
+```
+
+```r
+# Alternative method for p-value
+pval_1c_alt &lt;-pt(t_1c,df_1c,lower.tail=TRUE)
+print(pval_1c_alt)
+```
+
+```
+## [1] 0.1026846
+```
+]
+]
+
+---
+
+class: inverse, center, middle
+
+# Question 2
+
+---
+## Load R packages and Import data file
+
+.tiny[
+
+```r
+#---------------------------------------
+# set your working directory here
+setwd("...")
+#----------------------------------------
+options(scipen=999)               # Do not use scientific notation
+library(stargazer)                # For producing good quality output from R 
+#------------------------------------
+# Question 2
+#-----------------------------------
+# (1) Import Data File from Excel and Save as R Data File
+tut3 &lt;- read.csv("cocaine.csv")
+```
+]
+
+
+
+---
+
+### View data
+
+
+```r
+head(tut3)
+```
+
+```
+##      price quant qual rating
+## 1  65.1839   1.0   90    463
+## 2  65.1333   2.0   90    463
+## 3  83.4213   0.5   89    494
+## 4 104.2130   1.0   89    500
+## 5  86.0013   1.0   87    478
+## 6  68.4216  10.0   87    478
+```
+
+
+---
+
+## Data background
+
+Consider the following econometric model:
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} +
+\beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} +
+\varepsilon_{t}$$`
+
+where:
+
+- `price` = price per gram in $USD for a cocaine sale
+- `quant` = number of grams of cocaine in a given sale
+- `qual` = quality if the cocaine expressed a percentage purity
+- `rating` = rating of the seller on a five-hundred point scale, 0 to 500
+
+The data required to complete this question are located on the subject page. The data file is called `cocaine.csv`. 
+
+The hypothesis tests for parts (d) and (e) should be conducted at the
+5% level of significance.
+
+--
+
+a) What signs do you expect for `\(\beta_1\)`, `\(\beta_2\)` and `\(\beta_3\)`?
+
+b) Using R, estimate the econometric model. Report and interpret the coefficient estimates. Do the signs of your estimated coefficients turn out as you expect?
+
+---
+
+.scroll-output[
+## Estimated model
+.tiny[
+
+```r
+# (2)  Estimate the econometric model by OLS
+reg1 &lt;- lm(price ~ quant + qual + rating, data=tut3)
+print(summary(reg1))                           # Print regression results to screen
+```
+
+```
+## 
+## Call:
+## lm(formula = price ~ quant + qual + rating, data = tut3)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -70.442 -13.420  -3.116  10.768 127.372 
+## 
+## Coefficients:
+##               Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -96.635476  25.238194  -3.829             0.000134 ***
+## quant        -0.079835   0.007075 -11.284 &lt; 0.0000000000000002 ***
+## qual          0.763569   0.096480   7.914  0.00000000000000501 ***
+## rating        0.217914   0.047529   4.585  0.00000494749425468 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 21.86 on 1405 degrees of freedom
+## Multiple R-squared:  0.1307,	Adjusted R-squared:  0.1288 
+## F-statistic:  70.4 on 3 and 1405 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+R2_reg1 &lt;-summary(reg1)$r.squared              # R2 
+print(R2_reg1)                                 # Print R-squared to the screen
+```
+
+```
+## [1] 0.1306843
+```
+]
+]
+
+---
+
+.scroll-output[
+
+c) What proportion of the variation in cocaine price is explained by variation in quantity, quality, and seller rating?
+
+.tiny[
+
+```r
+# stargazer output
+stargazer(reg1, type="html", dep.var.labels=c("Cocaine price per gram in $USD"),
+          covariate.labels=c("Intercept","Quantity (grams)", "Quality (% purity)", "Rating"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out= "tut3_reg1.html")
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;Cocaine price per gram in USD&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;-96.6355&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(25.2382)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quantity (grams)&lt;/td&gt;&lt;td&gt;-0.0798&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0071)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quality (% purity)&lt;/td&gt;&lt;td&gt;0.7636&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0965)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Rating&lt;/td&gt;&lt;td&gt;0.2179&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0475)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;1,409&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1307&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1288&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;21.8570 (df = 1405)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;70.4046&lt;sup&gt;***&lt;/sup&gt; (df = 3; 1405)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+]
+
+---
+
+### Hypothesis Test
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} +
+\beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} +
+\varepsilon_{t}$$`
+
+d) It is claimed that the greater the number of sales, the higher the risk of getting caught; and thus, sellers are willing to accept a lower price if they can make sales in greater quantities. Test this hypothesis. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+--
+
+`$$H_{0}: \beta_{1}\geq 0 \qquad \qquad H_{A}: \beta_{1} &lt; 0$$`
+--
+`$$t = \frac{b_{1} -0}{\text{se}(b_{1})} \sim t(1409-4)$$`
+
+--
+
+`$$\alpha = 0.05 \quad -t_{0.05,1405} \thickapprox -1.6449$$`
+
+
+```r
+qt(0.05, 1405)
+```
+
+```
+## [1] -1.645939
+```
+
+--
+
+Reject `\(H_{0}\)` if `\(t \leq -1.6449\)`; since this is a one-tailed test.
+
+---
+
+
+
+`$$t = \frac{b_{1} -0}{\text{se}(b_{1})}  = -11.2844$$`
+
+--
+
+Reject the null hypothesis.
+
+* The data are consistent with the hypothesis that sellers are willing to accept a lower price if they can make sales in larger quantities.
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# This is a one-sided t test :H0: beta1=0 HA:beta1 &lt; 0
+alpha &lt;- 0.05                                 # set desired significance
+b1_reg1 &lt;- coef(reg1)[["quant"]]              # coefficient on quantity
+print(b1_reg1)
+```
+
+```
+## [1] -0.07983452
+```
+
+```r
+seb1_reg1 &lt;- sqrt(vcov(reg1)[2,2])            # standard error of b1
+print(seb1_reg1)
+```
+
+```
+## [1] 0.007074802
+```
+
+```r
+df_reg1 &lt;- df.residual(reg1)                  # degrees of freedom
+print(df_reg1)
+```
+
+```
+## [1] 1405
+```
+
+```r
+t_1 &lt;- (b1_reg1-0)/seb1_reg1                  # construct t test statistic
+print(t_1)
+```
+
+```
+## [1] -11.28435
+```
+
+```r
+tcr_1 &lt;- qt(alpha, df_reg1)                   # calculate critical value
+print(tcr_1)
+```
+
+```
+## [1] -1.645939
+```
+
+```r
+pval_1 &lt;- pt(t_1,df_reg1)                     # calculate p-value for 1 sided test
+print(pval_1)
+```
+
+```
+## [1] 0.0000000000000000000000000001245047
+```
+
+```r
+# Alternative method for p-value
+pval_1_alt &lt;-pt(t_1,df_reg1,lower.tail=TRUE)
+print(pval_1_alt)
+```
+
+```
+## [1] 0.0000000000000000000000000001245047
+```
+]
+]
+
+---
+
+### Hypothesis Test
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} +
+\beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} +
+\varepsilon_{t}$$`
+
+e)  Test the hypothesis that a premium is paid for better quality cocaine. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+--
+
+`$$H_{0}: \beta_{2} \leq 0 \qquad H_{A}: \beta_{2} &gt; 0$$`
+
+--
+`$$t = \frac{b_{2} -0}{\text{se}(b_{2})} \sim t(1409-4)$$`
+
+--
+
+`$$\alpha = 0.05 \quad t_{0.05,1405} \thickapprox 1.6449$$`
+
+
+```r
+qt(0.05, 1405, lower.tail=F)
+```
+
+```
+## [1] 1.645939
+```
+
+--
+
+Reject `\(H_{0}\)` if `\(t \geq 1.675\)`; since this is a one-tailed test.
+
+---
+
+
+
+`$$t = \frac{b_{2} -0}{\text{se}(b_{2})}  = 7.9143$$`
+
+--
+
+Reject the null hypothesis.
+
+* The data are consistent with the hypothesis that a premium is paid for better quality cocaine.
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# This is a one-sided t test :H0: beta2=0 HA:beta2 &gt; 0
+b2_reg1 &lt;- coef(reg1)[["qual"]]               # coefficient on quality
+print(b2_reg1)
+```
+
+```
+## [1] 0.7635687
+```
+
+```r
+seb2_reg1 &lt;- sqrt(vcov(reg1)[3,3])            # standard error of b2
+print(seb2_reg1)
+```
+
+```
+## [1] 0.09648016
+```
+
+```r
+print(df_reg1)
+```
+
+```
+## [1] 1405
+```
+
+```r
+t_2 &lt;- (b2_reg1-0)/seb2_reg1                  # construct t test statistic
+print(t_2)
+```
+
+```
+## [1] 7.914256
+```
+
+```r
+tcr_2 &lt;- qt(1-alpha, df_reg1)                 # calculate critical value
+print(tcr_2)
+```
+
+```
+## [1] 1.645939
+```
+
+```r
+pval_2 &lt;- 1 - pt(t_2,df_reg1)                 # calculate p-value for 1 sided test
+print(pval_2)
+```
+
+```
+## [1] 0.000000000000002442491
+```
+
+```r
+# Alternative method for p-value
+pval_2_alt &lt;-pt(t_2,df_reg1,lower.tail=FALSE)
+print(pval_2_alt)
+```
+
+```
+## [1] 0.000000000000002503595
+```
+]
+]
+
+
+---
+
+`$$\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} +
+\beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} +
+\varepsilon_{t}$$`
+
+f) Test the hypothesis that, controlling for quality and quantity, seller rating is an important determinant of price. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+--
+
+`$$H_{0}: \beta_{3} = 0 \qquad H_{A}: \beta_{3} \ne 0$$`
+
+--
+`$$t = \frac{b_{3} -0}{\text{se}(b_{3})} \sim t(1409-4)$$`
+
+--
+
+`$$\alpha = 0.05 \quad \pm t_{0.025,1405} \thickapprox \pm 1.9617$$`
+
+
+```r
+qt(0.025, 1405, lower.tail=F)
+```
+
+```
+## [1] 1.961654
+```
+
+--
+
+Reject `\(H_{0}\)` if `\(t \geq 1.9617\)` or `\(t \leq -1.9617\)`
+
+---
+
+
+
+`$$t = \frac{b_{3} -0}{\text{se}(b_{3})}  = 4.5848$$`
+
+--
+
+Reject the null hypothesis.
+
+* The data are consistent with the hypothesis that seller rating is an important determinant of price.
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# This is a two-sided t test :H0: beta3=0 HA:beta3 ne 0
+b3_reg1 &lt;- coef(reg1)[["rating"]]
+print(b3_reg1)
+```
+
+```
+## [1] 0.2179142
+```
+
+```r
+seb3_reg1 &lt;- sqrt(vcov(reg1)[4,4])            # standard error of b2
+print(seb3_reg1)
+```
+
+```
+## [1] 0.04752946
+```
+
+```r
+print(df_reg1)
+```
+
+```
+## [1] 1405
+```
+
+```r
+t_3 &lt;- (b3_reg1-0)/seb3_reg1                  # construct t test statistic
+print(t_3)
+```
+
+```
+## [1] 4.584825
+```
+
+```r
+alpha &lt;-0.05
+tcr_3 &lt;- qt(1-alpha/2, df_reg1)               # calculate critical value
+print(tcr_3)
+```
+
+```
+## [1] 1.961654
+```
+
+```r
+pval_3 &lt;- 2*(1-pt(abs(t_3), df_reg1))        # calculate p-value for 2 sided test
+print(pval_3)
+```
+
+```
+## [1] 0.000004947494
+```
+
+```r
+# Alternative method for p-value
+pval_3_alt &lt;-2*pt(abs(t_3),df_reg1,lower.tail=FALSE)
+print(pval_3_alt)
+```
+
+```
+## [1] 0.000004947494
+```
+]
+]
+
+
+---
+class: inverse, center, middle
+
+# End
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,191 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage[marginal,bottom]{footmisc}
+\usepackage[para]{threeparttable}
+\usepackage{fancyhdr}
+\usepackage[a4paper, left= 1.0in, right = 1.0in, bottom = 1.0in, top = 1.0in,includefoot,nomarginpar,includemp]{geometry}
+\usepackage{bm}
+\usepackage{sectsty}
+\usepackage{lscape}
+\usepackage{color}
+\usepackage[sectionbib,comma]{natbib}
+%\usepackage{indentfirst}
+\sectionfont{\raggedright}
+\setlength{\bibhang}{0.5in} \DeclareMathOperator*{\VAR}{VAR}
+\DeclareMathOperator*{\COV}{COV} \DeclareMathOperator*{\corr}{corr}
+\DeclareMathOperator*{\s}{s} \DeclareMathOperator*{\se}{se}
+\setlength{\parindent}{0.5in} \interfootnotelinepenalty=10000
+\makeatletter
+\renewcommand*{\l@figure}{\@dottedtocline{1}{0em}{3.8em}}
+\makeatother \makeatletter
+\renewcommand*{\l@table}{\@dottedtocline{1}{0em}{3.8em}}
+\makeatother
+
+\singlespacing
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+\textbf{Department of Economics} \\
+\textsc{The University of Melbourne}
+\end{center}
+\vspace{0.1in}
+\begin{center}
+\textbf{ECOM30001/ECOM90001: Basic Econometrics} \\
+\textbf{Semester 1, 2022}
+\end{center}
+\vspace{0.1in}
+\begin{center}
+\textsc{Tutorial 3}
+\end{center}
+\noindent \hrulefill
+
+\noindent This tutorial reviews some fundamental concepts for the basic linear model, including conducting hypothesis tests about a single coefficient, using the econometrics
+software package \textsc{R} that we will be using in this
+subject. \vspace{0.1in}
+
+\noindent This tutorial requires one data file:
+\begin{itemize}
+\item[-] \texttt{cocaine.csv}
+\end{itemize}
+This file can be obtained from the Canvas subject page.  \vspace{0.1in}
+
+\noindent In addition the R script file \texttt{tut3.R} provides the program code necessary to complete the tutorial. This R script file uses the following package(s) which need to be installed prior to running the R script file:
+\begin{align*}
+\mbox{\texttt{stargazer}} & : \mbox{for easily generating summary statistics for an R data file} \\
+\end{align*}
+This package can be installed directly in \textsc{RStudio} from the packages tab or by using the command \texttt{install.packages()} and inserting the name of the package in the brackets.
+
+ \newpage
+\subsubsection*{Question 1 (Hill, Griffiths \& Lim Exercise 5.5)}
+\renewcommand{\labelenumi}{\alph{enumi})}
+
+Consider the following econometric model for prices of owner-occupied homes in a metropolitan area surrounding a major city.
+\begin{align*}
+\mbox{ VALUE}_{i} & = \beta_{0} + \beta_{1}\,\mbox{ CRIME}_{i} +
+\beta_{2}\,\mbox{
+NITOX}_{i} \\
+ &+ \beta_{3}\,\mbox{ ROOMS}_{i} + \beta_{4}\,\mbox{ AGE}_{i} + \beta_{5}\,\mbox{ DIST}_{i}
+ \\
+ & + \beta_{6}\,\mbox{ ACCESS}_{i} + \beta_{7}\,\mbox{ TAX}_{i}
++ \beta_{8}\,\mbox{ PTRATIO}_{i} + \varepsilon_{i}
+\end{align*}
+
+These variables are defined as:
+\begin{align*}
+\mbox{ VALUE } & = \mbox{ median value of owner-occupied homes in \$'000's }\\
+\mbox{ CRIME } & = \mbox{ per-capita crime rate }\\
+\mbox{ NITOX } & = \mbox{ nitric oxides concentration (parts per million) }\\
+\mbox{ ROOMS } & = \mbox{ average number of rooms per dwelling }\\
+\mbox{ AGE } & = \mbox{ proportion of owner-occupied dwellings built prior to 1940 }\\
+\mbox{ DIST } & = \mbox{ weighted distance to five employment centres }\\
+\mbox{ ACCESS }& = \mbox{ index of accessability to radial highways } \\
+\mbox{ TAX } & = \mbox{ full-value property tax rate per \$10,000 }\\
+\mbox{ PTRATIO } & = \mbox{ pupil-teacher ratio by town  }\\
+\end{align*}
+
+\noindent Suppose you have data on 506 local census areas within the major city. An OLS regression provides the following estimates:
+\begin{center}
+\begin{tabular}{c c c c c}\\
+\multicolumn{5}{l}{Dependent Variable: VALUE}\\
+\multicolumn{5}{l}{Sample: 1 506}\\
+\multicolumn{5}{l}{Included Observations : 506}\\ \hline
+
+Variable & Coefficient & Std.Error & t-statistic & Prob. \\ \hline
+
+C & 28.40666 & 5.365948 & 5.293875 & 0.0000 \\
+
+CRIME & -0.183449 & 0.036489 & -5.027548 & 0.0000 \\
+
+NITOX & -22.81088 & 4.160741 & -5.482407 & 0.0000 \\
+
+ROOMS & 6.371512 & 0.392387 & 16.23784 & 0.0000 \\
+
+AGE & -0.047750 & 0.014102 & -3.386085 & 0.0008 \\
+
+DIST & -1.335269 & 0.200147 & -6.671448 & 0.0000 \\
+
+ACCESS & 0.272282 & 0.072276 & 3.376250 & 0.0002 \\
+
+TAX & -0.012592 & 0.003770 & -3.339939 & 0.0009 \\
+
+PTRATIO & -1.176787 & 0.139415 & -8.440868 & 0.0000 \\ \hline
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item Report briefly how each of the explanatory variables affects
+the value of a home. \vspace{0.1in}
+
+\item Test the hypothesis that increasing the average number of rooms by one
+changes the median value of a house by $\$7,500$. Your answer should
+clearly state the null and alternative hypotheses, the distribution
+of the test statistic, and your decision.
+
+\item Test the hypothesis that reducing the
+pupil-teacher ratio by 10 will increase the median value of a house by more
+than $\$10,000$. Your answer should clearly state the null and
+alternative hypotheses, the distribution of the test statistic, and
+your decision.
+\end{enumerate}
+
+\noindent \textbf{Note}: The hypothesis tests for parts (b) and (c)
+should be conducted at the 5\% level of significance.
+
+\subsubsection*{Question 2}
+
+Illicit drugs are increasingly being sold on crypto-markets on the `dark-web'. These markets facilitate anonymous buying and selling and are characterised by the following characteristics:
+\begin{itemize}
+\item [-] anonymous internet browsing
+\item [-] payments in virtual crypto-currencies (such as Bitcoin)
+\item [-] payments to third-party vendors (intermediaries)
+\item [-] vendor feedback systems (ratings)
+\end{itemize}
+
+\noindent This question examines the market for cocaine using a single platform on the dark-web, during July 2017. Consider the following econometric model:
+\[
+\mbox{price}_{i} = \beta_{0} + \beta_{1}\,\mbox{quant}_{i} + \beta_{2}\,\mbox{qual}_{i} + \beta_{3}\,\mbox{rating}_{i} + \varepsilon_{i}
+\]
+where:
+\begin{align*}
+\mbox{price } & = \mbox{price per gram in \$USD for a cocaine sale}\\
+\mbox{quant} & = \mbox{number of grams of coccaine in a given sale}\\
+\mbox{qual} & = \mbox{quality of the coccaine expressed as a percentage purity}\\
+\mbox{rating} & = \mbox{rating of the seller on a five-hundred point scale, $0$ to $500$}
+\end{align*}
+The data required to complete this question are located on the
+subject page. The data file is called \texttt{cocaine.csv}. \vspace{0.1in}
+
+\noindent The hypothesis tests for parts (d), (e), and  (f) should be conducted at the 5\% level of significance.
+\begin{enumerate}
+\item What signs do you expect for $\beta_{1}$, $\beta_{2}$ and
+$\beta_{3}$?
+\item Using \textsc{R}, estimate the econometric model. Report
+and interpret the coefficient estimates. Do the signs of your
+estimated coefficients turn out as you expect?
+
+\item What proportion of the variation in cocaine price is explained
+by variation in quantity, quality, and seller rating?
+
+\item It is claimed that the greater the number of sales, the higher
+the risk of getting caught; and thus, sellers are willing to accept
+a lower price if they can make sales in greater quantities. Test
+this hypothesis. Your answer should clearly state the null and
+alternative hypotheses, the distribution of the test statistic, and
+your decision.
+
+\item Test the hypothesis that a premium is paid
+for better quality cocaine. Your answer should clearly state the
+null and alternative hypotheses, the distribution of the test
+statistic, and your decision.
+
+\item Test the hypothesis that, controlling for quality and quantity, seller rating is an important
+determinant of price. Your answer should clearly state the
+null and alternative hypotheses, the distribution of the test
+statistic, and your decision.
+\end{enumerate}
+
+
+\end{document}
