@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ECOM30001/90001 Basic Econometrics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Chin Yong Quek" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ECOM30001/90001 Basic Econometrics
+## Tutorial 4: More Hypothesis Testing in R
+### Chin Yong Quek
+### Department of Economics <br> University of Melbourne
+### March 2022
+
+---
+
+# Objectives
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+
+.my {
+  font-size: 15px;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+/******************
+ * Slide scrolling
+ * (non-functional)
+ * not sure if it is a good idea anyway
+slides &gt; slide {
+  overflow: scroll;
+ padding: 5px 40px;
+}
+.scrollable-slide .remark-slide {
+  height: 400px;
+  overflow: scroll !important;
+}
+ ******************/
+
+.scroll-output {
+  height: 90%;
+  overflow-y: scroll;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+&lt;/style&gt;
+
+
+- Run OLS regression in R
+
+- Test for the significance of an OLS regression using an F-test
+
+- Test joint linear restrictions using an F-test
+
+- Test single linear restrictions using a t-test
+
+---
+
+## Load R packages and Import data file
+
+
+```r
+#---------------------------------------
+# set your working directory here
+setwd("...")
+#----------------------------------------
+options(scipen=999)
+library(stargazer)         # nice R output
+library(car)               # joint linear restrictions in R
+#---------------------------------------
+```
+
+
+---
+class: inverse, center, middle
+
+# Question 1
+
+---
+
+
+
+Consider the econometric model:
+`$$y_{i} = \beta_{0} + \beta_{1}\,X_{1i} + \beta_{2}\,X_{2i} + \varepsilon_{i}$$`
+
+Suppose you estimate this model using a sample of 20 observations and obtain the following fitted values:
+`$$\hat{y}_{i} = 0.96587 + 0.69914\,X_{1i} + 1.7769\,X_{2i}$$`
+
+with an estimated covariance matrix:
+
+.my[
+`$$\left[\begin{matrix} \widehat{\text{VAR}}[b_0] &amp; \widehat{\text{COV}}[b_0,b_1] &amp; \widehat{\text{COV}}[b_0,b_2] \\ \widehat{\text{COV}}[b_1,b_0] &amp; \widehat{\text{VAR}}[b_1] &amp; \widehat{\text{COV}}[b_1,b_2] \\ \widehat{\text{COV}}[b_2,b_0] &amp; \widehat{\text{COV}}[b_2,b_1] &amp; \widehat{\text{VAR}}[b_2]\end{matrix} \right]= \left[\begin{matrix} 0.218120 &amp; 0.019195 &amp; -0.050301 \\ 0.019195 &amp; 0.048526 &amp; -0.031223 \\ -0.050301 &amp; -0.031223 &amp; 0.037120\end{matrix} \right]$$`
+]
+
+with the estimated error variance `\(\hat{\sigma}^{2} = 2.5193\)` and the sample standard deviation of the dependent variable  `\(s = 6.4971\)`
+
+a) Use this information to find the `\(R^2\)` and the adjusted `\(\bar{R}^{2}\)`.
+
+--
+
+b) Use a t-test to test the hypothesis `\(H_{0}:\beta_{1} \geq 1\)` against the alternative
+`\(H_{A}:\beta_{1} &lt; 1\)`, at a 5% level of significance.
+
+--
+
+c) Test the hypothesis `\(\beta_{1} = \beta_{2} = 0\)` at a 5% level of significance.
+
+
+---
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,X_{1i} + \beta_{2}\,X_{2i} + \varepsilon_{i}$$`
+
+**Calculating `\(R^2\)` and adjusted `\(\bar{R}^{2}\)`**
+
+* Recall the definition of `\(R^2\)` and adjusted `\(\bar{R}^{2}\)`.
+
+--
+* What information in the question can we use to determine `\(ESS\)` and/or `\(RSS\)`?
+  + Sample size?
+  + Estimated coefficients?
+  + Estimated covariance matrix?
+  + Estimated error variance?
+  + Sample standard deviation of the dependent variable?
+  
+* What about calculating `\(TSS\)`?
+
+-----
+
+--
+
+`$$R^{2} =  1 - \frac{RSS}{TSS} = 1 - \frac{42.8281}{802.0339} = 0.9466$$`
+
+-----
+
+--
+
+`$$\bar{R}^{2} =  1 - \frac{RSS/(N-K-1)}{TSS/(N-1)} = 1 -
+\frac{42.8281/17}{802.0339/19} = 0.9403$$`
+
+---
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,X_{1i} + \beta_{2}\,X_{2i} + \varepsilon_{i}$$`
+
+`$$\hat{y}_{i} = 0.96587 + 0.69914\,X_{1i} + 1.7769\,X_{2i}$$`
+
+.my[
+`$$\left[\begin{matrix} \widehat{\text{VAR}}[b_0] &amp; \widehat{\text{COV}}[b_0,b_1] &amp; \widehat{\text{COV}}[b_0,b_2] \\ \widehat{\text{COV}}[b_1,b_0] &amp; \widehat{\text{VAR}}[b_1] &amp; \widehat{\text{COV}}[b_1,b_2] \\ \widehat{\text{COV}}[b_2,b_0] &amp; \widehat{\text{COV}}[b_2,b_1] &amp; \widehat{\text{VAR}}[b_2]\end{matrix} \right]= \left[\begin{matrix} 0.218120 &amp; 0.019195 &amp; -0.050301 \\ 0.019195 &amp; 0.048526 &amp; -0.031223 \\ -0.050301 &amp; -0.031223 &amp; 0.037120\end{matrix} \right]$$`
+]
+
+b) Use a t-test to test the hypothesis `\(H_{0}:\beta_{1} \geq 1\)` against the alternative
+`\(H_{A}:\beta_{1} &lt; 1\)`, at a 5% level of significance.
+
+--
+
+* `\(t = \frac{b_1-1}{\text{se}(b_1)} \sim t_{17}\)`
+
+* Left-tail test: Reject `\(H_0\)` if `\(t &lt; -t_c\)`
+
+.tiny[
+
+```r
+qt(0.05, 17)
+```
+
+```
+## [1] -1.739607
+```
+]
+
+--
+
+`$$t=\frac{0.69914-1}{\sqrt{0.048536}} = -1.3658$$`
+--
+
+.tiny[
+
+```r
+# p-value
+pt(-1.3658, 17)
+```
+
+```
+## [1] 0.09490036
+```
+]
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# Question 1 (b)
+#One-sided test: # H0: beta1= 1 HA: beta1 &lt;1
+b1 &lt;- 0.69914
+seb1 &lt;- sqrt(0.048526)
+t1_1b &lt;- (b1-1)/seb1
+print(t1_1b)
+```
+
+```
+## [1] -1.365769
+```
+
+```r
+df_1 &lt;- 20-3
+alpha &lt;-0.05
+tcr_1b &lt;- qt(alpha, df_1)      # calculate critical value
+print(tcr_1b)
+```
+
+```
+## [1] -1.739607
+```
+
+```r
+pval_1b &lt;- pt(t1_1b, df_1)    # calculate p-value for 1 sided test
+print(pval_1b)
+```
+
+```
+## [1] 0.09490515
+```
+]]
+
+
+---
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,X_{1i} + \beta_{2}\,X_{2i} + \varepsilon_{i}$$`
+
+`$$\hat{y}_{i} = 0.96587 + 0.69914\,X_{1i} + 1.7769\,X_{2i}$$`
+
+.my[
+`$$\left[\begin{matrix} \widehat{\text{VAR}}[b_0] &amp; \widehat{\text{COV}}[b_0,b_1] &amp; \widehat{\text{COV}}[b_0,b_2] \\ \widehat{\text{COV}}[b_1,b_0] &amp; \widehat{\text{VAR}}[b_1] &amp; \widehat{\text{COV}}[b_1,b_2] \\ \widehat{\text{COV}}[b_2,b_0] &amp; \widehat{\text{COV}}[b_2,b_1] &amp; \widehat{\text{VAR}}[b_2]\end{matrix} \right]= \left[\begin{matrix} 0.218120 &amp; 0.019195 &amp; -0.050301 \\ 0.019195 &amp; 0.048526 &amp; -0.031223 \\ -0.050301 &amp; -0.031223 &amp; 0.037120\end{matrix} \right]$$`
+]
+
+c) Test the hypothesis `\(\beta_{1} = \beta_{2} = 0\)` at a 5% level of significance.
+
+--
+
+* Can we use the `\(t\)`-test statistic?
+
+--
+
+`$$\text{NO! We cannot use }t \text{-test} \quad \qquad F = \frac{(RSS_{R} - RSS_{UR})/M}{RSS_{UR}/(N-K-1)} \sim F_{2,17}$$`
+
+--
+
+Since the restricted model does not contain any explanatory term, `\(RSS_{R}=TSS\)` and we can calculate the sample `\(F\)`-statistic using one of the below formulae:
+
+`$$F = \frac{(TSS - RSS_{UR})/M}{RSS_{UR}/(N-K-1)} = \frac{R^2/K}{(1-R^2)/(N-K-1)} =150.68$$`
+
+-----
+
+--
+.my[
+`$$R^2= 1-\frac{RSS_{UR}}{TSS} = \frac{TSS-RSS_{UR}}{TSS} \quad \text{and} \quad RSS_{UR} = TSS - (TSS\times R^2)=TSS\times(1-R^2)$$`
+]
+
+---
+
+### Testing single linear restriction using `\(t\)`-test
+
+.my[
+`$$\left[\begin{matrix} \widehat{\text{VAR}}[b_0] &amp; \widehat{\text{COV}}[b_0,b_1] &amp; \widehat{\text{COV}}[b_0,b_2] \\ \widehat{\text{COV}}[b_1,b_0] &amp; \widehat{\text{VAR}}[b_1] &amp; \widehat{\text{COV}}[b_1,b_2] \\ \widehat{\text{COV}}[b_2,b_0] &amp; \widehat{\text{COV}}[b_2,b_1] &amp; \widehat{\text{VAR}}[b_2]\end{matrix} \right]= \left[\begin{matrix} 0.218120 &amp; 0.019195 &amp; -0.050301 \\ 0.019195 &amp; 0.048526 &amp; -0.031223 \\ -0.050301 &amp; -0.031223 &amp; 0.037120\end{matrix} \right]$$`
+]
+
+d) Use a two-sided t-test to test the hypothesis `\(\beta_{2}  =2\,\beta_{1}\)` at a 5% level of significance.
+
+**Hint** You may find the following result useful. If `\(X\)`, `\(Y\)`, and `\(Z\)` are random variables:
+`\begin{align*}
+\text{VAR}(aX - bY) &amp; = a^{2}\,\text{VAR}(X)+b^{2}\,\text{VAR}(Y) - 2\,a\,b\,\text{COV}(X,Y) 
+\end{align*}`
+
+--
+
+`\begin{align*}
+\text{se}(b_{2} - 2\,b_{1}) &amp; = \sqrt{\widehat{\text{VAR}}(b_{2}) + 4\,\widehat{\text{VAR}}(b_{1}) -
+(2*2)\,\widehat{\text{COV}}(b_{1},b_{2})} \\
+&amp; = \sqrt{0.037120 + (4*0.048526) - (4*-0.031223)} \\
+&amp; = \sqrt{0.35612}
+\end{align*}`
+
+---
+
+`$$H_0:\beta_{2} - 2\,\beta_{1}=0 \qquad H_A: \beta_{2} - 2\,\beta_{1} \neq 0$$`
+
+`$$t = \frac{b_{2} - 2\,b_{1}}{\text{se}(b_{2} - 2\,b_{1})} = \frac{1.7769 -
+(2*0.69914)}{\sqrt{0.35612}} =   0.63447$$`
+
+since `\(-t_{c} &lt; t &lt; t_{c}\)`, we **cannot reject** `\(H_{0}\)` that `\(\beta_{2} = 2\,\beta_{1}\)` `\(\dots\)`
+
+--
+
+
+```r
+qt(0.025, 17, lower.tail = F)
+```
+
+```
+## [1] 2.109816
+```
+
+```r
+qt(0.975, 17)
+```
+
+```
+## [1] 2.109816
+```
+
+```r
+2*pt(0.63447, 17, lower.tail = F)
+```
+
+```
+## [1] 0.5342201
+```
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# Question 1(d)
+# Two-sided test H0: beta2-2beta1 = 0 HA: beta2-2beta1 ne 0
+b1 &lt;- 0.69914
+b2 &lt;- 1.7769
+
+varb1 &lt;- 0.048526
+varb2 &lt;- 0.037120
+covb1b2 &lt;- -0.031223
+
+bterm &lt;- b2 - 2*b1
+print(bterm)
+```
+
+```
+## [1] 0.37862
+```
+
+```r
+varterm &lt;- varb2 + (4*varb1) - (4*covb1b2)
+print(varterm)
+```
+
+```
+## [1] 0.356116
+```
+
+```r
+seterm &lt;- sqrt(varterm)
+print(seterm)
+```
+
+```
+## [1] 0.5967546
+```
+
+```r
+t1_1d &lt;- bterm/seterm
+print(t1_1d)
+```
+
+```
+## [1] 0.6344652
+```
+
+```r
+tcr_1d &lt;- qt(1-alpha/2, df_1)               # calculate critical value
+print(tcr_1d)
+```
+
+```
+## [1] 2.109816
+```
+
+```r
+pval_1d &lt;- 2*(1-pt(abs(t1_1d), df_1))        # calculate p-value for 2 sided test
+print(pval_1d)
+```
+
+```
+## [1] 0.5342231
+```
+]]
+
+---
+class: inverse, center, middle
+
+# Question 2
+
+---
+
+## Data background
+
+Consider a firm that uses both labour `\(L_{t}\)` and physical capital
+`\(K_{t}\)` to produce output `\(Y_{t}\)`. Standard production theory
+implies that the labour/capital ratio will be related to its
+relative price. This suggests the following econometric model:
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+where:
+
+- `\(L_{t}\)` = the quantity of labour used to produce output `\(Y_{t}\)`
+- `\(K_{t}\)` = the quantity of capital used to produce output `\(Y_{t}\)`
+- `\(Y_{t}\)` = the quantity of output produced
+- `\(w_{t}\)` = the price (per-unit) of labour
+- `\(r_{t}\)` = the price (per-unit) of capital
+- `\(\ln\)` = natural logarithm
+
+--
+
+The data file `tut4.csv` provides annual time-series data
+data covering the period 1948-1979 that can be used to estimate the econometric  model (1).
+
+---
+
+
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+### Import data into R and create required transformations of variables
+
+
+
+```r
+tut4 &lt;- read.csv("tut4.csv")
+
+# create required transformations of variables
+tut4$labcap &lt;- tut4$L/tut4$K              # L/K ratio
+tut4$wr &lt;- tut4$w/tut4$r                  # w/r ratio
+tut4$lnlabcap &lt;- log(tut4$labcap)         # log (L/K) ratio
+tut4$lnwr &lt;- log(tut4$wr)                 # log (w/r) ratio
+tut4$lny &lt;- log(tut4$Y)                   # log y
+```
+
+
+---
+
+### Interpretation of `\(\beta_1\)` and `\(\beta_2\)`
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+a) What is the economic interpretation of the parameters `\(\beta_{1}\)` and `\(\beta_{2}\)` in the model (1)?
+
+--
+
+.my[
+`$$\beta_{1} = \frac{\Delta E[\ln (L_{t}/K_{t})|\mathbf{X}_{t}]}{\Delta \ln
+(w_{t}/r_{t})}\biggm|_{Y \text{ held constant }} \thickapprox
+\frac{\%\,\Delta
+E[(L_{t}/K_{t})|\mathbf{X}_{t}]}{\%\,\Delta\,(w_{t}/r_{t})}\biggm|_{Y \text{ held
+constant }}$$`
+]
+
+--
+
+.my[
+`\(\beta_{1}\)` is the elasticity of the labour/capital ratio with respect to the relative price, holding output constant
+* the percentage change in the (expected) labour-capital ratio associated with a 1% change in the relative factor price ratio, holding output constant
+]
+
+--
+
+&amp;nbsp;
+
+.my[
+`$$\beta_{2} = \frac{\Delta E[\ln (L_{t}/K_{t})|\mathbf{X}_{t}]}{\Delta \ln
+Y_{t}}\biggm|_{(w/r) \text{ held constant }} \thickapprox
+\frac{\%\,\Delta E[(L_{t}/K_{t})|\mathbf{X}_{t}]}{\%\,\Delta\,Y_{t}}\biggm|_{(w/r)
+\text{ held constant }}$$`
+]
+
+--
+
+.my[
+`\(\beta_{2}\)` is the elasticity of the labour/capital ratio with respect to output, holding the relative price constant
+* the percentage change in the (expected) labour-capital ratio associated with a 1% change in the level of output, holding the relative factor price ratio constant
+]
+
+---
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+b) Using a 5% significance level, test the hypothesis that the relative price `\(w/r\)` has a negative effect upon the labour/capital ratio. Your answer should clearly state the null and alternative hypotheses, the distribution of test statistic, and your decision.
+
+--
+
+`$$H_0: \beta_1 \geq 0 \qquad \qquad H_A: \beta_1 &lt;0$$`
+* What is the test statistic and its distribution?
+
+--
+
+`$$t=\frac{b_1-\beta_1}{\text{se}(b_1)} \sim t_{(32-3)}$$`
+* What is the decision rule?
+
+--
+
+.tiny[
+
+```r
+qt(0.05, 29)    # critical value
+```
+
+```
+## [1] -1.699127
+```
+]
+
+**Decision Rule:** Reject `\(H_0\)` if `\(t &lt; -1.6991\)`
+
+-----
+
+We need to estimate the model to obtain the `\(b_1\)` and `\(\text{se}(b_1)\)` values.
+
+---
+
+.scroll-output[
+
+### Estimate model
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+.tiny[
+
+```r
+reg1 &lt;- lm(lnlabcap ~ lnwr +  lny, data = tut4) 
+print(summary(reg1))                           # Print regression results to screen
+```
+
+```
+## 
+## Call:
+## lm(formula = lnlabcap ~ lnwr + lny, data = tut4)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.2496 -0.1206  0.0027  0.0516  0.3910 
+## 
+## Coefficients:
+##             Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept)  1.16768    0.07852  14.871 0.00000000000000419 ***
+## lnwr        -0.58018    0.07285  -7.964 0.00000000877765183 ***
+## lny         -0.23792    0.05109  -4.657 0.00006582453946284 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1585 on 29 degrees of freedom
+## Multiple R-squared:   0.93,	Adjusted R-squared:  0.9252 
+## F-statistic: 192.7 on 2 and 29 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+R2_reg1 &lt;-summary(reg1)$r.squared              # R2 
+print(R2_reg1)                                 # Print R-squared to the screen
+```
+
+```
+## [1] 0.9300168
+```
+
+```r
+RSS_reg1 &lt;- deviance(reg1)                     # RSS
+print(RSS_reg1)                                # Print RSS to screen
+```
+
+```
+## [1] 0.7283834
+```
+]
+
+.tiny[
+
+```r
+# stargazer output
+stargazer(reg1, type="html", dep.var.labels=c("(Log) Labour-Capital Ratio"),
+          covariate.labels=c("Intercept","(Log) w/r Ratio", "(Log) Output"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out= "tut4_reg1.html")
+```
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(Log) Labour-Capital Ratio&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;1.1677&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0785)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) w/r Ratio&lt;/td&gt;&lt;td&gt;-0.5802&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0729)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) Output&lt;/td&gt;&lt;td&gt;-0.2379&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0511)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;32&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9252&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;0.1585 (df = 29)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;192.6925&lt;sup&gt;***&lt;/sup&gt; (df = 2; 29)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+]
+]
+
+---
+
+`$$H_0: \beta_1 \geq 0 \qquad \qquad H_A: \beta_1 &lt;0$$`
+`$$t = \frac{b_{1}- 0}{\text{se}(b_{1})} = \frac{-0.5801842}{0.07285096} =  -7.963989$$`
+Since `\(-7.9640 &lt; -1.6991\)`, reject `\(H_0\)`. 
+
+The sample evidence is consistent with the hypothesis that the labour/capital ratio is
+inversely related to the factor price ratio `\(w/r\)`. 
+
+
+```r
+pt(-7.963989, 29) # p-value
+```
+
+```
+## [1] 0.000000004388827
+```
+
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# Question 2(b): One-sided t test H0: beta1=0 HA:beta1 &lt; 0
+alpha &lt;- 0.05                                 # set desired significance
+b1_reg1 &lt;- coef(reg1)[["lnwr"]]               # coefficient on quantity
+seb1_reg1 &lt;- sqrt(vcov(reg1)[2,2])            # standard error of b1
+df_reg1 &lt;- df.residual(reg1)                  # degrees of freedom
+t_2b &lt;- (b1_reg1-0)/seb1_reg1                # construct t test statistic
+tcr_2b &lt;- qt(alpha, df_reg1)                 # calculate critical value
+pval_2b &lt;- pt(t_2b,df_reg1)                  # calculate p-value for 1 sided test
+print(df_reg1)                                # print df for t test
+```
+
+```
+## [1] 29
+```
+
+```r
+print(b1_reg1)                                # print estimate b1 
+```
+
+```
+## [1] -0.5801842
+```
+
+```r
+print(seb1_reg1)                              # print std. error for b1
+```
+
+```
+## [1] 0.07285096
+```
+
+```r
+print(t_2b)                                    # print t test statistic    
+```
+
+```
+## [1] -7.963989
+```
+
+```r
+print(tcr_2b)                                  # print t critical value
+```
+
+```
+## [1] -1.699127
+```
+
+```r
+print(pval_2b)                                # print p value for t test statistic
+```
+
+```
+## [1] 0.000000004388826
+```
+]
+]
+
+---
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+c) Using a 5% significance level, test the hypothesis that the level of output has a significant effect upon the labour/capital ratio. Your answer should clearly state the null and alternative hypotheses, the distribution of the test statistic, and your decision.
+
+--
+
+`$$H_0: \beta_2 = 0 \qquad \qquad H_A: \beta_2 \neq 0$$`
+`$$t = \frac{b_2-\beta_2}{\text{se}(b_2)} \sim t_{29}$$`
+.tiny[
+
+```r
+qt(0.025, 29, lower.tail = F)   # positive critical value
+```
+
+```
+## [1] 2.04523
+```
+]
+
+`$$t=-4.656589$$`
+Since `\(-4.6566 &lt;-2.0452\)`, we reject `\(H_0\)`.
+
+* Sample is consistent with the level of output having a (statistically) significant effect upon the labour/capital ratio.
+
+.tiny[
+
+```r
+2*pt(-4.656589, 29)   # 2-tail p-value
+```
+
+```
+## [1] 0.00006582448
+```
+]
+
+---
+
+.scroll-output[.tiny[
+
+```r
+# Question 2(c): Two-sided t test H0: beta2=0 HA:beta2 ne 0
+b2_reg1 &lt;- coef(reg1)[["lny"]]               # coefficient on quantity
+seb2_reg1 &lt;- sqrt(vcov(reg1)[3,3])           # standard error of b1
+t_2c &lt;- (b2_reg1-0)/seb2_reg1                 # construct t test statistic
+tcr_2c &lt;- qt(1-alpha/2, df_reg1)              # calculate critical value
+pval_2c &lt;- 2*(1-pt(abs(t_2c),df_reg1))         # calculate p-value for 2 sided test
+print(df_reg1)                               # print df for t test
+```
+
+```
+## [1] 29
+```
+
+```r
+print(b2_reg1)                               # print estimate b1 
+```
+
+```
+## [1] -0.2379183
+```
+
+```r
+print(seb2_reg1)                             # print std. error for b1
+```
+
+```
+## [1] 0.05109283
+```
+
+```r
+print(t_2c)                                   # print t test statistic   
+```
+
+```
+## [1] -4.656589
+```
+
+```r
+print(tcr_2c)                                 # print t critical value
+```
+
+```
+## [1] 2.04523
+```
+
+```r
+print(pval_2c)                               # print p value for t test statistic  
+```
+
+```
+## [1] 0.00006582454
+```
+]
+]
+
+---
+
+.scroll-output[
+d) What proportion of the variation in the (log) labour/capital ratio is explained by movements in `\(\ln (w/r)\)` and `\(\ln Y\)`?
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(Log) Labour-Capital Ratio&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;1.1677&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0785)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) w/r Ratio&lt;/td&gt;&lt;td&gt;-0.5802&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0729)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) Output&lt;/td&gt;&lt;td&gt;-0.2379&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0511)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;32&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9252&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;0.1585 (df = 29)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;192.6925&lt;sup&gt;***&lt;/sup&gt; (df = 2; 29)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+]
+
+---
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+e) Using a 5% level of significance, test the hypothesis that the relative price and output have no effect upon the labour/capital ratio. Your answer should clearly state the null and alternative hypotheses, the test statistic, and your decision.
+
+--
+
+`$$H_0: \beta_1 =\beta_2 = 0 \qquad \qquad H_A: \beta_1 \neq 0 \text{ and/or } \beta_2 \neq 0$$`
+--
+
+* Can we use the `\(t\)`-test? If not, what do you suggest?
+
+--
+
+`$$F = \frac{(RSS_{R}-RSS_{UR})/K}{RSS_{UR}/(N-K-1)} \sim F_{K,N-K-1}$$`
+--
+
+Imposing the restriction under the null hypothesis, i.e. `\(H_0: \beta_1 = \beta_2= 0\)` results in a model without any explanatory variables.
+
+* `\(TSS=RSS_{R}\)`
+
+* We also saw from Q1 that we can express the `\(F\)` statistic in terms of `\(R^2\)` given the restricted model has NO explanatory variables.
+
+`$$F = \frac{R^2/K}{(1-R^2)/(N-K-1)}$$`
+
+---
+
+.scroll-output[
+### Different ways of determining `\(F\)`
+
+.tiny[
+
+```r
+summary(reg1)
+```
+
+```
+## 
+## Call:
+## lm(formula = lnlabcap ~ lnwr + lny, data = tut4)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.2496 -0.1206  0.0027  0.0516  0.3910 
+## 
+## Coefficients:
+##             Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept)  1.16768    0.07852  14.871 0.00000000000000419 ***
+## lnwr        -0.58018    0.07285  -7.964 0.00000000877765183 ***
+## lny         -0.23792    0.05109  -4.657 0.00006582453946284 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1585 on 29 degrees of freedom
+## Multiple R-squared:   0.93,	Adjusted R-squared:  0.9252 
+## F-statistic: 192.7 on 2 and 29 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+# (1) Obtain directly following lm command
+F_reg1 = summary(reg1)$fstatistic                           # Sample F statistic
+F_reg1_numdf &lt;- 2                                           # numerator df: number of restrictions
+F_reg1_demdf &lt;- df_reg1                                     # denominator df: df for unrestricted model
+F_crit &lt;- qf(1-alpha, df1=F_reg1_numdf, F_reg1_demdf)       # F critical value
+pval_1 &lt;- 1-pf(F_reg1, F_reg1_numdf, F_reg1_demdf)          # p value
+print(F_crit)                                               # Print F critical value
+```
+
+```
+## [1] 3.327654
+```
+
+```r
+print(F_reg1)                                               # Print sample F statistic
+```
+
+```
+##    value    numdf    dendf 
+## 192.6925   2.0000  29.0000
+```
+
+```r
+print(F_reg1_numdf)                                         # Print numerator df
+```
+
+```
+## [1] 2
+```
+
+```r
+print(F_reg1_demdf)                                         # Print denominator df
+```
+
+```
+## [1] 29
+```
+
+```r
+print(pval_1[1])                                            # Print p-value
+```
+
+```
+## value 
+##     0
+```
+
+```r
+# (2) Using car package
+hnull_1 &lt;-c("lnwr = 0", "lny=0")                           # null hypothesis
+linearHypothesis(reg1, hnull_1)                            # print test results
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## lnwr = 0
+## lny = 0
+## 
+## Model 1: restricted model
+## Model 2: lnlabcap ~ lnwr + lny
+## 
+##   Res.Df     RSS Df Sum of Sq      F                Pr(&gt;F)    
+## 1     31 10.4080                                              
+## 2     29  0.7284  2    9.6796 192.69 &lt; 0.00000000000000022 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# (3) Using Restricted and Unrestricted RSS
+# already estimated unrestricted model
+# restricted model: only contains an intercept term
+# unrestricted model: reg1
+# restricted model: reg1_rest1
+reg_rest1 &lt;- lm(lnlabcap ~ 1, data=tut4)                     # Intercept only model
+RSS_rest1 &lt;- deviance(reg_rest1)                            # Restricted model RSS
+df_rest1 &lt;- df.residual(reg_rest1)                          # df for the restricted model
+print(RSS_rest1)                                            # print RSS for restricted model
+```
+
+```
+## [1] 10.40797
+```
+
+```r
+# F_reg1_numdf:  numerator df: number of restrictions
+# F_reg1_demdf:  denominator df: df for unrestricted model
+F2_num &lt;- (RSS_rest1-RSS_reg1)/F_reg1_numdf             # F statistic: numerator
+F2_dem &lt;- RSS_reg1/F_reg1_demdf                         # F statistic: denominator
+F2 &lt;- F2_num/F2_dem                                     # Sample F statistic
+pval_2 &lt;- 1-pf(F2, F_reg1_numdf, F_reg1_demdf)          # p-vavlue 
+print(F2)                                               # Print sample F- statistic
+```
+
+```
+## [1] 192.6925
+```
+
+```r
+print(pval_2[1])                                        # Print p-value
+```
+
+```
+## [1] 0
+```
+
+```r
+#  (4) Use the TSS
+lnlabcap_sd &lt;-sd(tut4$lnlabcap)                         # save standard deviation of dep. variable
+print(lnlabcap_sd)                                      # print standard deviation of dep. variable
+```
+
+```
+## [1] 0.5794317
+```
+
+```r
+N_reg1 &lt;-nobs(reg1)                                     # number of observations unrestricted model
+TSS_reg1 &lt;-((lnlabcap_sd)^2)*(N_reg1-1)                 # calculate TSS
+print(TSS_reg1)                                         # print TSS
+```
+
+```
+## [1] 10.40797
+```
+
+```r
+# F_reg1_numdf:  numerator df: number of restrictions
+# F_reg1_demdf:  denominator df: df for unrestricted model
+F3_num  &lt;- (TSS_reg1-RSS_reg1)/F_reg1_numdf           # F statistic: numerator
+F3_dem &lt;- RSS_reg1/F_reg1_demdf                       # F statistic: denominator
+F3 = F3_num/F3_dem                                    # F test statistic
+pval_3 &lt;- 1-pf(F3, F_reg1_numdf, F_reg1_demdf)        # p value
+print(F3)                                             # Print sample F-statistic
+```
+
+```
+## [1] 192.6925
+```
+
+```r
+print(pval_3[1])                                      # Print p-value 
+```
+
+```
+## [1] 0
+```
+
+```r
+# (5) Use the R2 version
+print(R2_reg1)                                          # R-squared for unrestricted model
+```
+
+```
+## [1] 0.9300168
+```
+
+```r
+# F_reg1_numdf:  numerator df: number of restrictions
+# F_reg1_demdf:  denominator df: df for unrestricted model
+F4_num &lt;- R2_reg1/F_reg1_numdf                         # F statistic: numerator
+F4_dem &lt;- (1-R2_reg1)/F_reg1_demdf                     # F statistic: denominator
+F4 = F4_num/F4_dem                                     # F test statistic
+pval_4 &lt;- 1-pf(F4, F_reg1_numdf, F_reg1_demdf)         # p value
+print(F4)                                              # Print sample F-statistic
+```
+
+```
+## [1] 192.6925
+```
+
+```r
+print(pval_4[1])            
+```
+
+```
+## [1] 0
+```
+
+]
+]
+
+---
+
+`\begin{equation}
+\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} +
+\beta_{1}\,\ln\left(\frac{w_{t}}{r_{t}}\right) + \beta_{2}\,\ln
+Y_{t} + e_{t} \qquad \text{(1)}
+\end{equation}`
+
+f) A popular restricted version of model (1) is the *Cobb-Douglas* production function. If the underlying production function is *Cobb-Douglas*, the labour/capital ratio will be given by:
+
+`$$\ln\left(\frac{L_{t}}{K_{t}}\right) = \beta_{0} -
+\ln\left(\frac{w_{t}}{r_{t}}\right) + \varepsilon_{t}$$`
+
+i) What restrictions on `\(\beta_{1}\)` and `\(\beta_{2}\)` does the Cobb-Douglas production function impose upon the econometric model (1)?
+
+--
+
+ii) At the 5% level, test the hypothesis that the data are consistent with a Cobb-Douglas production function. Your answer should clearly state the null and alternative hypotheses, the test statistic, and your decision.
+
+--
+
+`$$F=\frac{(RSS_{R}-RSS_{UR})/M}{RSS_{UR}/(N-K-1)} \sim F_{M,N-K-1}$$`
+* What are the values of `\(M\)` and `\(N-K-1\)`?
+
+--
+
+.tiny[
+
+```r
+qf(0.05,2,29,lower.tail = F)
+```
+
+```
+## [1] 3.327654
+```
+
+]
+
+---
+
+.scroll-output[
+### Different ways of determining `\(F\)`
+
+.tiny[
+
+```r
+# Question 2 (f)
+# Restricted model: beta2 = 0 &amp; beta1 = -1
+# Unrestricted model: reg1
+# Restricted model: treg_rest2
+# (1) Using car package
+hnull_2 &lt;-c("lnwr = -1", "lny=0")                           # null hypothesis
+linearHypothesis(reg1, hnull_2)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## lnwr = - 1
+## lny = 0
+## 
+## Model 1: restricted model
+## Model 2: lnlabcap ~ lnwr + lny
+## 
+##   Res.Df     RSS Df Sum of Sq      F     Pr(&gt;F)    
+## 1     31 1.56306                                   
+## 2     29 0.72838  2   0.83468 16.616 0.00001554 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# (2) Using Restricted and Unrestricted RSS
+# already estimated unrestricted model
+# restricted model: only contains an intercept term
+# unrestricted model: reg1
+# restricted model: reg1_rest1
+tut4$lnlabcap_star &lt;- tut4$lnlabcap + tut4$lnwr            # new dependent variable
+reg_rest2 &lt;- lm(lnlabcap_star ~ 1, data=tut4)              # intercept only model
+RSS_rest2 &lt;- deviance(reg_rest2)                           # Restricted model RSS
+print(RSS_rest2)
+```
+
+```
+## [1] 1.563064
+```
+
+```r
+# numerator df: number of restrictions = 2
+F5_numdf &lt;- 2
+# F_reg1_demdf:  denominator df: df for unrestricted model
+F5_num &lt;- (RSS_rest2-RSS_reg1)/F5_numdf                   # F statistic: numerator
+F5_dem &lt;- RSS_reg1/F_reg1_demdf                           # F statistic: denominator
+F5 &lt;- F5_num/F5_dem                                       # Sample F statistic
+pval_5 &lt;- 1-pf(F5, F5_numdf, F_reg1_demdf)                # p-vavlue 
+print(F5)                                                 # Print sample F- statistic
+```
+
+```
+## [1] 16.61607
+```
+
+```r
+print(pval_5[1])
+```
+
+```
+## [1] 0.00001554378
+```
+
+]
+]
+
+
+---
+class: inverse, center, middle
+
+# End
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
