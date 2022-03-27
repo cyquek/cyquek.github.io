@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ECOM30001/90001 Basic Econometrics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Chin Yong Quek" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ECOM30001/90001 Basic Econometrics
+## Tutorial 5: Model Specification, Dummy Variables
+### Chin Yong Quek
+### Department of Economics <br> University of Melbourne
+### March/April 2022
+
+---
+
+# Objectives
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+
+.my {
+  font-size: 15px;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+/******************
+ * Slide scrolling
+ * (non-functional)
+ * not sure if it is a good idea anyway
+slides &gt; slide {
+  overflow: scroll;
+ padding: 5px 40px;
+}
+.scrollable-slide .remark-slide {
+  height: 400px;
+  overflow: scroll !important;
+}
+ ******************/
+
+.scroll-output {
+  height: 90%;
+  overflow-y: scroll;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+&lt;/style&gt;
+
+
+- Conducting the Ramsey RESET test in R
+
+- General issues about choosing the correct functional form
+
+- Interpretation of coefficients in models with dummy variables
+
+---
+
+## Load R packages
+
+
+```r
+#---------------------------------------
+# set your working directory here
+setwd("...")
+#---------------------------------------
+options(scipen=999)
+library(ggplot2)
+library(car)
+library(lmtest)
+library(stargazer)
+#---------------------------------------
+```
+
+
+
+
+---
+class: inverse, center, middle
+
+# Question 1
+
+---
+
+Consider the following total cost function where `\(y_{i}\)` represents total cost for firm `\(i\)` and `\(x_{i}\)` represents output for this firm `\(i\)`:
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,x_{i} + \beta_{2}\,x_{i}^{2} +
+\beta_{3}\,x_{i}^{3} + \varepsilon_{i}$$`
+
+Data for a sample of 28 firms in the clothing industry are provided in the `clothes_tut5.csv`. This file contains the following
+variables:
+
+* `y` = total cost for firm `\(i\)`
+* `x` = output for firm `\(i\)`
+* `x2` = squared output for firm `\(i\)`
+* `x3` = cubed output for firm `\(i\)`
+
+with:
+
+* `ln x` = natural logarithm of output for firm `\(i\)`
+* `ln y` = natural logarithm of total cost for firm `\(i\)`
+
+a) Find the OLS estimates of the parameters `\(\beta_{0},\beta_{1},\beta_{2}\)` and `\(\beta_{3}\)`.
+
+---
+
+.scroll-output[
+
+## Read data file into R and Estimate model
+.tiny[
+
+```r
+tut5 &lt;- read.csv("clothes_tut5.csv")
+# Question 1 (a)
+# (2)  Estimate the cubic model by OLS
+reg1 &lt;- lm(y ~ x + x2 + x3, data=tut5)
+df_reg1 &lt;- reg1$df.residual
+summary(reg1)
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x + x2 + x3, data = tut5)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -48.007 -12.594  -3.266  12.776  44.689 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept) 134.6560    44.8001   3.006  0.00612 **
+## x            57.9702    29.9702   1.934  0.06496 . 
+## x2          -11.0289     5.7646  -1.913  0.06772 . 
+## x3            1.1431     0.3359   3.403  0.00234 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 21.93 on 24 degrees of freedom
+## Multiple R-squared:   0.98,	Adjusted R-squared:  0.9775 
+## F-statistic: 391.2 on 3 and 24 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+print(df_reg1)
+```
+
+```
+## [1] 24
+```
+
+
+```r
+stargazer(reg1, type="html", dep.var.labels=c("Total Cost"),
+          covariate.labels=c("Intercept","Output", "Output squared", "Output cubed"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out= "tut5_reg1a.html")
+```
+
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;Total Cost&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;134.6560&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(44.8001)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Output&lt;/td&gt;&lt;td&gt;57.9702&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(29.9702)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Output squared&lt;/td&gt;&lt;td&gt;-11.0289&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(5.7646)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Output cubed&lt;/td&gt;&lt;td&gt;1.1431&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.3359)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;28&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9800&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.9775&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;21.9255 (df = 24)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;391.2195&lt;sup&gt;***&lt;/sup&gt; (df = 3; 24)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+]
+
+---
+
+.scroll-output[
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,x_{i} + \beta_{2}\,x_{i}^{2} +
+\beta_{3}\,x_{i}^{3} + \varepsilon_{i}$$`
+
+b) What parameter restrictions would imply a linear total cost function? Using the `car` package, test whether the data are consistent with a linear total cost function, at the 5% level.
+
+* Hypotheses? Test statistic and its distribution? Decision and conclusion?
+
+.tiny[
+
+```r
+# Question 1 (b)
+# Test linear total cost function
+# H0: beta2 = 0 and beta3 = 0
+hnull_1b &lt;- c("x2 = 0", "x3 = 0")
+linearHypothesis(reg1, hnull_1b)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## x2 = 0
+## x3 = 0
+## 
+## Model 1: restricted model
+## Model 2: y ~ x + x2 + x3
+## 
+##   Res.Df   RSS Df Sum of Sq      F          Pr(&gt;F)    
+## 1     26 71202                                        
+## 2     24 11537  2     59664 62.056 0.0000000003277 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+alpha &lt;- 0.05
+qf(1-alpha,2,df_reg1)          # F critical value
+```
+
+```
+## [1] 3.402826
+```
+
+]]
+
+---
+
+.scroll-output[
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,x_{i} + \beta_{2}\,x_{i}^{2} +
+\beta_{3}\,x_{i}^{3} + \varepsilon_{i}$$`
+
+c) What parameter restrictions would imply a quadratic total cost function? Test whether the data are consistent with a quadratic total cost function, at the 5% level.
+
+* Hypotheses? Test statistic and its distribution? Decision and conclusion?
+
+
+
+
+.tiny[
+
+```r
+# Question 1 (c) 
+# Test quadratic total cost function
+# 2 sided test: H0: beta3 = 0
+# Using car package
+hnull_1c &lt;- c("x3=0")
+linearHypothesis(reg1, hnull_1c)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## x3 = 0
+## 
+## Model 1: restricted model
+## Model 2: y ~ x + x2 + x3
+## 
+##   Res.Df   RSS Df Sum of Sq      F  Pr(&gt;F)   
+## 1     25 17105                               
+## 2     24 11537  1    5567.1 11.581 0.00234 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+qf(1-alpha,1,df_reg1)           # F-critical value
+```
+
+```
+## [1] 4.259677
+```
+
+]]
+
+---
+
+.scroll-output[
+
+## Calculating t-test statistic manually
+
+.tiny[
+
+```
+##               Estimate Std. Error   t value    Pr(&gt;|t|)
+## (Intercept) 134.655977 44.8000984  3.005707 0.006122130
+## x            57.970210 29.9702372  1.934259 0.064955729
+## x2          -11.028935  5.7646144 -1.913213 0.067723353
+## x3            1.143118  0.3359116  3.403031 0.002340094
+```
+
+]
+
+.tiny[
+
+```r
+# Test quadratic total cost function
+# 2 sided test: H0: beta3 = 0
+alpha &lt;- 0.05                               # set desired significance
+b3_reg1 &lt;- coef(reg1)[["x3"]]               # coefficient on x3
+seb3_reg1 &lt;- sqrt(vcov(reg1)[4,4])          # standard error of b3
+t &lt;- (b3_reg1-0)/seb3_reg1                  # construct t test statistic
+tcr &lt;- qt(1-alpha/2, df_reg1)               # calculate critical value
+pval_1 &lt;- 2*(1-pt(abs(t), df_reg1))         # calculate p-value for 2 sided test
+print(df_reg1)
+```
+
+```
+## [1] 24
+```
+
+```r
+print(t)
+```
+
+```
+## [1] 3.403031
+```
+
+```r
+print(tcr)
+```
+
+```
+## [1] 2.063899
+```
+
+```r
+print(pval_1)
+```
+
+```
+## [1] 0.002340094
+```
+
+]
+]
+
+---
+
+`$$y_{i} = \beta_{0} + \beta_{1}\,x_{i} + \beta_{2}\,x_{i}^{2} +
+\beta_{3}\,x_{i}^{3} + \varepsilon_{i}$$`
+
+d) Recall the definition of average cost. What parameter restrictions would imply a linear average cost function? Using the `car` package, test whether the data are consistent with a linear average cost function, at the 5% level.
+
+--
+
+What is the average cost function?
+
+--
+
+`$$\frac{y_{i}}{x_{i}} = \frac{\beta_{0}}{x_{i}} + \beta_{1} +
+\beta_{2}\,x_{i} + \beta_{3}\,x_{i}^{2} +
+\frac{\varepsilon_{i}}{x_{i}}$$`
+
+--
+
+We are testing parameter restrictions on the **cubic total cost function**. We do NOT need to estimate the average cost function.
+
+`\(H_{0}: \beta_{0} = \beta_{3} = 0\)`.
+
+`$$\frac{y_{i}}{x_{i}} = \frac{\beta_{0}}{x_{i}} + \overbrace{\beta_{1} +
+\beta_{2}\,x_{i}}^{\text{linear}} + \beta_{3} \,x_{i}^{2} +
+\frac{\varepsilon_{i}}{x_{i}}$$`
+
+---
+
+.tiny[
+
+```r
+# Question 1 (d)
+# Test linear average cost function
+hnull_1d &lt;- c("(Intercept) = 0", "x3 = 0")
+linearHypothesis(reg1, hnull_1d)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## (Intercept) = 0
+## x3 = 0
+## 
+## Model 1: restricted model
+## Model 2: y ~ x + x2 + x3
+## 
+##   Res.Df    RSS Df Sum of Sq    F            Pr(&gt;F)    
+## 1     26 101818                                        
+## 2     24  11537  2     90280 93.9 0.000000000004482 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+qf(1-alpha,2,df_reg1)                   # F-critical value
+```
+
+```
+## [1] 3.402826
+```
+]
+
+
+---
+
+## RESET test
+
+RESET test is designed to detect, amongst other things, omitted variables and incorrect functional form.
+
+`$$y_i = \beta_0 + \beta_1 \, X_{1i} +\beta_2 \, X_{2i} + \delta_1 \, \widehat{y_i}^2 + \varepsilon_i$$`
+`$$y_i = \beta_0 + \beta_1 \, X_{1i} +\beta_2 \, X_{2i} + \delta_1 \, \widehat{y_i}^2 + \delta_2 \, \widehat{y_i}^3 + \varepsilon_i$$`
+1. `\(H_0: \delta_1 = 0 \quad H_A: \delta_1 \neq 0\)`
+
+2. `\(H_0: \delta_1 = \delta_2= 0 \quad H_A: \delta_1 \neq 0 \text{ and/or } \delta_2 \neq0\)`
+
+* If the original model is not the correct functional form, we
+would expect the square or some higher power of one of more
+`\(x\)`’s to improve the fit of the model.
+
+* Intuitively, if there are no omitted variables, the inclusion of powers in `\(\widehat{y_i}\)` should not have any explanatory power.
+
+---
+
+e) Test the hypothesis that the model is correctly specified using the RESET test, at the 5% level. What is your conclusion?
+
+--
+
+.tiny[
+
+```r
+# Question 1 (e)
+# Test total cost model is well specified
+# Use the RESET test
+# Cubic Model: Reset Test with squared fitted values
+resettest(reg1, power=2, type="fitted")
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg1
+## RESET = 0.98739, df1 = 1, df2 = 23, p-value = 0.3307
+```
+
+```r
+qf(1-alpha,1,23)                    # F-critical value
+```
+
+```
+## [1] 4.279344
+```
+
+```r
+# Cubic Model: Reset Test with squared and cubed fitted values
+resettest(reg1, power=2:3, type="fitted")
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg1
+## RESET = 0.54561, df1 = 2, df2 = 22, p-value = 0.5871
+```
+
+```r
+qf(1-alpha,2,22)                    # F-critical value
+```
+
+```
+## [1] 3.443357
+```
+
+]
+
+--
+
+* What can we conclude looking at the RESET test results?
+
+---
+
+f) Estimate the following alternative total cost function:
+
+`$$\ln y_{i} = \alpha_{0} + \alpha_{1}\,\ln x_{i} + \varepsilon_{i}$$`
+
+Test the hypothesis that the model is correctly specified using the RESET test, at the 5% level. What is your conclusion?
+
+--
+
+.tiny[
+
+```r
+# Question 1(f)
+# Log-Log Total Cost Model
+reg2 &lt;- lm(lny ~ lnx, data=tut5)
+summary(reg2)
+```
+
+```
+## 
+## Call:
+## lm(formula = lny ~ lnx, data = tut5)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.27943 -0.12768  0.00893  0.10052  0.31952 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  4.84067    0.08528   56.76 &lt; 0.0000000000000002 ***
+## lnx          0.62135    0.05350   11.61     0.00000000000862 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1594 on 26 degrees of freedom
+## Multiple R-squared:  0.8384,	Adjusted R-squared:  0.8322 
+## F-statistic: 134.9 on 1 and 26 DF,  p-value: 0.000000000008623
+```
+]
+
+
+---
+
+.scroll-output[
+.tiny[
+
+
+```r
+stargazer(reg2, type="html", dep.var.labels=c("(Log) Total Cost"),
+          covariate.labels=c("Intercept","(Log) Output"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out= "tut5_reg1f.html")
+```
+
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(Log) Total Cost&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;4.8407&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0853)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) Output&lt;/td&gt;&lt;td&gt;0.6214&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0535)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;28&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.8384&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.8322&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;0.1594 (df = 26)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;134.8825&lt;sup&gt;***&lt;/sup&gt; (df = 1; 26)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+.tiny[
+
+```r
+# Log-Log Model: Reset Test with squared fitted values
+resettest(reg2, power=2, type="fitted")
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg2
+## RESET = 26.229, df1 = 1, df2 = 25, p-value = 0.00002723
+```
+
+```r
+qf(1-alpha,1,25)                     # F-critical value
+```
+
+```
+## [1] 4.241699
+```
+
+```r
+# Log-Log Model: Reset Test with squared and cubed fitted values
+resettest(reg2, power=2:3, type="fitted")
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg2
+## RESET = 32.752, df1 = 2, df2 = 24, p-value = 0.0000001382
+```
+
+```r
+qf(1-alpha,2,24)                     # F-critical value
+```
+
+```
+## [1] 3.402826
+```
+
+]
+]
+]
+
+
+
+
+---
+
+g) Based on your results for (e) and (f), does the RESET test suggest that the cubic cost function or the log-log cost function is appropriate? Why?
+
+--
+
+**Cubic function**
+
+.tiny[
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg1
+## RESET = 0.98739, df1 = 1, df2 = 23, p-value = 0.3307
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg1
+## RESET = 0.54561, df1 = 2, df2 = 22, p-value = 0.5871
+```
+
+]
+
+--
+
+**Log-log cost function**
+
+.tiny[
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg2
+## RESET = 26.229, df1 = 1, df2 = 25, p-value = 0.00002723
+```
+
+```
+## 
+## 	RESET test
+## 
+## data:  reg2
+## RESET = 32.752, df1 = 2, df2 = 24, p-value = 0.0000001382
+```
+]
+
+
+---
+class: inverse, center, middle
+
+# Question 2
+
+---
+
+The equilibrium approach to unemployment is based upon the problem of how workers seeking employment find those employers seeking to fill vacancies. This can be expressed formally using a **matching function** that gives the number of jobs formed at a point in time `\((M_t)\)` as a function of the number of unemployed workers looking for jobs `\((U_t)\)` and the number of employers looking for workers `\((V_t)\)`:
+
+`$$M_t=A\,M\left(U_t,V_t \right)$$`
+where `\(A\)` is a parameter reflecting the 'efficiency' of the matching technology. Assume the following functional form for the matching technology:
+
+`$$M_t=A\,M\left(U_t,V_t \right)=AU_t^\theta V_t^{1-\theta} \qquad 0&lt;\theta&lt;1 \qquad (3)$$`
+
+--
+
+Define the matching rate as: `\(m_t=\dfrac{M_t}{U_t}\)`
+
+Similarly, define the vacancy-unemployment rate as: `\(v_t=\dfrac{V_t}{U_t}\)`
+ 
+The matching technology (3) may be written as:
+`$$m_t=A\,v_t^{1-\theta} \qquad 0&lt;\theta&lt;1$$`
+
+---
+
+Alternatively, taking logs of both sides:
+
+`$$\ln m_t = \ln A + (1-\theta) \, \ln v_t$$`
+
+This can be expressed as an econometric model:
+`$$\ln m_t = \beta_0 + \beta_1 \, \ln v_t + \varepsilon_t \quad \varepsilon_t \sim \mathcal{N}(0,\sigma^2)$$`
+where `\(\beta_1 = (1-\theta)\)` and `\(\beta_0 = \ln A\)` is a parameter reflecting the 'efficiency' of the matching technology.
+
+---
+
+The data file `tut5.csv` contains some aggregate time-series constructed from observations for the manufacturing industry collected for the Job Openings and Labor Turnover Survey (JOLTS). This monthly data was collected by the U.S Bureau of Labor Statistics and covers the period December 2000 until December 2019. The file contains the following
+variables:
+
+* U = the number of unemployed workers in thousands
+* V = the number of job-openings (vacancies) in thousands
+* M = the number of new hires (matches) in thousands
+* industry = categorical variable identifying one of three industries
+* year = year of observation
+* month = month of observation
+
+Note:
+`$$\texttt{industry} = 
+  \begin{cases}
+    	1 &amp; \text{if Construction industry}\\
+    	2 &amp; \text{if Manufacturing industry}\\
+    	3 &amp; \text{if Trade, Transportation, and Utilities Industry} \\
+    \end{cases}$$`
+
+---
+
+Suppose you suspect that the relationship between the vacancy-unemployment rate and the matching rate depends upon the quarter of the year. Consider the following econometric model:
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t} \qquad (2)$$`
+where `\(m_{it}\)` refers to the matching rate in region `\(i\)` in period `\(t\)` and the variable `\(Q_{jt}\)` is equal to 1 if the observation `\(t\)` occurs in quarter `\(j\)` and zero otherwise `\((j = 2,3,4)\)`.
+
+a) What is the interpretation of the parameters `\(\beta_{2}\)`, `\(\beta_{3}\)`, and `\(\beta_{4}\)`?
+
+--
+
+`\begin{align*}
+E[\ln m_{it}|Q_{1t} = 1,\ln v_{it}] &amp; = \beta_{0}+ \beta_{1}\,\ln v_{it} \\
+E[\ln m_{it}|Q_{2t} = 1,\ln v_{it}] &amp; = (\beta_{0} + \beta_{2}) +  \beta_{1}\,\ln v_{it}  \\
+E[\ln m_{it}|Q_{3t} = 1,\ln v_{it}] &amp; = (\beta_{0}+ \beta_{3}) +  \beta_{1}\,\ln v_{it}  \\
+E[\ln m_{it}|Q_{4t} = 1,\ln v_{it}] &amp; = (\beta_{0} + \beta_{4}) +  \beta_{1}\,\ln v_{it}
+\end{align*}`
+
+--
+
+* `\(\beta_{2}\)` is the difference in the mean (log) matching rate, between quarters 1 and 2, conditional upon the vacancy-unemployment rate.
+* `\(\beta_{3}\)` is the difference in the mean (log) matching rate, between quarters 1 and 3, conditional upon the vacancy-unemployment rate. 
+* `\(\beta_{4}\)` is the difference in the mean (log) matching rate, between quarters 1 and 4, conditional upon the vacancy-unemployment rate.
+
+
+---
+
+.scroll-output[
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t} \qquad (4)$$`
+
+b) Estimate model (4). Note you will first need to create variables for the matching rate `\(m_{it}\)`,  the vacancy rate `\(v_{it}\)`. Then create variables for the natural logarithms `\(\ln m_{it}\)` and `\(\ln v_{it}\)`. You will also need to create indicator (dummy) variables for the quarter of observation.
+
+At the 5% level and using the `car` package, test the hypothesis that the relationship between the vacancy-unemployment rate and the matching rate is the same between quarters of the year.
+
+### Read in csv file and create new variables
+.tiny[
+
+```r
+vac_tut5 &lt;- read.csv("tut5.csv")
+# create required logarithmic variables
+vac_tut5$lnm = log(vac_tut5$m)
+vac_tut5$lnu = log(vac_tut5$u)
+vac_tut5$lnv = log(vac_tut5$v)
+# generate matching rate
+vac_tut5$mrate = vac_tut5$m/vac_tut5$u
+# generate vacancy rate
+vac_tut5$vrate = vac_tut5$v/vac_tut5$u
+# generate log matching rate
+vac_tut5$lnmrate=log(vac_tut5$mrate)
+# generate log vacancy rate
+vac_tut5$lnvrate=log(vac_tut5$vrate)
+# create categorical variable for quarters from month variable
+# this creates a variable {1,2,3,4} for each quarter of the year
+vac_tut5$monthcat &lt;- cut(vac_tut5$month, seq(0,12,3), labels=c(1:4))
+# create dummy variables for quarters
+vac_tut5$q1 &lt;- as.numeric(vac_tut5$monthcat == 1)
+vac_tut5$q2 &lt;- as.numeric(vac_tut5$monthcat == 2)
+vac_tut5$q3 &lt;- as.numeric(vac_tut5$monthcat == 3)
+vac_tut5$q4 &lt;- as.numeric(vac_tut5$monthcat == 4)
+```
+
+]
+
+### Estimate model (4)
+
+.tiny[
+
+```r
+vac_reg2 &lt;- lm(lnmrate ~ lnvrate + q2 + q3 + q4, data = vac_tut5)         # OLS results: model
+summary(vac_reg2)                                                  # print results to screen
+```
+
+```
+## 
+## Call:
+## lm(formula = lnmrate ~ lnvrate + q2 + q3 + q4, data = vac_tut5)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.04639 -0.22429 -0.00041  0.26087  0.81176 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -0.23603    0.03438  -6.866      0.0000000000149 ***
+## lnvrate      0.52063    0.01572  33.115 &lt; 0.0000000000000002 ***
+## q2           0.26117    0.03785   6.901      0.0000000000119 ***
+## q3           0.18751    0.03793   4.944      0.0000009647727 ***
+## q4           0.08524    0.03752   2.272               0.0234 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3477 on 682 degrees of freedom
+## Multiple R-squared:  0.6452,	Adjusted R-squared:  0.6432 
+## F-statistic: 310.1 on 4 and 682 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+RSS_vac_reg2 &lt;- deviance(vac_reg2)                                 # RSS for model
+df_vac_reg2 &lt;-vac_reg2$df.residual                                 # df for model
+print(RSS_vac_reg2)                                                # print RSS to screen
+```
+
+```
+## [1] 82.47088
+```
+
+]
+
+.tiny[
+
+```r
+# stargazer output
+stargazer(vac_reg2, type="html", dep.var.labels=c("(Log) Matching Rate"),
+          covariate.labels=c("Intercept","(Log) Vacancy Rate", "Quarter 2",
+                             "Quarter 3", "Quarter 4"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001)
+          )
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="1" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(Log) Matching Rate&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;-0.2360&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0344)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) Vacancy Rate&lt;/td&gt;&lt;td&gt;0.5206&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0157)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 2&lt;/td&gt;&lt;td&gt;0.2612&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0378)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 3&lt;/td&gt;&lt;td&gt;0.1875&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0379)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 4&lt;/td&gt;&lt;td&gt;0.0852&lt;sup&gt;*&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0375)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;687&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.6452&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.6432&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;0.3477 (df = 682)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;310.0958&lt;sup&gt;***&lt;/sup&gt; (df = 4; 682)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+]
+
+---
+
+### Hypothesis test: Vacancy-unemployment rate and matching rate
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t} \qquad (4)$$`
+
+At the 5% level and using the `car` package, test the hypothesis that the relationship between the vacancy-unemployment rate and the matching rate is the same between quarters of the year.
+
+.tiny[
+
+```r
+# Test for quarterly effects
+# H0: beta2 = beta3 = beta4 = 0
+hnullb &lt;-c("q2=0", "q3=0", "q4=0")
+linearHypothesis(vac_reg2, hnullb)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## q2 = 0
+## q3 = 0
+## q4 = 0
+## 
+## Model 1: restricted model
+## Model 2: lnmrate ~ lnvrate + q2 + q3 + q4
+## 
+##   Res.Df    RSS Df Sum of Sq      F           Pr(&gt;F)    
+## 1    685 89.095                                         
+## 2    682 82.471  3    6.6236 18.258 0.00000000002099 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+
+---
+
+.scroll-output[
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t} \qquad (2)$$`
+
+`$$H_{0}:\beta_{2} = \beta_{3} = \beta_{4} = 0  \qquad \qquad H_{A}:\text{ at least one }\beta_{k} \neq 0 \text{ for } k = 2,3,4$$`
+
+### Alternative method using the F-statistic formula
+
+`$$F = \frac{(RSS_{R}-RSS_{UR})/3}{RSS_{UR}/682} = \frac{(89.09451-82.47088)/3}{82.47088/682}= 18.25823$$`
+
+Restricted model: `\(\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} +  \varepsilon_{i,t}\)`
+
+.tiny[
+
+```r
+vac_reg1 &lt;- lm(lnmrate ~ lnvrate, data = vac_tut5)  # restricted model
+summary(vac_reg1)
+```
+
+```
+## 
+## Call:
+## lm(formula = lnmrate ~ lnvrate, data = vac_tut5)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.07559 -0.23421 -0.02071  0.26148  0.92230 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -0.08449    0.02380  -3.551             0.000411 ***
+## lnvrate      0.53583    0.01614  33.201 &lt; 0.0000000000000002 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3606 on 685 degrees of freedom
+## Multiple R-squared:  0.6167,	Adjusted R-squared:  0.6162 
+## F-statistic:  1102 on 1 and 685 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+RSS_vac_reg1 &lt;- deviance(vac_reg1)                                
+print(RSS_vac_reg1)   # RSS_R
+```
+
+```
+## [1] 89.09451
+```
+
+```r
+print(RSS_vac_reg2)   # RSS_UR
+```
+
+```
+## [1] 82.47088
+```
+
+```r
+# The long way
+# Restricted model: vac_reg1
+# Unrestricted model: vac_reg2
+alpha &lt;- 0.05                                           # desired level of significance
+df_num_2b &lt;- 3                                          # numerator df: number of restrictions
+df_dem_2b &lt;-df_vac_reg2                                 # denominator df: vac_reg2  
+F2b_num &lt;- (RSS_vac_reg1 - RSS_vac_reg2)/df_num_2b      # F statistic numerator   
+F2b_dem &lt;- RSS_vac_reg2/df_dem_2b                       # F statistic denominator
+F2b &lt;- F2b_num/F2b_dem                                  # sample value of F statistic
+print(F2b)                                              # Print sample value of F stat
+```
+
+```
+## [1] 18.25822
+```
+
+```r
+Fcr_2b &lt;- qf(1-alpha,df_num_2b,df_dem_2b)               # F critical value for alpha= 0.05
+pval_2b &lt;- 1-pf(F2b, df_num_2b, df_dem_2b)              # p value for sample F stat
+print(Fcr_2b)                                           # Print  F critical value
+```
+
+```
+## [1] 2.617963
+```
+
+```r
+print(pval_2b)                                          # Print p value for sample F stat
+```
+
+```
+## [1] 0.00000000002098832
+```
+]
+
+]
+
+---
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t} \qquad (2)$$`
+
+c) A criticism of model (4) is that it restricts the relationship between the vacancy-unemployment rate and the matching rate to be the same across geographic regions. Consider the following (unrestricted) model:
+
+`\begin{align}
+\ln m_{it} &amp;  = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t}  +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} \notag \\
+&amp; \beta_{5}\,\mbox{industry1}_{i} + \beta_{6}\,\mbox{industry2}_{i} + \varepsilon_{it}
+\end{align}`
+
+where `\(m_{it}\)` refers to the matching rate in region `\(i\)` in period `\(t\)` and the variable `industryj` is equal to 1 if the observation relates to industry j and zero otherwise `\((j=1 \quad \text{and } 2)\)`.
+
+i) What is the interpretation of the parameters `\(\beta_{5}\)` and `\(\beta_{6}\)`?
+
+.my[
+
+For example for quarter 1:
+
+`\begin{align*}
+E[\ln m_{it}|\mbox{industry1}_{i} = 1,\ln v_{t}, Q_{t}] &amp; = \beta_{0}+ \beta_{1}\,\ln v_{t} \\
+E[\ln m_{it}|\mbox{industry2}_{i} = 1,\ln v_{t}, Q_{t}] &amp; = (\beta_{0} + \beta_{5}) +  \beta_{1}\,\ln v_{t}  \\
+E[\ln m_{it}|\mbox{industry3}_{i} = 1,\ln v_{t}, Q_{t}] &amp; = (\beta_{0}+ \beta_{6}) +  \beta_{1}\,\ln v_{t}
+\end{align*}`
+
+* `\(\beta_{5}\)` is the difference in the mean (log) matching rate, between industry 1 (Construction) and industry 3 (Trade, Transportation, and Utilities), conditional upon the vacancy-unemployment rate for a specific quarter of the year.
+* `\(\beta_{6}\)` is the difference in the mean (log) matching rate, between industry 2 (Manufacturing) and industry 3 (Trade, Transportation, and Utilities), conditional upon the vacancy-unemployment rate for a specific quarter of the year.
+]
+
+---
+
+.scroll-output[
+
+`\begin{align}
+\ln m_{it} &amp;  = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t}  +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} \notag \\
+&amp; \beta_{5}\,\mbox{industry1}_{i} + \beta_{6}\,\mbox{industry2}_{i} + \varepsilon_{it}
+\end{align}`
+
+.tiny[
+
+```r
+# create dummy variables for industry
+vac_tut5$industry1 &lt;- as.numeric(vac_tut5$industry==1)
+vac_tut5$industry2 &lt;- as.numeric(vac_tut5$industry==2)
+vac_tut5$industry3 &lt;- as.numeric(vac_tut5$industry==3)
+```
+
+]
+
+ii) At the 5% level and using the `car` package, test the hypothesis that, controlling for the vacancy-unemployment rate and the quarter of the year, the matching rate is the same between industries.
+
+.tiny[
+
+```r
+vac_reg3 &lt;- lm(lnmrate ~ lnvrate + q2 + q3 + q4 + industry1 + industry2, 
+               data=vac_tut5)     
+summary(vac_reg3)                                        # print results to screen
+```
+
+```
+## 
+## Call:
+## lm(formula = lnmrate ~ lnvrate + q2 + q3 + q4 + industry1 + industry2, 
+##     data = vac_tut5)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.79315 -0.17234  0.00701  0.16446  0.68430 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) -0.09343    0.02344  -3.987       0.000074174731 ***
+## lnvrate      0.60747    0.01190  51.044 &lt; 0.0000000000000002 ***
+## q2           0.23764    0.02451   9.697 &lt; 0.0000000000000002 ***
+## q3           0.16037    0.02458   6.526       0.000000000132 ***
+## q4           0.07238    0.02425   2.985              0.00294 ** 
+## industry1    0.30249    0.02458  12.305 &lt; 0.0000000000000002 ***
+## industry2   -0.36933    0.02173 -16.997 &lt; 0.0000000000000002 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2246 on 680 degrees of freedom
+## Multiple R-squared:  0.8524,	Adjusted R-squared:  0.8511 
+## F-statistic: 654.5 on 6 and 680 DF,  p-value: &lt; 0.00000000000000022
+```
+
+```r
+RSS_vac_reg3 &lt;- deviance(vac_reg3)                        # RSS for model 3
+df_vac_reg3 &lt;-vac_reg3$df.residual                        # df for model 3
+print(RSS_vac_reg3)                                       # print RSS to screen
+```
+
+```
+## [1] 34.31044
+```
+
+```r
+# Test for industry effects
+#H0: beta5 = beta6 = 0
+hnullc &lt;-c("industry1=0", "industry2=0")
+linearHypothesis(vac_reg3, hnullc)
+```
+
+```
+## Linear hypothesis test
+## 
+## Hypothesis:
+## industry1 = 0
+## industry2 = 0
+## 
+## Model 1: restricted model
+## Model 2: lnmrate ~ lnvrate + q2 + q3 + q4 + industry1 + industry2
+## 
+##   Res.Df    RSS Df Sum of Sq      F                Pr(&gt;F)    
+## 1    682 82.471                                              
+## 2    680 34.310  2     48.16 477.25 &lt; 0.00000000000000022 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+]
+
+---
+
+.scroll-output[
+
+### Regression results
+
+.tiny[
+
+```r
+stargazer(vac_reg1, vac_reg2, vac_reg3, type="html", dep.var.labels=c("(Log) Matching Rate"),
+          covariate.labels=c("Intercept","(Log) Vacancy Rate", "Quarter 2",
+                             "Quarter 3", "Quarter 4", "Construction", "Manufacturing"),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out= "tut5_reg3.html")
+```
+]
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="3"&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="3"&gt;(Log) Matching Rate&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1)&lt;/td&gt;&lt;td&gt;(2)&lt;/td&gt;&lt;td&gt;(3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;-0.0845&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;-0.2360&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;-0.0934&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0238)&lt;/td&gt;&lt;td&gt;(0.0344)&lt;/td&gt;&lt;td&gt;(0.0234)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;(Log) Vacancy Rate&lt;/td&gt;&lt;td&gt;0.5358&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.5206&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.6075&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0161)&lt;/td&gt;&lt;td&gt;(0.0157)&lt;/td&gt;&lt;td&gt;(0.0119)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 2&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;0.2612&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2376&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0378)&lt;/td&gt;&lt;td&gt;(0.0245)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 3&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;0.1875&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.1604&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0379)&lt;/td&gt;&lt;td&gt;(0.0246)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Quarter 4&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;0.0852&lt;sup&gt;*&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.0724&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0375)&lt;/td&gt;&lt;td&gt;(0.0243)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Construction&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;0.3025&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0246)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Manufacturing&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;-0.3693&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;(0.0217)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;687&lt;/td&gt;&lt;td&gt;687&lt;/td&gt;&lt;td&gt;687&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.6167&lt;/td&gt;&lt;td&gt;0.6452&lt;/td&gt;&lt;td&gt;0.8524&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.6162&lt;/td&gt;&lt;td&gt;0.6432&lt;/td&gt;&lt;td&gt;0.8511&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;0.3606 (df = 685)&lt;/td&gt;&lt;td&gt;0.3477 (df = 682)&lt;/td&gt;&lt;td&gt;0.2246 (df = 680)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;1,102.2930&lt;sup&gt;***&lt;/sup&gt; (df = 1; 685)&lt;/td&gt;&lt;td&gt;310.0958&lt;sup&gt;***&lt;/sup&gt; (df = 4; 682)&lt;/td&gt;&lt;td&gt;654.5365&lt;sup&gt;***&lt;/sup&gt; (df = 6; 680)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td colspan="3" style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+
+]
+
+---
+
+.scroll-output[
+
+`\begin{align}
+\ln m_{it} &amp;  = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t}  +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} \notag \\
+&amp; \beta_{5}\,\mbox{industry1}_{i} + \beta_{6}\,\mbox{industry2}_{i} + \varepsilon_{it}
+\end{align}`
+
+`$$\ln m_{it} = \beta_{0} + \beta_{1}\,\ln v_{it} + \beta_{2}\,Q_{2t} +
+\beta_{3}\,Q_{3t} + \beta_{4}\,Q_{4t} +  \varepsilon_{i,t}$$`
+
+
+`$$F = \frac{(RSS_{R}-RSS_{UR})/2}{RSS_{UR}/680} = \frac{(82.47088-34.31044)/2}{34.31044/680} = 477.2469$$`
+.tiny[
+
+```r
+# The long way
+# Restricted model: vac_reg2
+# Unrestricted model: vac_reg3
+alpha &lt;- 0.05                                           # desired level of significance
+df_num_2c &lt;- 2                                          # numerator df: number of restrictions
+df_dem_2c &lt;-df_vac_reg3                                 # denominator df: vac_reg3  
+F2c_num &lt;- (RSS_vac_reg2 - RSS_vac_reg3)/df_num_2c      # F statistic numerator   
+F2c_dem &lt;- RSS_vac_reg3/df_dem_2c                       # F statistic denominator
+F2c &lt;- F2c_num/F2c_dem                                  # sample value of F statistic
+print(F2c)                                              # Print sample value of F stat
+```
+
+```
+## [1] 477.2469
+```
+
+```r
+Fcr_2c &lt;- qf(1-alpha,df_num_2c,df_dem_2c)               # F critical value for alpha= 0.05
+pval_2c &lt;- 1-pf(F2c, df_num_2c, df_dem_2c)              # p value for sample F stat
+print(Fcr_2c)                                           # Print  F critical value
+```
+
+```
+## [1] 3.008969
+```
+
+```r
+print(pval_2c)  
+```
+
+```
+## [1] 0
+```
+]
+]
+
+---
+class: inverse, center, middle
+
+# End
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
