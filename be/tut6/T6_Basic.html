@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ECOM30001/90001 Basic Econometrics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Chin Yong Quek" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ECOM30001/90001 Basic Econometrics
+## Tutorial 6: Difference-in-Difference Models, Heteroskedasticity
+### Chin Yong Quek
+### Department of Economics <br> University of Melbourne
+### April 2022
+
+---
+
+# Objectives
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+
+.my {
+  font-size: 15px;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+/******************
+ * Slide scrolling
+ * (non-functional)
+ * not sure if it is a good idea anyway
+slides &gt; slide {
+  overflow: scroll;
+ padding: 5px 40px;
+}
+.scrollable-slide .remark-slide {
+  height: 400px;
+  overflow: scroll !important;
+}
+ ******************/
+
+.scroll-output {
+  height: 90%;
+  overflow-y: scroll;
+}
+&lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+&lt;/style&gt;
+
+
+- Interpretation of coefficients on dummy variables, especially in the context of a differences-in-differences research design
+
+- Estimating econometric models 
+  + with interaction terms in R
+  + with robust heteroskedasticity consistent  (Huber-White) standard errors in R
+  + using Generalised (Weighted) Least Squares (GLS) in R
+
+---
+
+## Load R packages
+
+
+```r
+#---------------------------------------
+# set your working directory here
+setwd("...")
+#---------------------------------------
+library(ggplot2)
+library(car)
+library(lmtest)
+library(stargazer)
+library(sandwich)   # for easily calculating robust (Huber-White) heteroskedasticity consistent
+library(scales)     # for displaying thousands with commas in graphs
+#---------------------------------------
+```
+
+
+
+
+---
+class: inverse, center, middle
+
+# Question 1: D-i-D
+
+---
+
+.scroll-output[.my[
+This question is based on the following published paper:
+
+Duflo, Esther (2001), `Schooling and Labor Market Consequences of School Construction in Indonesia: Evidence from an Unusual Policy Experiment', *American Economic Review*, **91(4)**, pp795--813
+
+**Research Question:** Can investments in infrastructure increase educational attainment?
+
+In 1973, the Indonesian government initiated a major school construction program, the Sekolah Daser INPRES program. This program was funded through the boom in oil prices in the 1970's which benefited Indonesia. Between 1973-74 and 1978-79, close to 62,000 new schools were constructed at a cost of over $500 million (1990 U.S. dollars). This represented approximately 1 school being built per 500 children aged 5-14 in 1971 (p797).
+
+The number of schools to be constructed in each district was proportional to the number of primary school children not enrolled in school in 1972 (p797).
+
+The date of birth and the region of birth jointly determine an individual's exposure to the program. Note that region of birth and region of education are highly correlated (at age 12, `\(91.5\%\)` of children were still living in their region of birth). Indonesian children normally attend primary school between the ages of 7 and 12. All children born in 1962 or before were 12 or older in 1974, when the first INPRES schools were constructed. Thus, they did not benefit from the program, since they should have left primary school before the first INPRES schools were opened (p 797). Consequently, the exposure to the program was an increasing function of the individual's date of birth.
+
+#### Data
+
+The study uses the 1995 Intercensal Survey of Indonesia (SUPAS). The sample consists of males born between 1957 and 1972. The study considers two groups of individuals:
+
+a) 'Pre' Program: Born between 1957 and 1962 (aged 12-17 in 1974) and aged between 33 and 38 in 1995.
+
+b) 'Post' Program: Born between 1968 and 1972 (aged 2-6 in 1974) and aged between 23 and 27 in 1995.
+
+]
+]
+
+---
+
+#### Empirical Model
+
+Consider the following econometric model:
+
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+where `\(S_{ijk}\)` refers to the years of schooling of individual `\(i\)`, born in region `\(j\)`, in birth cohort `\(k\)` and:
+
+.my[
+`$$\text{TREAT}_{ij} = 
+  \begin{cases}
+    	1 &amp; \text{treatment group: if } i \text{ was born in a region where 'many' schools were built}\\
+    	0 &amp; \text{control group: otherwise}\\
+    \end{cases}$$`
+]
+
+Observations were allocated to the 'treatment' group (regions where many schools were built) based on a regression of the number of schools on the number of children. Regions with positive residuals were allocated to the treatment group. Note also:
+
+`$$\text{AFTER}_{ik} = 
+  \begin{cases}
+    	1 &amp; \text{if } i \text{ was aged 2-6 in 1974 (born after the program)}\\
+    	0 &amp; \text{if } i \text{ was aged 12-17 in 1974 (born before the program)}\\
+    \end{cases}$$`
+
+
+---
+
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+a) What is the interpretation of the population parameter `\(\alpha_{2}\)`?
+
+b) What is the interpretation of the population parameter `\(\alpha_{1}\)`?
+
+c) What is the interpretation of the population parameter `\(\beta_{1}\)`?
+
+-----
+
+Consider the following conditional mean functions:
+
+.my[
+`$$\begin{align*}
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{2} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + \alpha_{1} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{1} + \alpha_{2} + \beta_{1} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] \\ \\
+\end{align*}$$`
+]
+
+---
+
+## `\(\alpha_2\)`
+
+Provided the composition of the 'before' and 'after' control group remains the same  (in terms of unobservable variables):
+
+.my[
+`$$E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] - E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] = 0$$`
+]
+
+then:
+
+.my[
+`$$\alpha_{2} = E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] - E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0]$$`
+]
+
+so `\(\alpha_{2}\)` represents the difference in mean years of schooling for the control group between individuals born after the program (`post-program), relative to those born before the program (`pre-program).It represents the trend in mean years of schooling for individuals aged 2-6 in 1974, compared to individuals aged 12-17 in 1974.
+
+---
+
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+b) What is the interpretation of the population parameter `\(\alpha_{1}\)`?
+
+c) What is the interpretation of the population parameter `\(\beta_{1}\)`?
+
+-----
+
+Consider the following conditional mean functions:
+
+.my[
+`$$\begin{align*}
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{2} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + \alpha_{1} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{1} + \alpha_{2} + \beta_{1} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] \\ \\
+\end{align*}$$`
+
+]
+
+---
+
+## `\(\alpha_1\)`
+
+Provided the composition of the 'pre' group is the same in the treatment and control regions (in terms of unobservable variables):
+
+.my[
+`$$E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] - E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] = 0$$`]
+
+then:
+
+.my[
+`$$\alpha_{1} = E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] - E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0]$$`
+]
+
+so `\(\alpha_{1}\)` represents the difference in mean years of schooling for individuals aged 12-17 in 1974 born in the `treatment` regions ('many' schools built regions), compared to individuals aged 12-17 in 1974 born in the `control` regions ('few' schools built regions). 
+
+* So `\(\alpha_{1}\)` represents the 'pre' treatment difference between the treatment and control regions
+
+
+---
+
+
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+c) What is the interpretation of the population parameter `\(\beta_{1}\)`?
+
+-----
+
+Consider the following conditional mean functions:
+
+.my[
+`$$\begin{align*}
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{2} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] &amp; = \alpha_{0} + \alpha_{1} + E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] \\ \\
+E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] &amp; = \alpha_{0} + \alpha_{1} + \alpha_{2} + \beta_{1} +  E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] \\ \\
+\end{align*}$$`
+
+]
+
+---
+
+.scroll-output[
+
+## `\(\beta_1\)`
+
+Provided:
+
+.my[
+`$$\begin{align*}
+&amp; \left\{E[\varepsilon_{ijk}|\mbox{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] - E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 1,\mbox{AFTER}_{ik} = 0] \right\} \\
+&amp; -   \left\{E[\varepsilon_{ijk}|\mbox{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] - E[\varepsilon_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] \right\} = 0
+\end{align*}$$`
+]
+
+This requires the:
+
+- changes in mean years of schooling between individuals aged 12-17 in 1974 ('pre-program' group) and individuals aged 2-6 in 1974 ('post-program' group) are common across the treatment and control groups. 
+  + **Parallel-trend assumption**: Relies on the strong assumption that there are NO omitted time-varying and region of birth specific effects. 
+  + E.g. IF the allocation of *other* government programs initiated as a result of the oil boom, such as water and sanitisation projects, which potentially affect educational attainment, and might plausibly be related to the allocation under the INPRES program (p. 799), this identifying assumption would NOT be satisfied.
+
+- composition of the treatment and control groups remains the same between the 'pre' group (aged 12-17 in 1974) and the 'post' group (aged 2-6 in 1974).
+
+then:
+
+.my[
+`$$\begin{align*}
+&amp; \left\{E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 1] - E[S_{ijk}|\text{TREAT}_{ij} = 1,\text{AFTER}_{ik} = 0] \right\} \\
+&amp; -   \left\{E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 1] - E[S_{ijk}|\text{TREAT}_{ij} = 0,\text{AFTER}_{ik} = 0] \right\} \\ \\
+&amp; = \left\{(\alpha_{0} + \alpha_{1} + \alpha_{2} + \beta_{1}) - (\alpha_{0} + \alpha_{1})\right\} - \left\{(\alpha_{0} + \alpha_{2}) - \alpha_{0} \right\} \\
+&amp; = \beta_{1}
+\end{align*}$$`
+]
+
+
+.my[
+`$$\begin{align*}
+\beta_{1} &amp; = \left\{\text{Mean Schooling (treatment, post-program)} - \text{Mean Schooling (treatment, pre-program)}\right\} \\
+&amp; -  \left\{\text{Mean Schooling (control, post-program)} - \text{Mean Schooling (control, pre-program)}\right\}
+\end{align*}$$`
+]
+
+It represents the 'causal' effect of the program by comparing the actual difference in mean schooling between the 'pre'-program  and 'post'-program birth cohorts for the treatment group, relative to the counter-factual difference that would prevail if there were no treatment (school building program).
+
+]
+
+---
+
+&lt;img src="img_1.PNG" width="860" style="display: block; margin: auto;" /&gt;
+
+---
+
+.scroll-output[
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+The econometric model (1) essentially divides the sample into four mutually exclusive groups:
+
+i) 'control' group pre-program: individuals aged 12-17 in 1974 in 'few' schools built regions
+
+ii) 'control' group post-program: individuals aged 2-6 in 1974 in 'few' schools built regions
+
+iii) 'treatment group pre-program: individuals aged 12-17 in 1974 in 'many' schools built regions
+
+iv) 'treatment' group post-program: individuals aged 2-6 in 1974 in 'many' schools built regions.
+
+The estimates for the econometric model (1) without any additional controls, are equivalent to an analysis based on the sample mean of years of schooling in each of these four (4) groups:
+
+&lt;img src="img_2.PNG" width="1043" style="display: block; margin: auto;" /&gt;
+
+The sample consists of individuals aged 2-6 in 1974 or 12-17 in 1974 who are observed to be working for a wage in the 1995 census data. This provides a total of 31,061 observations.
+
+At the 5% level of significance, test the hypothesis that the school building program had a null effect upon (completed) years of education. Your answer should clearly state the null and alternative hypothesis, the distribution of the test statistic, and your conclusion.
+
+]
+
+---
+
+&lt;img src="img_3.PNG" width="1567" style="display: block; margin: auto;" /&gt;
+
+---
+
+`$$S_{ijk} = \alpha_{0} + \alpha_{1}\,\text{TREAT}_{ij} + \alpha_{2}\,\text{AFTER}_{ik} + \beta_{1}\,\left\{\text{TREAT}_{ij}*\text{AFTER}_{ik}\right\} + \varepsilon_{ijk}$$`
+
+
+At the 5% level of significance, test the hypothesis that the school building program had a null effect upon (completed) years of education. Your answer should clearly state the null and alternative hypothesis, the distribution of the test statistic, and your conclusion.
+
+--
+
+`$$H_0: \beta_1 = 0 \qquad H_A: \beta_1 \neq 0$$`
+
+`$$t = \frac{b_1-0}{\text{se}(b_1)} \sim t_{n-4}$$`
+
+`\(t = \frac{0.11}{0.089} = 1.236\)`
+
+Reject `\(H_0\)` if `\(t &lt; -1.96\)` or `\(t &gt; 1.96\)`
+
+Since `\(-1.96 &lt; 1.236 &lt; 1.96\)`, do not reject `\(H_0\)`. The sample does not provide evidence that the INPRES program affected completed years of schooling in the treatment regions.
+
+---
+class: inverse, center, middle
+
+# Question 2
+
+---
+
+Consider the following econometric model that relates per-capita expenditures on health to per-capita gross domestic product (GDP):
+
+`$$\frac{\text{health}_{i}}{\text{POP}_{i}} = \beta_{0} +
+\beta_{1}\,\frac{\text{GDP}_{i}}{\text{POP}_{i}} + \varepsilon_{i}$$`
+
+where:
+
+* `\(\text{health}_{i}\)` = health expenditure in 2018 for country `\(i\)`, in current $US
+* `\(\text{GDP}_{i}\)` = gross domestic product in 2018 for country `\(i\)`, in current $US
+* `\(\text{POP}_{i}\)` = population in 2018 for country `\(i\)`
+
+The data file `tut6.csv` contains data that may be used to estimate this econometric model.
+
+a) It is suspected that the random error `\(\varepsilon_i\)` might be heteroskedastic. Why might this suspicion about heteroskedasticity be reasonable? What are the consequences for the OLS estimator if you ignore this heteroskedasticity in the random error `\(\varepsilon_i\)`?
+
+---
+
+`$$\frac{\text{health}_{i}}{\text{POP}_{i}} = \beta_{0} + \beta_{1}\,\frac{\text{GDP}_{i}}{\text{POP}_{i}} + \varepsilon_{i}$$`
+
+&gt; Why suspect heteroskedastic error?
+
+--
+
+* Richer countries, countries with a higher GDP per capita, have more income to distribute
+  + Greater  flexibility in terms of how much they can spend on health.
+
+* 'Richer' countries might spend either a considerable amount of health or spend relatively less on health. In contrast, countries with a relatively smaller GDP per capita will have fewer budget options, and the amount they spend on health is likely to vary less.
+
+--
+
+**Consequences**
+
+* The OLS estimators for `\(\beta_0\)` and `\(\beta_1\)` remain unbiased estimators of the population parameters. 
+
+* Ignoring heteroskedasticity when it is present, we will be using an estimate of `\(\text{VAR}[b_1]\)` to obtain an incorrect `\(\text{se}(b_1)\)`. 
+  + Interval estimates and hypothesis tests, based upon these incorrect standard errors, will NOT be valid.
+
+---
+
+### Variance of slope estimator
+
+In a SLRM with heteroskedastic error:
+
+`$$\text{VAR}[b_1] = \dfrac{\sum \left[\left(x_i - \bar{x}  \right)^2  \sigma_i^2\right]}{\left[\sum \left(x_i - \bar{x}  \right)^2\right]^2}$$`
+
+In a SLRM with homoskedastic error:
+
+`$$\text{VAR}[b_1] = \frac{\sigma^2}{\sum \left(x_i -\bar{x} \right)^2}$$`
+
+---
+
+`$$\frac{\text{health}_{i}}{\text{POP}_{i}} = \beta_{0} + \beta_{1}\,\frac{\text{GDP}_{i}}{\text{POP}_{i}} + \varepsilon_{i}$$`
+
+b) What is the interpretation of `\(\beta_1\)`? Estimate the econometric model (2) by Ordinary Least Squares. Test the hypothesis `\(H_0:\beta_1=0\)` against the alternative `\(H_A:\beta_1 \neq 0\)`. Plot the least squares regression function and the actual data. Is there any evidence of heteroskedasticity?
+
+--
+
+`\(\beta_1\)` represents the average effect upon health expenditures per capita of an additional dollar in GDP per capita.
+
+--
+
+### Read data file into R and Estimate model
+
+
+```r
+tut6 &lt;- read.csv("tut6.csv")  # Read raw data into R
+tut6$healthpop &lt;- tut6$health/tut6$pop  # generate health pop ratio
+tut6$gdppop &lt;- tut6$gdp/tut6$pop  # generate gdp pop ratio
+mean_gdppop &lt;-mean(tut6$gdppop)
+print(mean_gdppop)
+```
+
+```
+## [1] 18644.79
+```
+
+```r
+# OLS Model (Ignore heteroskedasticity)
+reg3 &lt;- lm(healthpop ~ gdppop, data=tut6)
+```
+
+---
+
+.scroll-output[
+
+### Estimated model
+.tiny[
+
+```r
+print(summary(reg3))
+```
+
+```
+## 
+## Call:
+## lm(formula = healthpop ~ gdppop, data = tut6)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4475.7  -150.0    53.9   165.7  4586.5 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.173e+02  1.110e+02  -1.958   0.0533 .  
+## gdppop       9.746e-02  3.867e-03  25.199   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 818.1 on 92 degrees of freedom
+## Multiple R-squared:  0.8735,	Adjusted R-squared:  0.8721 
+## F-statistic:   635 on 1 and 92 DF,  p-value: &lt; 2.2e-16
+```
+
+```r
+# Sample F statistic
+wald_ols &lt;- waldtest(reg3)                         # sample F statistics of overall significance
+print(wald_ols)                                    # print sample F statistic  
+```
+
+```
+## Wald test
+## 
+## Model 1: healthpop ~ gdppop
+## Model 2: healthpop ~ 1
+##   Res.Df Df   F    Pr(&gt;F)    
+## 1     92                     
+## 2     93 -1 635 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+RSS_reg3 &lt;- deviance(reg3)                         # residual sum of squares for reg3
+resid_reg3 &lt;- reg3$residuals                       # generate series for residuals for reg3                    
+yhat_reg3 &lt;- reg3$fitted.values                    # generate series for fitted values for reg3
+
+demdf1 &lt;- df.residual(reg3)                          # denominator df
+fstat1 &lt;- round(wald_ols$"F"[2], digits=4)           # Sample value of F stat
+pvalf1 &lt;- round(wald_ols$'Pr(&gt;F)'[2], digits=4)      # p value of F test
+numdf1 &lt;- abs(wald_ols$"Df"[2])                      # numerator df 
+print(fstat1)
+```
+
+```
+## [1] 634.9971
+```
+
+```r
+print(pvalf1)
+```
+
+```
+## [1] 0
+```
+
+```r
+print(numdf1)
+```
+
+```
+## [1] 1
+```
+
+]]
+
+---
+
+`$$\frac{\text{health}_{i}}{\text{POP}_{i}} = \beta_{0} + \beta_{1}\,\frac{\text{GDP}_{i}}{\text{POP}_{i}} + \varepsilon_{i}$$`
+
+### Hypothesis test
+
+Test the hypothesis `\(H_0:\beta_1=0\)` against the alternative `\(H_A:\beta_1 \neq 0\)`.
+
+--
+
+`$$t = \frac{b_1-0}{\text{se}(b_1)} \sim t_{92}$$`
+
+* Two-sided test, so $t_c = 1.98161 at `\(\alpha = 0.05\)`
+
+.tiny[
+
+```r
+qt(0.025, 92, lower.tail = F)
+```
+
+```
+## [1] 1.986086
+```
+]
+
+`$$t  = \dfrac{0.097457-0}{0.003867} = 25.199$$`
+
+* Decision rule: Reject `\(H_0\)` when `\(t &lt; -1.98161\)` or `\(t &gt; 1.98161\)`. Since `\(t &gt; t_c\)`, reject `\(H_0\)` and conclude that the sample evidence is not consistent with the null hypothesis that `\(\beta_1=0\)`.
+
+---
+
+.tiny[
+
+```r
+#----------------------------------------
+# Two-sided test H0: beta1 = 0 HA: beta1 ne 0
+#------------------------------------------
+alpha &lt;- 0.05                                     # set level of significance
+b1_reg3 &lt;- coef(reg3)[["gdppop"]]                 # coefficient on gdppop
+seb1_reg3 &lt;- sqrt(vcov(reg3)[2,2])                # standard error of b1
+df_reg3 &lt;- df.residual(reg3)                      # degrees of freedom
+t_3 &lt;- (b1_reg3-0)/seb1_reg3                      # construct t test statistic
+tcr_3 &lt;- qt(1-alpha/2, df_reg3)                   # calculate critical value
+pval_3 &lt;- 2*(1-pt(abs(t_3), df_reg3))             # calculate p-value for 2 sided test
+print(df_reg3)                                    # print degrees of freedom 
+```
+
+```
+## [1] 92
+```
+
+```r
+print(t_3)                                        # print sample t test statistic
+```
+
+```
+## [1] 25.19915
+```
+
+```r
+print(tcr_3)                                      # print t critical value
+```
+
+```
+## [1] 1.986086
+```
+
+```r
+print(pval_3)
+```
+
+```
+## [1] 0
+```
+
+]
+
+---
+
+.scroll-output[
+.tiny[
+
+### Any evidence of heteroskedasticity?
+
+Plot the least squares regression function and the actual data. Is there any evidence of heteroskedasticity?
+
+
+```r
+#----------------------------------
+# Plot the actual and fitted values
+#----------------------------------
+ggplot(tut6, aes(x=gdppop)) +
+  geom_point(aes(y=healthpop, colour="Actual Data")) +
+  geom_line(aes(y=yhat_reg3, colour="Fitted Values: Linear Model"), size=1) +  
+  labs(x = "Gross Domestic Product, per capita", y = "Health Expenditures, per capita") +
+  scale_y_continuous(breaks = round(seq(0,10000, by = 2000),1),labels=comma) +
+  scale_x_continuous(breaks = round(seq(0,90000, by = 10000),1),labels=comma) +
+                         scale_colour_manual("", 
+                      breaks = c("Actual Data", "Fitted Values: Linear Model"),
+                      values = c("blue", "red")) +
+  theme_classic() +
+  theme(axis.text=element_text(size=10), axis.title=element_text(size=10))
+```
+
+&lt;img src="T6_Basic_files/figure-html/unnamed-chunk-13-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+```r
+#---------------------------- 
+# (2) Plot the OLS Residuals
+#---------------------------- 
+#---------------------------- 
+# (2) Plot the OLS Residuals
+#---------------------------- 
+ ggplot(tut6, aes(x=gdppop)) +
+   geom_bar(aes(y=resid_reg3), colour="dark green",width=0.5, fill="dark green", 
+            stat="identity") + 
+   geom_hline(yintercept=0, color="black") + 
+   geom_vline(xintercept=mean_gdppop, color="black") +
+   labs(x = "GDP, per capita", y = "OLS Residuals: Linear Model") +
+   scale_y_continuous(breaks = round(seq(-4000,4000, by = 1000),1), labels=comma) +
+   scale_x_continuous(breaks = round(seq(0,900000, by = 10000),1), labels=comma) +
+   theme_classic() +
+   theme(axis.text=element_text(size=10), axis.title=element_text(size=10))
+```
+
+&lt;img src="T6_Basic_files/figure-html/unnamed-chunk-13-2.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+* Plotted values are **more dispersed** about the fitted regression line for larger values of GDP per capita
+  + Suggests the presence of heteroskedasticity and that the variance of the error terms appears to be increasing
+with GDP per capita.
+
+* Pattern also appears when looking at a scatter plot of the OLS residuals against GDP per capita
+
+]]
+
+---
+
+.scroll-output[
+
+### White standard errors in a SLRM
+
+`$$\widehat{\text{VAR}}[b_1] = \frac{\sum(x_i-\bar{x})^2\,\hat{e}_i^2}{\left[\sum(x_i-\bar{x})^2  \right]^2}$$`
+.tiny[
+
+```r
+#-----------------------------
+# Robust (Huber-White) Standard Errors
+ #---------------------------
+# Use sandwich package
+cov_reg3 &lt;- vcovHC(reg3, type = "HC1")
+print(cov_reg3)                               # print robust variance=covariance matrix
+```
+
+```
+##              (Intercept)        gdppop
+## (Intercept) 5524.0139113 -5.381402e-01
+## gdppop        -0.5381402  6.231541e-05
+```
+
+```r
+robust_se_reg3    &lt;- sqrt(diag(cov_reg3))     # robust std errors as sq root of main diagonals      
+# Adjusted F statistic (Robust standard errors)
+wald_r &lt;- waldtest(reg3, vcov = cov_reg3)     # sample F statistic using the robust variance-cov matrix
+print(wald_r)               
+```
+
+```
+## Wald test
+## 
+## Model 1: healthpop ~ gdppop
+## Model 2: healthpop ~ 1
+##   Res.Df Df      F    Pr(&gt;F)    
+## 1     92                        
+## 2     93 -1 152.42 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+fstat2 &lt;- round(wald_r$"F"[2], digits=4)           # Sample value of F stat based on robust var-cov matrix
+pvalf2 &lt;- round(wald_r$'Pr(&gt;F)'[2], digits=4)      # p value of F test
+numdf2 &lt;- abs(wald_r$"Df"[2])                      # numerator df 
+print(fstat2)
+```
+
+```
+## [1] 152.417
+```
+
+```r
+print(pvalf2)
+```
+
+```
+## [1] 0
+```
+
+```r
+print(numdf2)
+```
+
+```
+## [1] 1
+```
+]
+
+]
+
+---
+
+### Hypothesis testing using White standard errors
+
+Using the White standard errors, test the hypothesis `\(H_{0}: \beta_{1}=0\)` against the alternative `\(H_{A}: \beta_{1} \neq 0\)`. By comparing your answer to part (b), what can you say about the sample value of the test statistic that ignores the presence of heteroskedasticity?
+
+--
+
+`$$t = \frac{b_1-0}{\text{se}(b_1)} \sim t_{92}$$`
+
+* Two-sided test, so `\(t_c = 1.9861\)` at `\(\alpha = 0.05\)`
+
+.tiny[
+
+```r
+qt(0.025, 92, lower.tail = F)
+```
+
+```
+## [1] 1.986086
+```
+]
+
+`$$t  = \frac{0.097457-0}{0.007897} = 12.3457$$`
+
+* Decision rule: Reject `\(H_0\)` when `\(t &lt; -1.9861\)` or `\(t &gt; 1.9861\)`. Since `\(t &gt; t_c\)`, reject `\(H_0\)` and conclude that the sample evidence is not consistent with the null hypothesis that `\(\beta_1=0\)`.
+
+Previously, `\(\text{se}(b_1) = 0.003867\)`
+
+---
+
+.scroll-output[
+.tiny[
+
+```r
+#----------------
+# Two-sided test H0: beta1 = 0 HA: beta1 ne 0
+# Use robust standard errors
+#------------------------------
+b1_reg3 &lt;- coef(reg3)[["gdppop"]]              # coefficient on gdppop
+print(b1_reg3)
+```
+
+```
+## [1] 0.0974573
+```
+
+```r
+seb1_reg3_r &lt;- sqrt(cov_reg3[2,2])             # robust standard error of b1
+print(seb1_reg3_r)
+```
+
+```
+## [1] 0.007894011
+```
+
+```r
+df_reg3 &lt;- df.residual(reg3)                   # degrees of freedom
+t_4 &lt;- (b1_reg3-0)/seb1_reg3_r                 # construct t test statistic
+tcr_4 &lt;- qt(1-alpha/2, df_reg3)                # calculate critical value
+pval_4 &lt;- 2*(1-pt(abs(t_4), df_reg3))          # calculate p-value for 2 sided test
+print(df_reg3)                                 # print degrees of freedom
+```
+
+```
+## [1] 92
+```
+
+```r
+print(t_4)                                     # print robust sample t test statistic
+```
+
+```
+## [1] 12.34573
+```
+
+```r
+print(tcr_4)                                   # print t critical value
+```
+
+```
+## [1] 1.986086
+```
+
+```r
+print(pval_4)                                  # print robust p value for sample t stat
+```
+
+```
+## [1] 0
+```
+
+```r
+#----------------
+coeftest(reg3, vcov = cov_reg3)   # White se
+```
+
+```
+## 
+## t test of coefficients:
+## 
+##                Estimate  Std. Error t value  Pr(&gt;|t|)    
+## (Intercept) -217.292869   74.323710 -2.9236  0.004355 ** 
+## gdppop         0.097457    0.007894 12.3457 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+coeftest(reg3)                    # Homo
+```
+
+```
+## 
+## t test of coefficients:
+## 
+##                Estimate  Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.1729e+02  1.1099e+02 -1.9577  0.05329 .  
+## gdppop       9.7457e-02  3.8675e-03 25.1991  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+]
+]
+
+---
+
+`$$\frac{\text{health}_{i}}{\text{POP}_{i}} = \beta_{0} + \beta_{1}\,\frac{\text{GDP}_{i}}{\text{POP}_{i}} + \varepsilon_{i}$$`
+
+### Generalised Least Squares
+
+Assume that the heteroskedasticity takes the form:
+
+`$$\text{VAR}\left[ \varepsilon_i \right]= \sigma^2 \frac{\text{GDP}_i}{\text{POP}_i}$$`
+
+Based upon this assumption, outline a transformation of the model (2) that will generate an homoskedastic random error.
+
+--
+
+For notational purposes define:
+
+`$$y_{i} = \frac{\text{health}_{i}}{\text{POP}_{i}}  \qquad \text{and } \qquad x_{i} = \frac{\text{GDP}_{i}}{\text{POP}_{i}}$$`
+
+so that the model (2) may be written as `\(y_{i} = \beta_{0} + \beta_{1}\,x_{i} + \varepsilon_{i}\)`. 
+
+--
+
+What is the transformation? 
+
+---
+
+The transformed model will be given by:
+
+`$$\frac{y_{i}}{\sqrt{x_{i}}} = \frac{\beta_{1}}{\sqrt{x_{i}}} + \beta_{2}\,\frac{x_{i}}{\sqrt{x_{i}}} +
+\frac{\varepsilon_{i}}{\sqrt{x_{i}}}$$`
+
+where `\(E[\varepsilon_{i}]=0\)`, `\(\text{COV}[\varepsilon_{i},\varepsilon_{j}]=0\)` and `\(\text{VAR}[\varepsilon_{i}] = \sigma^{2}\,x_{i}\)`. 
+
+--
+
+Alternatively, define the transformed model:
+
+`$$y_{i}^{*} = \beta_{0}^{*}\,x_{1i}^{*} + \beta_{1}^{*}\,x_{2i}^{*} + \varepsilon_{i}^{*}$$`
+
+where
+
+`$$y_{i}^{*} = \frac{y_{i}}{\sqrt{x_{i}}} \quad x_{1i}^{*} = \frac{1}{\sqrt{x_{i}}} \quad x_{2i}^{*} = \frac{x_{i}}{\sqrt{x_{i}}} \quad \varepsilon_{i}^{*} = \frac{\varepsilon_{i}}{\sqrt{x_{i}}}$$`
+
+Note that:
+
+`$$\text{VAR}[\varepsilon^{*}_{i}] = \text{VAR}\left[\frac{\varepsilon_{i}}{\sqrt{x_{i}}}\right] = \frac{1}{x_{i}}\,\text{VAR}[\varepsilon_{i}] = \frac{1}{x_{i}}\,[\sigma^{2}\,x_{i}] = \sigma^{2}$$`
+
+so the errors in the transformed model will be homoskedastic.
+
+---
+
+### Extension
+
+Suppose you are asked to show `\(\text{COV}\left(\varepsilon_i^*, \varepsilon_j^*  \right)=0\)` and `\(E\left(  \varepsilon_i^*\right) =0\)`.
+
+--
+
+`$$E\left(  \varepsilon_i^*\right) = E\left[ \dfrac{\varepsilon_i}{\sqrt{x_i}} \right] = x_i^{-0.5}E\left( \varepsilon_i \right)  =0$$`
+
+--
+
+`$$\begin{align*}
+     \text{COV}\left(\varepsilon_i^* , \varepsilon_j^*  \right) &amp; = E\left[  \varepsilon_i^*  \varepsilon_j^* \right] \\
+     &amp; = E \left[ \dfrac{\varepsilon_i}{\sqrt{x_i}}\dfrac{\varepsilon_j}{\sqrt{x_j}} \right] = x_i^{-0.5} x_j^{-0.5} E\left[\varepsilon_i , \varepsilon_j  \right]=0
+ \end{align*}$$`
+
+---
+
+.scroll-output[
+
+
+e) Estimate the model (2) under this assumption for the heteroskedastic error. Consider the hypothesis `\(H_0 : \beta_1 = 0\)`. Comment on the size of the sample test statistic relative to that calculated using both the OLS results and the White standard errors.
+
+.tiny[
+
+```r
+#---------------------------
+# Generalised Least Squares (GLS)
+# Heteroskedasticity: var = sigma2*gdppop
+tut6$weight1 &lt;- 1/tut6$gdppop                    # weight for GLS
+reg3_gls &lt;- lm(healthpop~ gdppop, weight=weight1, data=tut6)
+print(summary(reg3_gls))                      # print GLS results
+```
+
+```
+## 
+## Call:
+## lm(formula = healthpop ~ gdppop, data = tut6, weights = weight1)
+## 
+## Weighted Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -16.0040  -2.0938  -0.6002   1.2550  19.6376 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -72.479338  24.785278  -2.924  0.00435 ** 
+## gdppop        0.089690   0.003158  28.405  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.792 on 92 degrees of freedom
+## Multiple R-squared:  0.8976,	Adjusted R-squared:  0.8965 
+## F-statistic: 806.8 on 1 and 92 DF,  p-value: &lt; 2.2e-16
+```
+
+```r
+# Sample F statistic
+wald_gls &lt;-waldtest(reg3_gls)                 # sample F statistic for GLS model
+print(wald_gls)                               # print sample F statistic
+```
+
+```
+## Wald test
+## 
+## Model 1: healthpop ~ gdppop
+## Model 2: healthpop ~ 1
+##   Res.Df Df      F    Pr(&gt;F)    
+## 1     92                        
+## 2     93 -1 806.85 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+fstat3 &lt;- round(wald_gls$"F"[2], digits=4)           # Sample value of F stat for GLS model
+pvalf3 &lt;- round(wald_gls$'Pr(&gt;F)'[2], digits=4)      # p value of F test
+numdf3 &lt;- abs(wald_gls$"Df"[2])                      # numerator df 
+print(fstat3)
+```
+
+```
+## [1] 806.8483
+```
+
+```r
+print(pvalf3)
+```
+
+```
+## [1] 0
+```
+
+```r
+print(numdf3)
+```
+
+```
+## [1] 1
+```
+
+```r
+#--------------------------------
+# Two-sided test H0: beta1 = 0 HA: beta1 ne 0
+# Based on GLS reuslts
+#--------------------------------
+coeftest(reg3_gls)
+```
+
+```
+## 
+## t test of coefficients:
+## 
+##                Estimate  Std. Error t value  Pr(&gt;|t|)    
+## (Intercept) -72.4793380  24.7852780 -2.9243  0.004346 ** 
+## gdppop        0.0896903   0.0031575 28.4051 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+b1_reg3_gls &lt;- coef(reg3_gls)[["gdppop"]]     # GLS coefficient on gdppop
+print(b1_reg3_gls)
+```
+
+```
+## [1] 0.08969033
+```
+
+```r
+seb1_reg3_gls &lt;- sqrt(vcov(reg3_gls)[2,2])    # GLS standard error of b1
+print(seb1_reg3_gls)
+```
+
+```
+## [1] 0.003157546
+```
+
+```r
+df_reg3_gls &lt;- df.residual(reg3_gls)          # degrees of freedom
+t_5 &lt;- (b1_reg3_gls-0)/seb1_reg3_gls          # construct t test statistic
+tcr_5 &lt;- qt(1-alpha/2, df_reg3_gls)           # calculate critical value
+pval_5 &lt;- 2*(1-pt(abs(t_5), df_reg3_gls))     # calculate p-value for 2 sided test
+print(df_reg3_gls)                            # print degrees of freedom for GLS model
+```
+
+```
+## [1] 92
+```
+
+```r
+print(t_5)                                    # print sample t test statistic for GLS model
+```
+
+```
+## [1] 28.40507
+```
+
+```r
+print(tcr_5)                                  # print t critical value
+```
+
+```
+## [1] 1.986086
+```
+
+```r
+print(pval_5)                                 # print p value for sample t statistic GLS model
+```
+
+```
+## [1] 0
+```
+]
+
+
+]
+
+---
+
+.scroll-output[
+
+.regression[
+&lt;table style="text-align:center"&gt;&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="3"&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="3" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td colspan="3"&gt;Health Expenditure, per capita&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;OLS&lt;/td&gt;&lt;td&gt;Robust (White)&lt;/td&gt;&lt;td&gt;GLS&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(1)&lt;/td&gt;&lt;td&gt;(2)&lt;/td&gt;&lt;td&gt;(3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;Intercept&lt;/td&gt;&lt;td&gt;-217.2929&lt;/td&gt;&lt;td&gt;-217.2929&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;-72.4793&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(110.9920)&lt;/td&gt;&lt;td&gt;(74.3237)&lt;/td&gt;&lt;td&gt;(24.7853)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;GDP, per captia&lt;/td&gt;&lt;td&gt;0.0975&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.0975&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.0897&lt;sup&gt;***&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;(0.0039)&lt;/td&gt;&lt;td&gt;(0.0079)&lt;/td&gt;&lt;td&gt;(0.0032)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;F Statistic&lt;/td&gt;&lt;td&gt;634.9971&lt;/td&gt;&lt;td&gt;152.417&lt;/td&gt;&lt;td&gt;806.8483&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F p value&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F num df&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;F dem df&lt;/td&gt;&lt;td&gt;92&lt;/td&gt;&lt;td&gt;92&lt;/td&gt;&lt;td&gt;92&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Observations&lt;/td&gt;&lt;td&gt;94&lt;/td&gt;&lt;td&gt;94&lt;/td&gt;&lt;td&gt;94&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.8735&lt;/td&gt;&lt;td&gt;0.8735&lt;/td&gt;&lt;td&gt;0.8976&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.8721&lt;/td&gt;&lt;td&gt;0.8721&lt;/td&gt;&lt;td&gt;0.8965&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style="text-align:left"&gt;Residual Std. Error (df = 92)&lt;/td&gt;&lt;td&gt;818.0717&lt;/td&gt;&lt;td&gt;818.0717&lt;/td&gt;&lt;td&gt;3.7916&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="4" style="border-bottom: 1px solid black"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="text-align:left"&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td colspan="3" style="text-align:right"&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.01; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+]
+
+.tiny[
+
+
+```r
+stargazer(reg3, reg3, reg3_gls, type = "html", 
+          dep.var.labels=c("Health Expenditure, per capita"),
+          covariate.labels=c("Intercept", "GDP, per captia"),
+          column.labels = c("OLS", "Robust (White)", "GLS"),
+          se        = list(NULL, robust_se_reg3, NULL),
+          omit.stat = "f",
+          add.lines = list(c("F Statistic", fstat1, fstat2, fstat3),
+                           c("F p value", pvalf1, pvalf2, pvalf3),
+                           c("F num df", numdf1, numdf2, numdf3),
+                           c("F dem df", demdf1, demdf1, demdf1)),
+          digits=4, align=TRUE,
+          intercept.bottom=FALSE,
+          star.cutoffs = c(0.05, 0.01, 0.001))
+```
+
+
+
+]]
+
+---
+
+### GLS Hypothesis testing
+
+* GLS estimate of `\(\beta_1\)` is slightly smaller than that using OLS (0.0556 for OLS to 0.0515 for GLS)
+
+* GLS standard error for `\(\beta_1\)` is smaller than both the OLS and robust (White) standard errors
+
+`$$t = \frac{b_1-0}{\text{se}(b_1)} \sim t_{92}$$`
+
+* Two-sided test, so `\(t_c = 1.9861\)` at `\(\alpha = 0.05\)`
+
+.tiny[
+
+```r
+qt(0.025, 92, lower.tail = F)
+```
+
+```
+## [1] 1.986086
+```
+]
+
+`$$t  = \frac{0.089690}{0.003158} = 28.405$$`
+
+* Decision rule: Reject `\(H_0\)` when `\(t &lt; -1.9818\)` or `\(t &gt; 1.9818\)`. Since `\(t &gt; t_c\)`, reject `\(H_0\)` and conclude that the sample evidence is not consistent with the null hypothesis that `\(\beta_1=0\)`.
+
+---
+
+Summarising the test statistics:
+
+* OLS: t = 25.199
+* White: t = 12.346
+* GLS: t = 28.405
+
+The sample test statistics for the GLS estimates is larger than that using the White standard errors. 
+
+--
+
+It does not make much sense to compare the sample test statistic to those obtained using OLS since these are invalid, in the presence of heteroskedasticity.
+
+
+
+---
+class: inverse, center, middle
+
+# End
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
