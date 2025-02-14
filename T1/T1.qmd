@@ -1,0 +1,314 @@
+---
+title: "ECOM20001 Semester 1 2025    <br> 
+Tutorial 1 <br> Introduction to R"
+format:
+  html: 
+    grid:
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 300px
+      gutter-width: 1.5rem
+    title-block-banner: true  
+    css: style_rb.css  
+    theme: 
+      - Zephyr        
+    code-fold:  true         
+    fontsize: 1.1em
+    linestretch: 1.7
+    toc: true
+    toc-location: left
+    toc-expand: 4
+    number-sections: false 
+    number-depth: 4
+---
+
+## Introductions
+
+Welcome to ECOM20001 Econometrics 1.
+
+::::: {layout-ncol="2"}
+::: left
+Hopefully, you were able to meet a few of your classmates in your first tutorial. You don't have to form groups within the same tutorial for assignments but if you are after an assignment group partner(s) your tutorial could be a good place to start.
+:::
+
+::: left
+
+```         
+```
+
+![](classmates.jpg)
+:::
+:::::
+
+## Administration
+
+Dr. Aaron Barkley will go through the admin items in the first lecture; they are also contained in the Subject Guide [here](https://canvas.lms.unimelb.edu.au/courses/210026/pages/welcome-click-here-to-get-started).
+
+Tutorial participation counts 5% towards your final mark - please ensure that you attend the tutorial that you are officially enrolled in.
+
+You should also run the R code provided *before* each class and come armed with any questions you may have about the code or content of that tutorial.
+
+There are three assignments to be completed this semester. Submissions can be individual or groups of up to 3 students. If you form a group you will have to *register* your group for *each* assignment on the Subject Home Page in Canvas.
+
+## R and R Studio
+
+R is an open-source and free statistical program for doing econometrics. R-Studio is a companion program that makes working with R user friendly.
+
+Throughout ECOM20001, we will undertake tutorials and assignments in R Studio.
+
+R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS.
+
+Tutorial 1 contains information on how to install R and R Studio.
+
+If you have any problems doing this please let me know,
+
+### Tutorial Files 
+
+The R program files and CSV data files are stored under
+
+$$\text{Modules} \rightarrow \text{Tutorials}$$ on the Subject Home Page.
+
+It is recommended that you set up the following directory structure on your PC or laptop.
+
+![](dir_structure.JPG)
+
+this ensures that all the output generated using R during the tutorial will reside in the sub-folder for that tutorial.
+
+Next, download the data files (.csv) and R script file (.r) to the relevant subdirectory (e.g. Tutorial 1 for this tutorial).
+
+## Practice using R and R Studio
+
+Now that we have R and R Studio installed and the files for Tutorial 1, **tute1_tutors.csv** and **tute1.R** in the Tutorial 1 sub-folder we can start exploring how to use R.
+
+### Set the Working Directory
+
+You will notice this line in the R code provided:
+
+```{r echo=TRUE, eval=FALSE}
+setwd("/Users/byrned/Dropbox/Teaching/20001/Tutorials/Tutorial1")
+```
+
+I'd suggest that you comment this line out (each week); you can do this by placing a hash (#) at the start of the line e.g.
+
+```{r}
+# setwd("/Users/byrned/Dropbox/Teaching/20001/Tutorials/Tutorial1")  
+```
+
+notice how the text is now italicised indicating that this line will not be run by R.
+
+<div>
+
+::: {.callout-tip}
+## Tip
+
+comments are not only useful for you, but also for others reading your code. You should always use comments in the R scripts that are required for *assignments*. <br>In general, including comments in R scripts is considered "best practice".
+:::
+
+</div>
+
+Then go to the top Menu bar and select $$\text{Session} \rightarrow \text{Set Working Directory} \rightarrow \text{Choose Directory}$$
+
+![](setwd_menubar.PNG){fig-align="center"}
+
+In the Console window in RStudio (bottom left pane) type in
+
+```{r}
+getwd()
+```
+
+to make sure you are pointing to the correct directory
+
+### Load and View the R script file
+
+In the Environment pane (on the right in RStudio) under Files (in the menu bar) click on **tute1.r** . You should now see the R code in a new Scripting window (on the left in RStudio)
+
+![](rcode.JPG){fig-align="center"}
+
+### Create a dataframe
+
+the next thing we want to do is import the CSV data file into a R 'dataframe'. To do this, run the following line in the R script provided:
+
+```{r}
+data=read.csv(file="tute1_tutors.csv")
+```
+
+you should see the following in the Environment window:
+
+![](dataframe.JPG){fig-align="center"}
+
+to view the data click on the "spreadsheet" button shown above or use this command in the Script window
+
+```{r}
+print(data)
+```
+
+while this is OK for small datasets such as this, we will be using data sets with over 15,000 observations in the coming weeks.\
+Another way to check whether all the data has been created in the data frame correctly is to look at the first few rows of data and the last few rows.\
+This can be done by running
+
+```{r echo=TRUE,eval=TRUE}
+head(data,4)
+```
+
+```{r echo=TRUE,eval=TRUE}
+tail(data,3)
+```
+
+If you would like to see, for example, records for observations 4-6, you could use
+
+```{r echo=TRUE,eval=TRUE}
+data[c(4:6),]
+```
+
+###  Running the R script
+
+The idea behind providing the R script file along with the tutorial questions is to give you a chance to see what various R commands output *before* the tutorial. You should read through the comments provided in the R script file and then run the code "chink" to see what is output e.g.
+
+```{r echo=TRUE,eval=TRUE}
+# Print Hello World
+print("Hello World")
+```
+
+```{r echo=TRUE,eval=TRUE}
+# Print your second R output!
+print("R says: Hello! How are you?")
+```
+
+```{r echo=TRUE,eval=TRUE}
+# Print can also print numbers without quotes
+print(20001)
+```
+
+This way you get to know how the commands work - remember you will have to write your own code to complete assignments.
+
+### Data Types and Structures
+
+**Everything** in R is an object.
+
+R has 6 basic data types. (In addition to the five listed below, there is also raw which we will not worry about.)
+
+-   character\
+-   numeric (real or decimal)\
+-   integer\
+-   logical\
+-   complex
+
+Elements of these data types may be combined to form data structures, such as atomic vectors. When we call a vector atomic, we mean that the vector only holds data of a single data type.
+
+To get a list of variables names in our data frame use:
+
+```{r echo=TRUE,eval=TRUE}
+names(data)
+
+```
+
+To reference a variable you need to include the data frame name then **\$** and the the variable name; e.g. to print out the tutors nationalities use
+
+```{r echo=TRUE,eval=TRUE}
+print(data$nationality)
+```
+
+to find out what types of variables are in the data frame use
+
+```{r echo=TRUE,eval=TRUE}
+sapply(data,class)
+```
+
+::: {.callout-note}
+The next example shows how to change an observation and variable type. You should not have to do this as the data files provided should have the correct data structure; however as an example of one way to change an observation and variable type let's look at the variable ***fav_number***
+:::
+
+The variable *fav_number* should be numeric; because the last entry has characters
+
+(e.g. *pi*) R is treating the whole vector as character. To change this:
+
+the dimensions of the data frame are given by
+
+```{r echo=TRUE,eval=TRUE}
+dim(data)
+```
+
+so our data frame has 11 rows and 4 columns.
+
+The value we want to change (*pi*) is in the last row (11th) of the last column (4th) so we can use this code
+
+```{r echo=TRUE,eval=TRUE}
+# change this observation from pi to 3.145553
+data[11,4]=3.145553
+
+```
+
+Check out that the observation has been changed; another good way to do this (without using additional packages) is to find the string 3.145553 in the variable vector *fav_number*
+
+```{r}
+grep("3.14",data$fav_number)
+```
+
+so the observation has been changed correctly. However, if you run
+
+```{r echo=TRUE,eval=FALSE}
+sapply(data,class)
+```
+
+again the variable *fav_number* is still showing as a character variable rather than numeric! The next thing to do then is to change this vector to numeric using
+
+```{r}
+# coerce the variable to numeric
+data$fav_number <- as.numeric(data$fav_number) 
+# check that fav_number is now a numeric vector
+sapply(data,class)
+```
+
+now the variable *fav_number* is numeric with the correct observation for Paul's favourite number (*pi*).
+
+```{r}
+tail(data,1)
+```
+
+### Installing and using packages
+
+Currently, the CRAN package repository features 21953 available packages.
+
+Anyone can write an R package; and they add and delete packages almost everyday!
+
+We will try to keep the use of packages to a minimum however you do need to know how to install and call up packages required to run the R script files.
+
+Say, for example, we need to install the **stargazer** package
+
+There are two ways to do this.
+
+Using R Studio: go to the Files Window (bottom right) and click on **Packages** then enter the package names e.g. ***stargazer*** in the Packages dialog box and then hit **Install**
+
+![](install_packages.JPG){fig-align="center"}
+
+The second way is to install the packages directly using R code. In the script window enter and run
+
+```{r echo=TRUE, eval=FALSE}
+install.packages("stargazer")
+```
+
+I'd suggest using the first method.
+
+##  Summary
+
+After this tutorial you should be comfortable with
+
+-   creating a directory structure for Econ 1 on your laptop/PC
+
+-   downloading files to the correct directory for each week's tutorial
+
+-   installing R and R Studio on you laptop/PC
+
+-   using R Studio to create a R data frame
+
+-   using the R script file provided each week
+
+-   entering some basic R commands
+
+## Next Week
+
+As noted in the **Administration** section (above) you should download the **tute2.R** and **tute2_crime.csv** to your tutorial 2 sub-folder; then follow the instructions we went through today to create a data frame.
+
+Next open **tute2.pdf** and have a look at the questions; if you are able to match the relevant R code contained in the **tute2.R** file to the questions *before* the tutorial that would be great.
+
+Look forward to meeting you all again next week 👍

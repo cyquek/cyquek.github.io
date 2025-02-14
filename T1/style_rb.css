@@ -1,0 +1,19 @@
+/* Whole document: */
+body{
+font-family: Times New Roman;
+font-size: 14pt;
+}
+
+/* Rounded box styling for the title slide */
+.rounded-box {
+  background-color: #4a4aff; /* Similar to Beamer theme color */
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  font-family: Times New Roman;
+font-size: 32pt;
+}
+
+
