@@ -101,7 +101,7 @@ notice how the text is now green indicating that this line will not be run by R.
 ::: {.callout-tip}
 ## Tip
 
-comments are not only useful for you, but also for others reading your code. You should always use comments in the R scripts that are required for *assignments*. <br>In general, including comments in R scripts is considered "best practice".
+Comments are not only useful for you, but also for others reading your code. You should always use comments in the R scripts that are required for *assignments*. <br>In general, including comments in R scripts is considered "best practice".
 :::
 
 </div>
@@ -112,7 +112,7 @@ Then go to the top Menu bar and select $$\text{Session} \rightarrow \text{Set Wo
 
 In the Console window in RStudio (bottom left pane) type in
 
-```{r}
+```{r eval=FALSE}
 getwd()
 ```
 
@@ -162,7 +162,7 @@ data[c(4:6),]
 
 ###  Running the R script
 
-The idea behind providing the R script file along with the tutorial questions is to give you a chance to see what various R commands output *before* the tutorial. You should read through the comments provided in the R script file and then run the code "chink" to see what is output e.g.
+The idea behind providing the R script file along with the tutorial questions is to give you a chance to see what various R commands output *before* the tutorial. You should read through the comments provided in the R script file and then run the code "chunk" to see what is output e.g.
 
 ```{r echo=TRUE,eval=TRUE}
 # Print Hello World
