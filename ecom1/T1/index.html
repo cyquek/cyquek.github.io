@@ -274,17 +274,16 @@ Tip
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   instructor nationality fav_icrecream      fav_number
-1   David B.       Canada    Strawberry            2904
-2   David M.      England       Vanilla               7
-3   Jia Sheen    Malaysia       Vanilla               3
-4        Kael   Australia     Chocolate               7
-5        Abby     Vietnam       Vanilla               8
+1       Aaron     America    Strawberry            2904
+2         Lin       China       Vanilla               7
+3       Heidi    Malaysia       Vanilla               3
+4         Tom   Australia     Chocolate               7
+5     Longcan   Australia       Vanilla               8
 6     Richard   Australia       Vanilla               5
-7         Roy       China       Vanilla               6
-8      Sahiba       India     Chocolate               5
-9        Thai   Australia     Chocolate               7
-10      Simon       Korea       Vanilla             109
-11       Paul   Australia     Chocolate 3.14555323 (pi)</code></pre>
+7       Zheng       China       Vanilla               6
+8        Thai   Australia     Chocolate               7
+9        Chin       Korea       Vanilla             109
+10       Paul   Australia     Chocolate 3.14555323 (pi)</code></pre>
 </div>
 </div>
 <p>while this is OK for small datasets such as this, we will be using data sets with over 15,000 observations in the coming weeks.<br>
@@ -297,10 +296,10 @@ This can be done by running</p>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  instructor nationality fav_icrecream fav_number
-1  David B.       Canada    Strawberry       2904
-2  David M.      England       Vanilla          7
-3  Jia Sheen    Malaysia       Vanilla          3
-4       Kael   Australia     Chocolate          7</code></pre>
+1      Aaron     America    Strawberry       2904
+2        Lin       China       Vanilla          7
+3      Heidi    Malaysia       Vanilla          3
+4        Tom   Australia     Chocolate          7</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -310,9 +309,9 @@ This can be done by running</p>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   instructor nationality fav_icrecream      fav_number
-9        Thai   Australia     Chocolate               7
-10      Simon       Korea       Vanilla             109
-11       Paul   Australia     Chocolate 3.14555323 (pi)</code></pre>
+8        Thai   Australia     Chocolate               7
+9        Chin       Korea       Vanilla             109
+10       Paul   Australia     Chocolate 3.14555323 (pi)</code></pre>
 </div>
 </div>
 <p>If you would like to see, for example, records for observations 4-6, you could use</p>
@@ -323,8 +322,8 @@ This can be done by running</p>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  instructor nationality fav_icrecream fav_number
-4       Kael   Australia     Chocolate          7
-5       Abby     Vietnam       Vanilla          8
+4        Tom   Australia     Chocolate          7
+5    Longcan   Australia       Vanilla          8
 6    Richard   Australia       Vanilla          5</code></pre>
 </div>
 </div>
@@ -397,8 +396,8 @@ This can be done by running</p>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(data<span class="sc">$</span>nationality)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "Canada"    "England"   "Malaysia"  "Australia" "Vietnam"   "Australia"
- [7] "China"     "India"     "Australia" "Korea"     "Australia"</code></pre>
+<pre><code> [1] "America"   "China"     "Malaysia"  "Australia" "Australia" "Australia"
+ [7] "China"     "Australia" "Korea"     "Australia"</code></pre>
 </div>
 </div>
 <p>to find out what types of variables are in the data frame use</p>
@@ -434,16 +433,16 @@ Note
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 11  4</code></pre>
+<pre><code>[1] 10  4</code></pre>
 </div>
 </div>
-<p>so our data frame has 11 rows and 4 columns.</p>
-<p>The value we want to change (<em>pi</em>) is in the last row (11th) of the last column (4th) so we can use this code</p>
+<p>so our data frame has 10 rows and 4 columns.</p>
+<p>The value we want to change (<em>pi</em>) is in the last row (10th) of the last column (4th) so we can use this code</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change this observation from pi to 3.145553</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">11</span>,<span class="dv">4</span>]<span class="ot">=</span><span class="fl">3.145553</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">10</span>,<span class="dv">4</span>]<span class="ot">=</span><span class="fl">3.145553</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Check out that the observation has been changed; another good way to do this (without using additional packages) is to find the string 3.145553 in the variable vector <em>fav_number</em></p>
@@ -453,7 +452,7 @@ Note
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"3.14"</span>,data<span class="sc">$</span>fav_number)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 11</code></pre>
+<pre><code>[1] 10</code></pre>
 </div>
 </div>
 <p>so the observation has been changed correctly. However, if you run</p>
@@ -485,13 +484,13 @@ Note
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   instructor nationality fav_icrecream fav_number
-11       Paul   Australia     Chocolate   3.145553</code></pre>
+10       Paul   Australia     Chocolate   3.145553</code></pre>
 </div>
 </div>
 </section>
 <section id="installing-and-using-packages" class="level3">
 <h3 class="anchored" data-anchor-id="installing-and-using-packages">Installing and using packages</h3>
-<p>Currently, the CRAN package repository features 21953 available packages.</p>
+<p>Currently, the CRAN package repository features 20k+ available packages.</p>
 <p>Anyone can write an R package; and they add and delete packages almost everyday!</p>
 <p>We will try to keep the use of packages to a minimum however you do need to know how to install and call up packages required to run the R script files.</p>
 <p>Say, for example, we need to install the <strong>stargazer</strong> package</p>
