@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 3   Hypothesis Testing and Confidence Interval Estimation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 3 <br> Hypothesis Testing and Confidence Interval Estimation</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a>
+  <ul class="collapse">
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3">Question 3</a></li>
+  <li><a href="#question-4" id="toc-question-4" class="nav-link" data-scroll-target="#question-4">Question 4</a></li>
+  <li><a href="#question-5" id="toc-question-5" class="nav-link" data-scroll-target="#question-5">Question 5</a></li>
+  </ul></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a>
+  <ul class="collapse">
+  <li><a href="#question-1-1" id="toc-question-1-1" class="nav-link" data-scroll-target="#question-1-1">Question 1</a></li>
+  <li><a href="#question-2-1" id="toc-question-2-1" class="nav-link" data-scroll-target="#question-2-1">Question 2</a></li>
+  <li><a href="#question-3-1" id="toc-question-3-1" class="nav-link" data-scroll-target="#question-3-1">Question 3</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<p>Getting Started<br>
+Please create a Tutorial3 folder on your computer, and then go to the LMS site for ECOM 20001 and download the following files into the Tutorial3 folder:</p>
+<ul>
+<li><p><strong>tute3.R</strong></p></li>
+<li><p><strong>tute3_cps.csv</strong></p></li>
+</ul>
+<p>The first file is the R code for tutorial 3, the second file is the .csv file that contains the data set for the tutorial. The data set has the following 5 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>year</em></td>
+<td style="text-align: left;">year individual was randomly surveyed; either 1992 or 2012</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>ahe</em></td>
+<td style="text-align: left;">individual’s average hourly earnings (in real terms, 2012=100)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>bachelor</em></td>
+<td style="text-align: left;">equals 1 if individual has a bachelor degree, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>female</em></td>
+<td style="text-align: left;">equals 1 if individual is female, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>age</em></td>
+<td style="text-align: left;">age of the individual at time of survey</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the data set contains this information for 15,052 individuals in the U.S.<br>
+The reference for these data is the Current Population Survey (CPS) which is collected by the U.S. Department of Labor Statistics and provides individual-level data on the population, employment, and earnings. It is constructed from randomly sampling the U.S. population. For details, see <a href="https://www.census.gov/programs-surveys/cps.html" class="uri">https://www.census.gov/programs-surveys/cps.html</a></p>
+<p>With the R file and data downloaded into your Tutorial 3 folder, you are ready to proceed with the tutorial.</p>
+<p>The first thing to do is set the Working Directory and then load the CSV file into a data frame. Then, load the <strong><em>stargazer</em></strong> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set the working directory for the tutorial file</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># setwd("/Users/byrned/Dropbox/Teaching/20001/Tutorials/Tutorial3")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#...............</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Note I have not used the line above - use the top menu bar option for </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this under Session - Set Working Directory</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Load Stargazer package for summary statistics and regression tables</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the dataset from a comma separate value</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute3_cps.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="part-1" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
+<section id="question-1" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="question-1">Question 1</h3>
+<p>What is the sample mean and standard deviation of <em>ahe</em> (Average Hourly Earnings - AHE) for males and females?<br>
+Discuss these numbers and the figure produced in <strong><em>ahe_female.pdf</em></strong>, which reveals what is known as the gender earnings gap.</p>
+<ul>
+<li><p>Provide economic explanation(s) for your results. Recall from Tutorial 2 that an economic explanation focuses on the costs and benefits of a particular behaviour for explaining empirical patterns.</p></li>
+<li><p>In this example, what are the different economic costs and benefits among males and females in generating household earnings?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R code chunk to produce the required descriptive statistics:</p>
+<p>Mean and standard deviation of AHE for females</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># B. SUBSETS OF DATA</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppose we want to just look at ahe for females</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We can get all the observations that corresponds to females with female==1</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data$ahe[data$female==1] is ahe for females</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># data$ahe[data$female==0] is ahe for males</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean and standard deviation of earnings for females</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17.80898</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8.873493</code></pre>
+</div>
+</div>
+<p>Mean and standard deviation of AHE for males</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean and standard deviation of earnings for males</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.57906</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.5533</code></pre>
+</div>
+</div>
+<p>Gender difference in AHE (note this is extra code not in the R script provided)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## calculate the gender difference in AHE</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>male_ahe <span class="ot">&lt;-</span> <span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>fem_ahe <span class="ot">&lt;-</span> <span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>diff_ahe <span class="ot">&lt;-</span> male_ahe <span class="sc">-</span> fem_ahe</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>diff_ahe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.77008</code></pre>
+</div>
+</div>
+<ul>
+<li><p>Mean AHE for males is $20.58, and the standard deviation is $10.55.</p></li>
+<li><p>Mean AHE for females is $17.81, and the standard deviation is $8.87.</p></li>
+<li><p>The difference is $20.58-$17.81=$2.77 average earnings per hour</p></li>
+</ul>
+<p>We can also look at the plot of the probability density function.</p>
+<div class="column-left">
+<p>This gender earnings gap is clear visually in <strong>ahe_female.pdf</strong> (shown here) by the additional probability mass in the right part of the earnings distribution of males compared to females</p>
+</div>
+<div class="column-right">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">xlab=</span><span class="st">"AHE"</span>,<span class="at">main=</span><span class="st">"Gender and Earnings"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Female"</span>, <span class="st">"Male"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<p>What are potential economic explanations for this gender earnings gap?</p>
+<details>
+<summary>
+Interpretation
+</summary>
+<p>
+</p><ul>
+<li><p>The impact of differential child-rearing on long-run career earnings of females vs males.<br>
+This makes it more difficult/costly in the long-run for females to have the same average hourly earnings as males.</p></li>
+<li><p>The “glass ceiling” at work.<br>
+Among other explanations, it is often speculated that females on average tend to be less aggressive in negotiating pay with employers than males for equal jobs (all else equal). That is, it can be thought that is potentially more costly for females to negotiate than males in the workplace<br>
+</p>
+<p></p></li>
+</ul>
+</details></section>
+<section id="question-2" class="level3">
+<h3 class="anchored" data-anchor-id="question-2">Question 2</h3>
+<p>What is the sample mean and standard deviation of AHE for individuals with and without bachelor degrees?<br>
+Discuss these numbers and the figure produced in <strong>ahe_bachelor.pdf</strong>.<br>
+Provide economic explanation(s) for your results.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the Following R chunk given in the R script file:</p>
+<p>Mean and standard deviation of AHE for those with a bachelor degree</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean and standard deviation of earnings for bachelor degree</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23.34672</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.71684</code></pre>
+</div>
+</div>
+<p>Mean and standard deviation of AHE for those without a bachelor degree</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean and standard deviation of earnings for no bachelor degree</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16.04614</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.855756</code></pre>
+</div>
+</div>
+<p>Difference in AHE for those with and without degrees</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>diff_ahe_deg <span class="ot">&lt;-</span> <span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>diff_ahe_deg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.30058</code></pre>
+</div>
+</div>
+<ul>
+<li><p>The mean AHE for for people with a bachelor degree is $23.35, with a standard deviation of $10.72.</p></li>
+<li><p>for those with a bachelor degree the mean AHE is $16.05 with a standard deviation of $7.86</p></li>
+<li><p>The difference is $23.35-$16.05=$7.30 average earnings per hour</p></li>
+</ul>
+<p>The gap in the earnings distributions for people without and with bachelor degrees in <strong>ahe_bachelor.pdf</strong> (on the right) makes the gap very clear visually</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">xlab=</span><span class="st">"AHE"</span>,<span class="at">main=</span><span class="st">"Gender and Earnings"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Female"</span>, <span class="st">"Male"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">xlab=</span><span class="st">"AHE"</span>,<span class="at">main=</span><span class="st">"Education and Earnings"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"No Bachelor Degree"</span>, <span class="st">"Bachelor Degree"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>What are the potential economic explanations for this education earnings gap?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<ul>
+<li><p>Individuals with bachelor degrees are able to signal higher effort levels and worker quality to employers and able to compete for better paying jobs in the labour market.<br>
+That is, there is more expected benefit from hiring students with bachelor degrees in the labor market for better paying jobs</p></li>
+<li><p>Individuals with bachelor degrees have more intrinsic ability on average, and are able to progress more rapidly and higher up the career ladder. That is, it is intrinsically less costly for people with bachelor degrees to progress into higher paying roles in their career.</p></li>
+</ul>
+</section>
+<section id="question-3" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="question-3">Question 3</h3>
+<p>What is the 95% confidence interval (CI) for AHE? Report the results from the following tests:</p>
+<ul>
+<li>H_0: mean(AHE) = 19.5 vs H_1: mean(AHE) != 19.5 ( != means “not equal”)<br>
+</li>
+<li>H_0: mean(AHE) = 19.5 vs H_1: mean(AHE) &gt; 19.5<br>
+</li>
+<li>H_0: mean(AHE) = 19.5 vs H_1: mean(AHE) &lt; 19.5</li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Using the following code to let R conduct this 2 sided t-test,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe,<span class="at">mu=</span><span class="fl">19.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  data$ahe
+t = -1.2178, df = 15051, p-value = 0.2233
+alternative hypothesis: true mean is not equal to 19.5
+95 percent confidence interval:
+ 19.24180 19.56031
+sample estimates:
+mean of x 
+ 19.40105 </code></pre>
+</div>
+</div>
+<ul>
+<li>the t-statistic is <span class="math inline">\(-1.22\)</span>, and <span class="math inline">\(\lvert-1.22\rvert &lt; 1.96\)</span> (95% critical value for a 2-sided test), s we fail to reject the null hypothesis</li>
+</ul>
+<p>Notice that in a 2 sided test the <span class="math inline">\(\alpha\)</span> is divided by two and so is the p-value (because we have 2 tails).<br>
+</p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div></div></div>
+<p>The decision rule is to reject the null if the <span class="math inline">\(t \geq\)</span> than <span class="math inline">\(t_c\)</span> or <span class="math inline">\(t \leq\)</span> than <span class="math inline">\(-t_c\)</span> or, using the areas under the curve, add up each respective areas and reject the null if the <strong>p-value</strong> <span class="math inline">\(\leq\)</span> <span class="math inline">\(\mathbf{\alpha}\)</span>.<br>
+Both approaches yield the same result; if you get a different conclusion using the critical value approach and the p-value approach then a mistake has occurred somewhere.</p>
+<p>The next test is one-sided: H_0: mean(AHE) = 19.5 vs H_1: mean(AHE) &gt; 19.5<br>
+Note this can also be written as <span class="math inline">\(H_0: \mu_{AHE} \leq 19.5\)</span> vs <span class="math inline">\(H_1:\mu_{AHE} &gt; 19.5\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe,<span class="at">mu=</span><span class="fl">19.5</span>,<span class="at">alternative=</span> <span class="st">'greater'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  data$ahe
+t = -1.2178, df = 15051, p-value = 0.8883
+alternative hypothesis: true mean is greater than 19.5
+95 percent confidence interval:
+ 19.2674     Inf
+sample estimates:
+mean of x 
+ 19.40105 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  check by hand using the R code provided</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value for one-sided hypothesis test that the mean of ahe is greater than 19.5</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>ahe_mu<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe)                 <span class="co"># Sample mean of ahe</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>ahe_nobs<span class="ot">=</span><span class="fu">length</span>(data<span class="sc">$</span>ahe)             <span class="co"># Number of observations; length() returns the number of obs in ahe</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>ahe_sd<span class="ot">=</span><span class="fu">sd</span>(data<span class="sc">$</span>ahe)                   <span class="co"># Sample standard deviation of ahe</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>ahe_se<span class="ot">=</span>ahe_sd<span class="sc">/</span><span class="fu">sqrt</span>(ahe_nobs)          <span class="co"># Standard error of the sample mean</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>t_act<span class="ot">=</span>(ahe_mu<span class="fl">-19.5</span>)<span class="sc">/</span>ahe_se  <span class="co"># t-statistic</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>pvalue1<span class="ot">=</span><span class="dv">1</span><span class="sc">-</span><span class="fu">pnorm</span>(t_act)      <span class="co"># compute p-value</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"One-side p-value for greater than (&gt;) alternative:"</span>,pvalue1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "One-side p-value for greater than (&gt;) alternative: 0.888352707599048"</code></pre>
+</div>
+</div>
+<ul>
+<li>the t-statistic is <span class="math inline">\(-1.22\)</span>, and <span class="math inline">\(-1.22 &lt; 1.65\)</span> (95% critical value for a one-sided test for a greater than test), so fail to reject the null</li>
+</ul>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div></div></div>
+<p>Note in this case the p-value is <span class="math inline">\(\left( 1- p\,\text{value}/2 \right)\)</span> from the 2 tailed test above.<br>
+This is because the sign of the T test statistic is negative and the alternative hypothesis is that the population mean, <span class="math inline">\(\mu_{AHE}\)</span> is negative.</p>
+<p>This is also shown in the manual calculation of the p-value eg.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pvalue1<span class="ot">=</span><span class="dv">1</span><span class="sc">-</span><span class="fu">pnorm</span>(t_act)      <span class="co"># compute p-value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we have another one tailed test; H_0: mean(AHE) = 19.5 vs H_1: mean(AHE) &lt; 19.5.<br>
+Again this can be written as <span class="math inline">\(H_0: \mu_{AHE} \geq 19.5\)</span> vs.&nbsp;<span class="math inline">\(H_1: \mu_{AHE} &lt;19.5\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe,<span class="at">mu=</span><span class="fl">19.5</span>,<span class="at">alternative=</span> <span class="st">'less'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  data$ahe
+t = -1.2178, df = 15051, p-value = 0.1117
+alternative hypothesis: true mean is less than 19.5
+95 percent confidence interval:
+    -Inf 19.5347
+sample estimates:
+mean of x 
+ 19.40105 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  check by had using the R code provided</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value for one-sided hypothesis test that the mean of ahe is greater than 19.5</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>ahe_mu<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe)                 <span class="co"># Sample mean of ahe</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>ahe_nobs<span class="ot">=</span><span class="fu">length</span>(data<span class="sc">$</span>ahe)             <span class="co"># Number of observations; length() returns the number of obs in ahe</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ahe_sd<span class="ot">=</span><span class="fu">sd</span>(data<span class="sc">$</span>ahe)                   <span class="co"># Sample standard deviation of ahe</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ahe_se<span class="ot">=</span>ahe_sd<span class="sc">/</span><span class="fu">sqrt</span>(ahe_nobs)          <span class="co"># Standard error of the sample mean</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>t_act<span class="ot">=</span>(ahe_mu<span class="fl">-19.5</span>)<span class="sc">/</span>ahe_se  <span class="co"># t-statistic</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>pvalue2<span class="ot">=</span><span class="fu">pnorm</span>(t_act)        <span class="co"># compute p-value</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"One-side p-value for less than (&lt;) alternative:"</span>,pvalue2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "One-side p-value for less than (&lt;) alternative: 0.111647292400952"</code></pre>
+</div>
+</div>
+<ul>
+<li>the t-statistic is <span class="math inline">\(-1.22\)</span>, and <span class="math inline">\(-1.22 &gt; -1.65\)</span> (95% critical value for a one-sided test for a less than test), so fail to reject the null</li>
+</ul>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div></div></div>
+<p>In this case, the <span class="math inline">\(H_1: \mu_{AHE}&lt;0\)</span> and the t-statistic is negative so we can just halve the p-value from the 2 tailed test.</p>
+<p>This is reflected in the manual calculation for this test e.g.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value for one-sided hypothesis test that the mean of ahe is less than 19.5</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>t_act<span class="ot">=</span>(ahe_mu<span class="fl">-19.5</span>)<span class="sc">/</span>ahe_se  <span class="co"># t-statistic</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>pvalue2<span class="ot">=</span><span class="fu">pnorm</span>(t_act)        <span class="co"># compute p-value</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"One-side p-value for less than (&lt;) alternative:"</span>,pvalue2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "One-side p-value for less than (&lt;) alternative: 0.111647292400952"</code></pre>
+</div>
+</div>
+<p>How do the above results tie in to the estimate of the 95% confidence interval for the mean of AHE?</p>
+<p>To obtain the 95% CI for the mean of <em>ahe</em> run the following R chunk</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># B. COMPUTING CIs BY HAND, 90%, 95%, 99% CIs</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the 95% CI for AHE by hand (example)</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>ahe_mu<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe)                 <span class="co"># Sample mean of ahe</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>ahe_nobs<span class="ot">=</span><span class="fu">length</span>(data<span class="sc">$</span>ahe)             <span class="co"># Number of observations; length() returns the number of obs in ahe</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>ahe_sd<span class="ot">=</span><span class="fu">sd</span>(data<span class="sc">$</span>ahe)                   <span class="co"># Sample standard deviation of ahe</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>ahe_se<span class="ot">=</span>ahe_sd<span class="sc">/</span><span class="fu">sqrt</span>(ahe_nobs)          <span class="co"># Standard error of the sample mean</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>ahe_CI95_low<span class="ot">=</span>ahe_mu<span class="fl">-1.96</span><span class="sc">*</span>ahe_se       <span class="co"># Lower bound of the 95% CI</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>ahe_CI95_high<span class="ot">=</span>ahe_mu<span class="fl">+1.96</span><span class="sc">*</span>ahe_se      <span class="co"># Upper bound of the 95% CI</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Output CI results using 'paste' command for printing words and numbers on the same line</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI Lower Bound:"</span>,ahe_CI95_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI Lower Bound: 19.241806075171"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI Upper Bound:"</span>,ahe_CI95_high)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI Upper Bound: 19.5603017831867"</code></pre>
+</div>
+</div>
+<p>easier way</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-run t.test(data$ahe,mu=10) code to see 95% CI</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirm it is the same as what we computed by hand at [19.24,19.56]</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe,<span class="at">mu=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  data$ahe
+t = 238.79, df = 15051, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 19.24180 19.56031
+sample estimates:
+mean of x 
+ 19.40105 </code></pre>
+</div>
+</div>
+<p>Using either approach the 95% CI for <span class="math inline">\(\mu_{AHE}\)</span> is <span class="math inline">\(\left[ 19.24,19.56 \right]\)</span>.</p>
+<p>This means, in repeated samples that <span class="math inline">\(\mu_{AHE}\)</span> would fall in similarly constructed intervals 95% of the time.</p>
+<p>Since we did <strong>not</strong> reject the null hypothesis at the 5% level that <span class="math inline">\(\mu_{AHE}=19.5\)</span> this is consistent with the interval estimate (e.g.&nbsp;if the null was <strong><em>rejected</em></strong> then the CI would <span style="color:red"><strong>not</strong></span> include the value tested in the null, in this case, 19.5).</p>
+</section>
+<section id="question-4" class="level3">
+<h3 class="anchored" data-anchor-id="question-4">Question 4</h3>
+<p>Discuss the difference in mean AHE for 2012 from a two-sample T-test for the gender earnings gap among males and females without bachelor degrees:</p>
+<ul>
+<li>H_0: mean(AHE_Female_2012_NoBach) = mean(AHE_Male_2012_NoBach) vs<br>
+H_1: mean(AHE_Female_2012_NoBach) != mean(AHE_Male_2012_NoBach</li>
+</ul>
+<p>So we are testing for example:</p>
+<p>Let <span class="math inline">\(X\)</span> = the mean of AHE for females without a bachelor degree in 2012;<br>
+and <span class="math inline">\(Y\)</span> = the mean of AHE for females without a bachelor degree in 2012;<br>
+<span class="math inline">\(H_0: \mu_X=\mu_Y\)</span> vs.&nbsp;<span class="math inline">\(H_1:\mu_X \neq\mu_Y\)</span> or<br>
+<span class="math inline">\(H_0: \mu_X-\mu_Y=0\)</span> vs.&nbsp;<span class="math inline">\(H_1:\mu_X -\mu_Y \neq 0\)</span></p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following chunk provided in the R Script file provided</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Test difference of means in ahe for male and female without bachelor in 2012</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Gender wage gap in 2012 among people without bachelor degree</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.11905</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17.04357</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>diff1<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])<span class="sc">-</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"Difference in Mean Earnings in 2012 Between Males and Females without Bachelor Degrees:"</span>,diff1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Difference in Mean Earnings in 2012 Between Males and Females without Bachelor Degrees: -3.92452545214108"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>],data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  data$ahe[data$female == 1 &amp; data$year == 2012 &amp; data$bachelor == 0] and data$ahe[data$female == 0 &amp; data$year == 2012 &amp; data$bachelor == 0]
+t = -15.361, df = 3269.9, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -4.425451 -3.423600
+sample estimates:
+mean of x mean of y 
+ 13.11905  17.04357 </code></pre>
+</div>
+</div>
+<ul>
+<li><p>Difference in sample means is $13.11-$17.04=-$3.93</p></li>
+<li><p>the t-statistic for the test of difference in means is <span class="math inline">\(-15.361\)</span>, and <span class="math inline">\(\lvert-15.361 \rvert&gt;1.96\)</span> so reject the null at the 5% level that the difference of means equals 0.</p></li>
+</ul>
+<p>Does this result match up with the CI estimate?<br>
+Recall, if we don’t reject the null then the value we are testing under the null e.g.&nbsp;in this case <span class="math inline">\(H_0: \mu_X-\mu_Y=0\)</span> vs.&nbsp;<span class="math inline">\(H_1:\mu_X -\mu_Y \neq 0\)</span> then the value in the null should be in the CI.</p>
+<p>Run</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Test difference of means in ahe for male and female without bachelor in 2012</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Gender wage gap in 2012 among people without bachelor degree</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.11905</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17.04357</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>diff1<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])<span class="sc">-</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"Difference in Mean Earnings in 2012 Between Males and Females without Bachelor Degrees:"</span>,diff1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Difference in Mean Earnings in 2012 Between Males and Females without Bachelor Degrees: -3.92452545214108"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>],data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  data$ahe[data$female == 1 &amp; data$year == 2012 &amp; data$bachelor == 0] and data$ahe[data$female == 0 &amp; data$year == 2012 &amp; data$bachelor == 0]
+t = -15.361, df = 3269.9, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -4.425451 -3.423600
+sample estimates:
+mean of x mean of y 
+ 13.11905  17.04357 </code></pre>
+</div>
+</div>
+<p>Looking at these results the 95% CI is <span class="math inline">\(\left[-4.42, -3.424 \right]\)</span> which does not include <strong>0</strong> so the results of the hypothesis test and the interpretation of the CI for this <strong><em>two</em></strong> sample test line up.</p>
+</section>
+<section id="question-5" class="level3">
+<h3 class="anchored" data-anchor-id="question-5">Question 5</h3>
+<p>Now discuss the difference in mean AHE for 2012 from a two-sample t-test for the gender earnings gap among males and females with bachelor degrees:</p>
+<ul>
+<li>H0: mean(AHE_Female_2012_Bach) = mean(AHE_Male_2012_Bach) vs<br>
+H1: mean(AHE_Female_2012_Bach) != mean(AHE_Male_2012_Bach)</li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R chunk</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Test difference of means in ahe for male and female with bachelor in 2012</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Gender wage gap in 2012 among people with bachelor degree</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 21.50238</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25.29886</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>diff2<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"Difference in Mean Earnings in 2012 Between Males and Females with Bachelor Degrees:"</span>,diff2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Difference in Mean Earnings in 2012 Between Males and Females with Bachelor Degrees: -3.79648087004387"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>],data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  data$ahe[data$female == 1 &amp; data$year == 2012 &amp; data$bachelor == 1] and data$ahe[data$female == 0 &amp; data$year == 2012 &amp; data$bachelor == 1]
+t = -10.778, df = 3851.2, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -4.487066 -3.105896
+sample estimates:
+mean of x mean of y 
+ 21.50238  25.29886 </code></pre>
+</div>
+</div>
+<ul>
+<li><p>Difference in sample means is $21.50-$25.30=-$3.80</p></li>
+<li><p>t-statistic for the test of difference in means is <span class="math inline">\(-10.79\)</span>, and <span class="math inline">\(\lvert-10.79 \rvert&gt;1.96\)</span> so reject the null at the 5% level that the difference of means equals 0.</p></li>
+<li><p>the 95% CI is <span class="math inline">\(\vert -\$4.49,-\$3.39\rvert\)</span> which does not contain <span class="math inline">\(0\)</span> so matched the result of the hypothesis test.</p></li>
+</ul>
+<p>So we see our estimated gender earnings gap falls from $3.93 to $3.80 when we go from people without bachelor degrees to people with bachelor degrees.<br>
+In short education appears to make the gender earnings gap smaller.<br>
+The graph in <strong>ahe_female_bachelor_2012.pdf</strong> , see below, has a smaller gap in the means among males and females with bachelor degrees.</p>
+<p>Both the shifts in the distributions of earnings without and with bachelor degrees for males and females again highlight the importance of education for earnings.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">main=</span><span class="st">"Gender, Education, and Earnings in 2012"</span>, <span class="at">xlab=</span><span class="st">"AHE"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(data<span class="sc">$</span>ahe[data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> data<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span> <span class="sc">&amp;</span> data<span class="sc">$</span>bachelor<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Female, No Degree"</span>, <span class="st">"Male, No Degree"</span>, <span class="st">"Female Degree"</span>, <span class="st">"Male Degree"</span>), </span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"red"</span>,<span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>One possible economic explanation for this is among women with bachelors degree, there is a smaller propensity to have as many children, and hence less disruption in their careers due to children, which would mean a smaller gender earnings gap among people with bachelors degrees.</p>
+</section>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<blockquote class="blockquote">
+<p>Note: Part 2 of this tutorial contains extra practice exercises and will potentially only be partially covered in the tutorial, depending on time remaining. Solutions will be provided for students to work through and follow-up on in consultations</p>
+</blockquote>
+<section id="question-1-1" class="level3">
+<h3 class="anchored" data-anchor-id="question-1-1">Question 1</h3>
+<p>Suppose you collected AHE from a random sample n=5,000 of Victorians.<br>
+You compute the sample mean of $28.25 and sample standard deviation of $10.66.</p>
+<ol type="a">
+<li>Conduct a two-sided hypothesis test of the null that the population mean is $28 using both the p-value and critical-value approaches to hypothesis testing.<br>
+Use a 5% level of significance for your test.</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q 1 (a)</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>mean_a <span class="ot">&lt;-</span> <span class="dv">28</span>   <span class="co"># sample mean</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>mu_a <span class="ot">&lt;-</span> <span class="fl">28.25</span>  <span class="co"># population mean </span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>sd_a <span class="ot">&lt;-</span> <span class="fl">10.66</span>  <span class="co">#  standard deviation </span></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>n_a <span class="ot">&lt;-</span> <span class="dv">5000</span>    <span class="co"># sample size</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>se_a <span class="ot">&lt;-</span> sd_a<span class="sc">/</span><span class="fu">sqrt</span>(n_a)       <span class="co"># standard error</span></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>t_a <span class="ot">&lt;-</span> (mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>se_a    <span class="co"># t statistic</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>tcl_a <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.025</span>)        <span class="co"># lower critical value (-tc)</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>tcu_a <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)        <span class="co"># upper critical value (+tc)</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>tca <span class="ot">&lt;-</span> <span class="fu">c</span>(tcl_a,tcu_a)        <span class="co"># put the two tc's together  </span></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>abs_t_a <span class="ot">&lt;-</span> <span class="fu">abs</span>(t_a)          <span class="co"># absolute value of the t test statistic </span></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>pv_a <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_a)         <span class="co"># p value</span></span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="do">####  print out required results</span></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>t_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.658318</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>abs_t_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.658318</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>tca</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.959964  1.959964</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>pv_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0972533</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\lvert t_{act} \rvert=1.66&lt;1.96\)</span>, so fail to reject null at 5% level.<br>
+The p-value is computed as 2 x Phi(-|1.66|)=0.097 &gt; 0.05, which equivalently means fail to reject null at the 5% level (where Phi() is the cumulative density function <span class="math inline">\(\left( \Phi \right)\)</span> of the N(0,1) distribution).</p>
+<ol start="2" type="a">
+<li>Construct a 95% CI for the population mean</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>CI_l_b <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> (tcl_a<span class="sc">*</span>se_a)  <span class="co"># lower limit</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>CI_u_b <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> (tcu_a<span class="sc">*</span>se_a)  <span class="co"># upper limit</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>CI_b <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_l_b,CI_u_b)         <span class="co"># 95 % CI</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  print the CI (note difference to solutions will be rounding error)</span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>CI_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.70453 28.29547</code></pre>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Report the p-value for the two-sided hypothesis test of the null that the population mean is $28, as well as the 95% CI for the following sample sizes:</li>
+</ol>
+<ul>
+<li><p>n=2,500</p></li>
+<li><p>n=5,000</p></li>
+<li><p>n=10,000</p></li>
+<li><p>n=20,000</p></li>
+</ul>
+<p>Does the p-value for the test go up or down as the sample size rises?<br>
+Does the 95% CI expand or shrink as the sample size rises?<br>
+Explain the intuition for your findings regarding sample size, p-values, and confidence interval width.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>to calculate the p-values</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>t_d_1<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2500</span>))</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>t_d_2<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">5000</span>))</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>t_d_3<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10000</span>))</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>t_d_4<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">20000</span>))</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>pv_d_1 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_1)</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>pv_d_2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_2)</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>pv_d_3 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_3)</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>pv_d_4 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_4)</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>pvalues_d<span class="ot">&lt;-</span> <span class="fu">c</span>(pv_d_1,pv_d_2,pv_d_3,pv_d_4)</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>pvalues_d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2409530880 0.0972533044 0.0190160717 0.0009110825</code></pre>
+</div>
+</div>
+<p>So, we see the p-values shrink as the sample size grows.<br>
+Intuitively, as our estimate if the sample mean gets more precise with larger samples (which reduces the standard error of the man), we are increasingly able to reject even small differences between the sample mean and the hypothesized value of the sample mean.</p>
+<p>to calculate the CI’s</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>CI_l_b1 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcl_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2500</span>))  <span class="co"># lower limit</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>CI_u_b1 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcu_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2500</span>))  <span class="co"># upper limit</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>CI_b1 <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_l_b1,CI_u_b1)         <span class="co"># 95 % CI  n=2500</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>CI_l_b2 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcl_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">5000</span>))  <span class="co"># lower limit</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>CI_u_b2 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcu_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">5000</span>))  <span class="co"># upper limit</span></span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>CI_b2 <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_l_b2,CI_u_b2)         <span class="co"># 95 % CI  n=5000</span></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>CI_l_b3 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcl_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10000</span>))  <span class="co"># lower limit</span></span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>CI_u_b3 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcu_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10000</span>))  <span class="co"># upper limit</span></span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>CI_b3 <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_l_b3,CI_u_b3)         <span class="co"># 95 % CI  n=10,000</span></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>CI_l_b4 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcl_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">20000</span>))  <span class="co"># lower limit</span></span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>CI_u_b4 <span class="ot">&lt;-</span> mean_a <span class="sc">+</span> tcu_a<span class="sc">*</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">20000</span>))  <span class="co"># upper limit</span></span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>CI_b4 <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_l_b4,CI_u_b4)         <span class="co"># 95 % CI  n=20,000</span></span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  print the CI (note difference to solutions will be rounding error)</span></span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>CI_b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.58214 28.41786</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>CI_b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.70453 28.29547</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>CI_b3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.79107 28.20893</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>CI_b3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.79107 28.20893</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CI widths</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>CI_w1 <span class="ot">&lt;-</span> CI_u_b1<span class="sc">-</span>CI_l_b1</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>CI_w2 <span class="ot">&lt;-</span> CI_u_b2<span class="sc">-</span>CI_l_b2</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>CI_w3 <span class="ot">&lt;-</span> CI_u_b3<span class="sc">-</span>CI_l_b3</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>CI_w4 <span class="ot">&lt;-</span> CI_u_b4<span class="sc">-</span>CI_l_b4</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>CI_w_summ <span class="ot">&lt;-</span> <span class="fu">c</span>(CI_w1,CI_w2,CI_w3,CI_w4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The CI width shrinks as the sample size goes up for the same reason (see the output below).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print summary of CI width </span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>CI_w_summ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8357286 0.5909494 0.4178643 0.2954747</code></pre>
+</div>
+</div>
+<p>We maintain the same degree of confidence in the location of the population mean (95%) for a smaller interval because we have a more precise estimate of the sample mean with larger sample sizes.<br>
+That is, larger samples yield tighter CI’s in which the population mean is likely to be.</p>
+</section>
+<section id="question-2-1" class="level3">
+<h3 class="anchored" data-anchor-id="question-2-1">Question 2</h3>
+<p>Return to your original sample of n=5,000 Victorians with sample mean AHE of $28.25 and sample standard deviation of $10.66.<br>
+Suppose you also randomly sampled m=3,000 individuals from NSW and obtained a sample mean AHE of $30.88 and sample standard deviation of $11.22.</p>
+<ol type="a">
+<li>Construct a 95% CI for the population mean of AHE for the individuals from NSW.<br>
+Is it wider or more narrow than the 95% CI for AHE from Victoria? Explain.</li>
+</ol>
+<p>Use the following code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>n_NSW<span class="ot">=</span><span class="dv">3000</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>mean_s_NSW<span class="ot">=</span><span class="fl">30.88</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>sd_s_NSW<span class="ot">=</span><span class="fl">11.22</span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>se_NSW<span class="ot">=</span>sd_s_NSW<span class="sc">/</span><span class="fu">sqrt</span>(n_NSW)</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>t_c<span class="ot">=</span><span class="fu">qt</span>(<span class="fl">0.975</span>,n_NSW<span class="dv">-1</span>)</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>CI95_low_NSW <span class="ot">=</span> mean_s_NSW <span class="sc">-</span> t_c<span class="sc">*</span>se_NSW</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>CI95_high_NSW <span class="ot">=</span> mean_s_NSW <span class="sc">+</span> t_c<span class="sc">*</span>se_NSW</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% CI</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI Lower Bound:"</span>,CI95_low_NSW)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI Lower Bound: 30.4783427306392"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI Upper Bound:"</span>,CI95_high_NSW)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI Upper Bound: 31.2816572693608"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>width_NSW<span class="ot">=</span>CI95_high_NSW<span class="sc">-</span>CI95_low_NSW</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"CI width:"</span>,width_NSW)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CI width: 0.803314538721594"</code></pre>
+</div>
+</div>
+<p>The 95% CI for the population mean of AHE for the individuals from NSW turns out to be <span class="math inline">\([30.48,31.28]\)</span> with a width of <span class="math inline">\(0.80\)</span>.<br>
+We have a wider CI for NSW than VIC because:</p>
+<ul>
+<li><p>the sample size of VIC is larger, and</p></li>
+<li><p>the sample standard deviation of the data is smaller for VIC.</p></li>
+</ul>
+<p>This implies a more precise estimate of the sample mean for VIC and a tighter CI around it.</p>
+<ol start="2" type="a">
+<li>Conduct a two-sample t-test of the null that the difference in mean AHE for individuals in Victoria and NSW is 0.<br>
+Conduct the test using both the p-value and critical-value approaches. Use a 5% level of significance for your test.</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>n_VIC <span class="ot">=</span> <span class="dv">5000</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>n_NSW <span class="ot">=</span> <span class="dv">3000</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>mean_s_VIC <span class="ot">&lt;-</span> <span class="fl">28.25</span></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>mean_S_NSW <span class="ot">&lt;-</span> <span class="fl">30.88</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>sd_s_VIC <span class="ot">&lt;-</span> <span class="fl">10.66</span></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>sd_s_NSW  <span class="ot">&lt;-</span> <span class="fl">11.22</span></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>mean_s_diff <span class="ot">&lt;-</span>  mean_s_VIC <span class="sc">-</span> mean_s_NSW </span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>se_s_diff <span class="ot">=</span> <span class="fu">sqrt</span>(sd_s_VIC<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n_VIC <span class="sc">+</span> sd_s_NSW<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n_NSW)</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>t_s_diff <span class="ot">&lt;-</span> mean_s_diff<span class="sc">/</span>se_s_diff</span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>p_val_diff <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_s_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t_s_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -10.3404</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p_val_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.625908e-25</code></pre>
+</div>
+</div>
+<p>The two-sample t-test yields a t-statistic of <span class="math inline">\(-10.34\)</span>, with <span class="math inline">\(\lvert -10.34 \rvert &gt; 1.96\)</span> implying we reject the null that mean AHE in VIC and NSW are equal.<br>
+The p-value for the test is less than 0.000001.</p>
+<ol start="3" type="a">
+<li>Report the 95% CI for the difference in the mean AHE between Victoria and NSW.</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>The 95% CI for the difference in means is <span class="math inline">\([-3.12, -2.13]\)</span>.</p>
+</section>
+<section id="question-3-1" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-1">Question 3</h3>
+<p>Suppose you have a random sample of data with a mean m, and you conduct the following hypothesis test:</p>
+<p><span class="math inline">\(\hspace{2cm} \text{H0: m = 10  vs   H1: m != 10}\)</span> (<strong>!</strong>= means “not equal”)</p>
+<p>Having performed the test, you obtain a p-value of 0.07.</p>
+<ol type="a">
+<li>Does the 90% CI for the population mean contain <strong>m = 10</strong>? Explain.</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>The 90% CI does not contain <strong>m</strong>=10.<br>
+With a p-value of 0.07, you would reject the null hypothesis at the 10% level.<br>
+That is, m=10 does not sit within the region of null values that would not be rejected at the alpha=10% level, which is what defines a (1-alpha) = 90% confidence interval.</p>
+<ol start="2" type="a">
+<li>With the information provided in the question, can you determine if <strong>m = 8</strong> is contained in the 90% CI? Explain.</li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>You cannot determine if <strong>m=</strong>8 lies within the 90% CI with the data provided.<br>
+By knowing the p-value of 0.07, you can compute the magnitude of the t-statistic for the test from the CDF of the N(0,1) distribution.<br>
+However, even if you know the t-statistic, you will not know what is in the numerator and the denominator, which would be needed to figure out the sample mean and standard error of the mean, which in turn is required to compute a 90% CI.</p>
+<p>So here is my take on this question:</p>
+<p>We discussed today:</p>
+<ol type="i">
+<li><p>the test statistic (for one mean) is <span class="math inline">\(t = \dfrac{\bar{X} - \mu_X}{se_{\mu_X}}\)</span></p></li>
+<li><p>the p-value of the area under the curve associated with the t test statistic</p></li>
+<li><p>using the p-value approach, reject the <span class="math inline">\(H_0\)</span> if the p-value <span class="math inline">\(&lt;\)</span> the alpha</p></li>
+<li><p>we discussed that if you reject the <span class="math inline">\(H_0\)</span> then the value tested under the null (i.e.&nbsp;in this case <strong>m=</strong>8) would not lie within the relevant CI</p></li>
+</ol>
+<p>So for part (a) since the null is rejected then <span class="math inline">\(H_0: m=8\)</span> would not be in the interval (via point(iv) above).<br>
+The solution says sure we can get the value of the t test statistic which we can using R eg. (when looking at this code,have a look at the discussion we went through above in Q3 <a href="#abcde">click here</a> notice for a 2 tailed test we are splitting up the <span class="math inline">\(\alpha\)</span> and the p-value given in the question to get the values for <span class="math inline">\(\pm t_c\)</span> and <span class="math inline">\(\pm \,t\,\, \text{statistic}\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>p_value_qn_d <span class="ot">&lt;-</span><span class="fl">0.07</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>alpha_qn_d <span class="ot">&lt;-</span> <span class="fl">0.10</span></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>partd_t_tl <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(p_value_qn_d<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>partd_t_tu <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span><span class="sc">-</span> p_value_qn_d<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>partd_t <span class="ot">&lt;-</span> <span class="fu">c</span>(partd_t_tl,partd_t_tu)</span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>partd_t_tcl <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(alpha_qn_d<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>partd_t_tcu <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span><span class="sc">-</span>alpha_qn_d<span class="sc">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>partd_tc <span class="ot">&lt;-</span> <span class="fu">c</span>(partd_t_tcl,partd_t_tcu)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"Upper and Lower critical values:"</span>,partd_tc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Upper and Lower critical values: -1.64485362695147"
+[2] "Upper and Lower critical values: 1.64485362695147" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"2 sided t stat:"</span>,partd_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2 sided t stat: -1.8119106729526" "2 sided t stat: 1.8119106729526" </code></pre>
+</div>
+</div>
+<p>But, we have no idea what <span class="math inline">\(\bar{X}\)</span> nor <span class="math inline">\(se_{\mu_X}\)</span> is.</p>
+<p>In part (b) we are not told what the p-value is for the results of testing <span class="math inline">\(H_0: m=8\)</span>.<br>
+Remember the p-value of 0.07 relates to the testing <span class="math inline">\(H_0: m=10\)</span> and we are not told what the p-value of this test is. Since we still don’t know that <span class="math inline">\(\bar{X}\)</span> nor <span class="math inline">\(se_{\mu_X}\)</span> is from part (a) there is no way to construct the 95% CI in (b).</p>
+<p>Recall, the CI estimator for a parameter <span class="math inline">\(\mu_X\)</span> is <span class="math inline">\(\bar{X} \pm se_{\mu_X} \times t_c\)</span> .</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
