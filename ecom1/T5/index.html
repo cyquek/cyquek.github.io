@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 5   Single Linear Regression Testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 5 <br> Single Linear Regression Testing</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-a" id="toc-part-a" class="nav-link active" data-scroll-target="#part-a">Part A</a>
+  <ul class="collapse">
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  </ul></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c">Part C</a></li>
+  <li><a href="#earnings-and-height" id="toc-earnings-and-height" class="nav-link" data-scroll-target="#earnings-and-height">Earnings and Height</a>
+  <ul class="collapse">
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  </ul></li>
+  <li><a href="#homicides-and-police" id="toc-homicides-and-police" class="nav-link" data-scroll-target="#homicides-and-police">Homicides and Police</a>
+  <ul class="collapse">
+  <li><a href="#q1-1" id="toc-q1-1" class="nav-link" data-scroll-target="#q1-1">Q1</a></li>
+  <li><a href="#q2-1" id="toc-q2-1" class="nav-link" data-scroll-target="#q2-1">Q2</a></li>
+  <li><a href="#q3-1" id="toc-q3-1" class="nav-link" data-scroll-target="#q3-1">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="part-a" class="level2">
+<h2 class="anchored" data-anchor-id="part-a">Part A</h2>
+<section id="getting-started" class="level3">
+<h3 class="anchored" data-anchor-id="getting-started">Getting Started</h3>
+<p>Please create a Tutorial5 folder on your computer, and then go to the LMS site for ECOM20001 and download the following files into the Tutorial5 folder:</p>
+<ul>
+<li><p><strong>tute5.R</strong></p></li>
+<li><p><strong>tute5_height.csv</strong></p></li>
+<li><p><strong>tute5_crime.csv</strong></p></li>
+</ul>
+<p>The first file is the R code for tutorial 2, the second two files are the .csv files that contain two separate data sets for the tutorial.</p>
+<p>The first (micro) data set, <strong>tute2_height.csv</strong>, has the following 6 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 76%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>id</em></td>
+<td>worker identifier</td>
+</tr>
+<tr class="even">
+<td><em>earnings</em></td>
+<td>annual labour earnings in $10,000’a (in real terms, 2012=100)</td>
+</tr>
+<tr class="odd">
+<td><em>height</em></td>
+<td>height without shoes in centimeters</td>
+</tr>
+<tr class="even">
+<td><em>weight</em></td>
+<td>weight without shoes in centimeters</td>
+</tr>
+<tr class="odd">
+<td><em>male</em></td>
+<td>binary variable that equals 1 if the worker is male; 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>age</em></td>
+<td>age of the worker at the time of the survey</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the data set contains this information for n=17,870 U.S. workers.</p>
+<blockquote class="blockquote">
+<p>The first dataset is the same as the one we used in Tutorial 4, with one important difference that we discuss below. Recall this dataset is from Case, Anne and Christina Paxon (2008): “Stature and Status: Height, Ability, and Labor Market Outcomes,” Journal of Political Economy, 116(3), pp.&nbsp;499-532.</p>
+</blockquote>
+<p>The second (county-level) data set from England and Wales,2 tute5_crime.csv , has the following 3 variables:</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><em>county</em></td>
+<td>county name</td>
+</tr>
+<tr class="even">
+<td><em>police</em></td>
+<td>number of police officers in 2012</td>
+</tr>
+<tr class="odd">
+<td><em>homicides</em></td>
+<td>number of homicides in 2012</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>This dataset is from Machin, Stephen and Olivier Beck (2011): “Crime and Police Resources: The Street Crime Initiative,” Journal of the European Economic Association,9(4), pp.&nbsp;678-701.</p>
+</blockquote>
+</section>
+</section>
+<section id="part-b" class="level2">
+<h2 class="anchored" data-anchor-id="part-b">Part B</h2>
+<p>Having worked through the <strong>tute5.R</strong> code and graphs please answer the following questions.</p>
+</section>
+<section id="part-c" class="level2">
+<h2 class="anchored" data-anchor-id="part-c">Part C</h2>
+</section>
+<section id="earnings-and-height" class="level2">
+<h2 class="anchored" data-anchor-id="earnings-and-height">Earnings and Height</h2>
+<section id="q1" class="level3">
+<h3 class="anchored" data-anchor-id="q1">Q1</h3>
+<p>Estimate the following single linear regression model for worker <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[ Earnings_i = \beta_0+\beta_1\, Height_i + u_i\]</span></p>
+<p>Present the regression results, including discussion of statistical significance of the OLS regression estimate against a null of no relationship between earnings and height, for the change in earnings associated with a one-unit change in height.</p>
+<p>Also present the 95% confidence interval for the relationship between earnings and a one-unit change in height.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the required package(s)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mydata1<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute5_height.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of earnings on height</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>earn_reg1<span class="ot">=</span><span class="fu">lm</span>(earnings<span class="sc">~</span>height,<span class="at">data=</span>mydata1)  <span class="co"># run the single linear regression</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(earn_reg1)                          <span class="co"># summarize the regression results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = earnings ~ height, data = mydata1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.7972 -2.1909 -0.7923  3.4421  5.0579 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.051174   0.338050  -0.151     0.88    
+height       0.027859   0.001984  14.042   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.678 on 17868 degrees of freedom
+Multiple R-squared:  0.01092,   Adjusted R-squared:  0.01086 
+F-statistic: 197.2 on 1 and 17868 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><span class="math display">\[\begin{align*}
+    \widehat{Earnings} &amp; = \underset{(0.338)}{-0.051}+ \underset{(0.002)}{0.028} \,height \, \underset{\qquad(s.e)}{}\\
+    &amp; R^2=0.011 \qquad SER=2.678
+\end{align*}\]</span></p>
+<p>Increasing height by 1cm has a corresponding increase in annual earnings of $1 x $10000 x 0.028 = $280.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for the OLS slope coefficient on height from earn_reg1 regression</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(earn_reg1, <span class="st">'height'</span>, <span class="at">level=</span><span class="fl">0.95</span>)                          </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            2.5 %     97.5 %
+height 0.02397003 0.03174726</code></pre>
+</div>
+</div>
+<p>The 95% confidence interval (CI) is [0.024,0.032] so we fail to reject estimated relationships as small as $240 annually and as large as $320 annually at the 5% level of significance.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>the summary() command for summarising the results from a regression assumes homoskedastic standard errors. For tutorial 5, we will work with homoeskedastic standard errors as we introduce inference with single linear regression. Next week, in tutorial 6, we will extend our code to properly account for heteroskedastic standard errors. From that point on, all of our tutorials and assignments (2 &amp; 3) will work with heteroskedastic standard errors, as discussed at the end of Lecture Note 5.</p>
+</div>
+</div>
+</section>
+<section id="q2" class="level3">
+<h3 class="anchored" data-anchor-id="q2">Q2</h3>
+<p>Present the regression results, including discussion of statistical significance of the OLS regression estimate against a null of no relationship between earnings and height, for the change in earnings associated with a 100 cm change in height.<br>
+Also present the 95% confidence interval for the relationship between earnings and a 100 cm change in height.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Increasing height by 100 cm yields a 0.028 x 100 cm x $10000 = $28000 increase in annual earnings.</p>
+<p>To obtain the confidence interval (“manually” in R)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Obtain regression coefficients from earn_reg1 regression</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>beta<span class="ot">=</span><span class="fu">coef</span>(<span class="fu">summary</span>(earn_reg1))[, <span class="st">"Estimate"</span>] </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># beta[1] is OLS estimate of intercept</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># beta[2] is OLS estimate of slope</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Obtain standard errors from coefficients earn_reg1 regression</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>se<span class="ot">=</span><span class="fu">coef</span>(<span class="fu">summary</span>(earn_reg1))[, <span class="st">"Std. Error"</span>] </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># se[1] is standard error of OLS estimate of intercept</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># se[2] is standard error of OLS estimate of slope</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for increasing height by 100cm on earnings</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>CI95_low_100<span class="ot">=</span><span class="dv">100</span><span class="sc">*</span>(beta[<span class="dv">2</span>]<span class="sc">-</span><span class="fl">1.96</span><span class="sc">*</span>se[<span class="dv">2</span>])    <span class="co"># lower bound of 95% CI</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>CI95_upp_100<span class="ot">=</span><span class="dv">100</span><span class="sc">*</span>(beta[<span class="dv">2</span>]<span class="sc">+</span><span class="fl">1.96</span><span class="sc">*</span>se[<span class="dv">2</span>])    <span class="co"># upper bound of 95% CI</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI lower bound for 100cm increase in earnings is: "</span>, CI95_low_100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI lower bound for 100cm increase in earnings is:  2.39702224050023"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"95% CI upper bound for 100cm increase in earnings is: "</span>, CI95_upp_100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95% CI upper bound for 100cm increase in earnings is:  3.1747070103621"</code></pre>
+</div>
+</div>
+<p>The 95% CI in terms of annual earnings is [$24000,$32000].</p>
+</section>
+<section id="q3" class="level3">
+<h3 class="anchored" data-anchor-id="q3">Q3</h3>
+<p>Present the regression results, including discussion of statistical significance of the OLS regression estimate against a null that a 10 cm increase in height has an associated $3000 increase in annual earnings.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R code chunks:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## t-statistic and p-value for null that slope=0.03</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tstat2<span class="ot">=</span>(beta[<span class="dv">2</span>]<span class="sc">-</span><span class="fl">0.03</span>)<span class="sc">/</span>se[<span class="dv">2</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>tstat2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   height 
+-1.079371 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pval2<span class="ot">=</span><span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(tstat2))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"pvalue for 2-sided test of null that slope=0.03 is:"</span>, pval2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "pvalue for 2-sided test of null that slope=0.03 is: 0.280422212649672"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fail to reject null, p-value (pval2)=0.280</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is where it is important to take note of the units used to measure variables</p>
+</div>
+</div>
+<p>Recall that <em>earnings</em> are measured in $10,000’s and height in centimetres so the null hypothesis is <span class="math inline">\(H_0: \beta_1=0.03\)</span> vs.&nbsp;<span class="math inline">\(H_A: \beta_1 \neq0.03\)</span></p>
+<p>Using R we have</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## t-statistic and p-value for null that slope=0.03</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tstat2<span class="ot">=</span>(beta[<span class="dv">2</span>]<span class="sc">-</span><span class="fl">0.03</span>)<span class="sc">/</span>se[<span class="dv">2</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>tstat2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   height 
+-1.079371 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pval2<span class="ot">=</span><span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(tstat2))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"pvalue for 2-sided test of null that slope=0.03 is:"</span>, pval2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "pvalue for 2-sided test of null that slope=0.03 is: 0.280422212649672"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fail to reject null, p-value (pval2)=0.280</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The t-statistic for testing a null equal to $3000 increase in annual earnings for a 10cm increase in height the same as a 1cm increase in height having a $300 increase in earnings.<br>
+Hence the t-statistic for the test is t=(0.028-0.03) / 0.002 = -1.08 which has an associated p-value of 2 x Phi(-|-1.08|) = 0.280, where Phi( ) <span class="math inline">\(\left[ \Phi \right]\)</span>is the CDF of the N(0,1) distribution.<br>
+So fail to reject the null of a $3000 increase in annual earnings from a 10 cm increase in height at the 5% level of significance.</p>
+</section>
+</section>
+<section id="homicides-and-police" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="homicides-and-police">Homicides and Police</h2>
+<section id="q1-1" class="level3">
+<h3 class="anchored" data-anchor-id="q1-1">Q1</h3>
+<p>Present a scatter plot with police on the horizontal axis and homicides on the vertical axis. What relationship do you see?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mydata2<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute5_crime.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, let’s look at the sunmmary statistics for this data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Summary Statistics including the 25th and 75th percentile </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mydata2, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">summary.stat =</span> <span class="fu">c</span>(<span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"median"</span>, <span class="st">"p25"</span>,<span class="st">"p75"</span>,<span class="st">"min"</span>, <span class="st">"max"</span>),  </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">type=</span><span class="st">"text"</span>, <span class="at">title=</span><span class="st">"Descriptive Statistics"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">out=</span><span class="st">"sumstats2.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Descriptive Statistics
+====================================================================
+Statistic N    Mean    St. Dev.  Median Pctl(25) Pctl(75) Min  Max  
+--------------------------------------------------------------------
+police    43 3,065.953 4,690.181 1,968  1,342.5   3,191   809 31,435
+homicides 43  12.930    17.238     9       5       14.5    1   111  
+--------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p>So a typical county had 3066 police offices and 13 homicides in 2012. The range is considerable: the minimum number of police and homicides in a county is 809 and 1 respectively. The maximum number of police and homicides in a county is 31435 and 111 (!)<br>
+The interquartile range (75<sup>th</sup> - 25<sup>th</sup> percentiles) is quite wide for both <strong>homicides</strong> and <strong>police</strong> , 9.5 and 18948.5 respectively.</p>
+<p>Next, the scatter plot between homicides and police:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata2<span class="sc">$</span>police,mydata2<span class="sc">$</span>homicides,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Homicides and Police Force Across England and Wales Counties"</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Number of Police Officers in 2012"</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Number of Homicides in 2012"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"forestgreen"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" style="float:left;padding:10px;width:65.0%"></p>
+</div>
+</div>
+<p><brk></brk></p>
+<p>A positive relationship.<br>
+This is somewhat surprising (to me at least) because I would have initially thought more police means less crime/homicides.</p>
+</section>
+<section id="q2-1" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q2-1">Q2</h3>
+<p>Using the scatter plot, examine whether there are any potential outliers.</p>
+<ul>
+<li><p>If there are, discuss which data point(s) appear to be outliers and why they may be outliers.</p></li>
+<li><p>Produce a second scatter plot with the outliers removed.</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" style="float:left;padding:10px;width:80.0%"></p>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Additional line in the usual plot command to label London (note there are a <strong>lot</strong> of ways to label points in plots however they require installing and loading different packages; this is one way to label points using base R.</p>
+</div><div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata2<span class="sc">$</span>police,mydata2<span class="sc">$</span>homicides,</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Homicides and Police Force Across England and Wales Counties"</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Number of Police Officers in 2012"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Number of Homicides in 2012"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"forestgreen"</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x=</span><span class="dv">32000</span>,<span class="at">y=</span><span class="dv">110</span>,<span class="at">labels =</span> <span class="st">"London"</span>, <span class="at">pos=</span><span class="dv">2</span>,<span class="at">cex=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<p>“Metropolitan Police” is the data point in the top right corner of the graph with more than 100 homicides a year, which is a potential outlier. It’s a potential outlier because it corresponds to London, which is substantially larger than all other markets in the UK.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" style="float:left;padding:10px;width:80.0%"></p>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Scatter plot command without labels</p>
+</div><div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata2<span class="sc">$</span>police[mydata2<span class="sc">$</span>homicides<span class="sc">&lt;</span><span class="dv">100</span>],mydata2<span class="sc">$</span>homicides[mydata2<span class="sc">$</span>homicides<span class="sc">&lt;</span><span class="dv">100</span>],</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Homicides and Police Force Across England and Wales Counties"</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">sub=</span><span class="st">"(Outlier Removed)"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Number of Police Officers in 2012"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Number of Homicides in 2012"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"forestgreen"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<p>The second scatter plot with this potential outlier removed shows a similar positive relationship, but the scale of the axes are no longer stretched out by the potential outlier.</p>
+</section>
+<section id="q3-1" class="level3">
+<h3 class="anchored" data-anchor-id="q3-1">Q3</h3>
+<p>Estimate the following single linear regression model for county <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[
+Homicides_i = \beta_0+\beta_1\, Police_i+u_i
+\]</span></p>
+<p>Present the regression results, including discussion of statistical significance of the OLS estimate against a null of no relationship between homicides and police, for the change in homicides associated with a one-unit change in police.</p>
+<ul>
+<li><p>Also present the 95% confidence interval for the relationship between homicides and a one-unit change in police.</p></li>
+<li><p>Does the OLS regression coefficient estimate and 95% CI have an easy or difficult numerical interpretation?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Single Linear Regression of Homicides and Police with 95% Confidence Interval</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>crime_reg1<span class="ot">=</span><span class="fu">lm</span>(homicides<span class="sc">~</span>police, <span class="at">data=</span>mydata2)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(crime_reg1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = homicides ~ police, data = mydata2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.7686 -2.7359 -0.8036  2.2218 12.5901 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.9963839  0.7718408   2.587   0.0133 *  
+police      0.0035662  0.0001389  25.678   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.221 on 41 degrees of freedom
+Multiple R-squared:  0.9415,    Adjusted R-squared:   0.94 
+F-statistic: 659.4 on 1 and 41 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><span class="math display">\[\begin{align*}
+        \widehat{Homicides}_i &amp; = 1.9963 + 0.0036 \, Police_i, \qquad R^2=0.942, \, SER=4.221 \\
+            &amp;   \quad (0.7718) \quad (0.0001)
+    \end{align*}\]</span></p>
+<p>the p-value on the police coefficient less than 0.000001, so reject the null that there is no relationship between homicides and police.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(crime_reg1, <span class="st">'police'</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             2.5 %      97.5 %
+police 0.003285738 0.003846692</code></pre>
+</div>
+</div>
+<p>The 95% CI for the coefficient on police is [0.0033, 0.0038].</p>
+<p>Interpreting the results, we find that adding one more police officer (e.g.&nbsp;a one unit change) is associated with a 0.0036 increase in homicides in a county.</p>
+<p>It is a bit difficult to interpret this result since the scale of the police variable is in the 1000s so adding just one police officer seems like a minuscule change.</p>
+<p>The other issue is we have had to keep four digits past the decimal in our regression results to maintain some degree of accuracy in the results.<br>
+This is not preferred because there’s too many digits relative to what’s needed for interpreting the magnitudes of the effects of interest.<br>
+It would be preferred to have two or three digits past the decimal and no more. We need to rescale the variable to fix this issue.</p>
+</section>
+<section id="q4" class="level3">
+<h3 class="anchored" data-anchor-id="q4">Q4</h3>
+<p>Rescale police from the raw data to being in terms of 1000s of police in a county. Using this rescaled variable, present a new set of regression results, including discussion of statistical significance of the OLS regression estimate against a null of no relationship between homicides and police, for the change in homicides associated with a one-unit change in the rescaled police variable.</p>
+<ul>
+<li><p>Also present the 95% confidence interval for the relationship between homicides and a one-unit change in the re-scaled police variable.</p></li>
+<li><p>Does the OLS regression coefficient estimate and 95% CI have an easier numerical interpretation than the interpretation in Q3 above?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>First rescale the police variable:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>mydata2<span class="sc">$</span>police_1000<span class="ot">=</span>mydata2<span class="sc">$</span>police<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mydata2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    county              police        homicides       police_1000    
+ Length:43          Min.   :  809   Min.   :  1.00   Min.   : 0.809  
+ Class :character   1st Qu.: 1342   1st Qu.:  5.00   1st Qu.: 1.343  
+ Mode  :character   Median : 1968   Median :  9.00   Median : 1.968  
+                    Mean   : 3066   Mean   : 12.93   Mean   : 3.066  
+                    3rd Qu.: 3191   3rd Qu.: 14.50   3rd Qu.: 3.191  
+                    Max.   :31435   Max.   :111.00   Max.   :31.435  </code></pre>
+</div>
+</div>
+<p>Notice how with the summary statistics police_1000 now shows up with a mean of 3.066 (which means 3066 police on average) which has a similar scale as the mean of homicides in the sample of 12.93.</p>
+<p>Then re-estimate the model using the rescaled police variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>crime_reg2<span class="ot">=</span><span class="fu">lm</span>(homicides<span class="sc">~</span>police_1000, <span class="at">data=</span>mydata2)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(crime_reg2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = homicides ~ police_1000, data = mydata2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.7686 -2.7359 -0.8036  2.2218 12.5901 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   1.9964     0.7718   2.587   0.0133 *  
+police_1000   3.5662     0.1389  25.678   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.221 on 41 degrees of freedom
+Multiple R-squared:  0.9415,    Adjusted R-squared:   0.94 
+F-statistic: 659.4 on 1 and 41 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(crime_reg2, <span class="st">'police_1000'</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               2.5 %   97.5 %
+police_1000 3.285738 3.846692</code></pre>
+</div>
+</div>
+<p>The results after rescaling the police variable are:</p>
+<p><span class="math display">\[\begin{align*}
+        \widehat{Homicides}_i &amp; = 1.9963 + 3.566 \, Police_i, \qquad R^2=0.942, \, SER=4.221 \\
+            &amp;   \quad (0.7718) \quad (0.139)
+    \end{align*}\]</span></p>
+<p>The p-value on the police coefficient unchanged at less than 0.000001, so reject the null that there is no relationship between homicides and police. (note that the t-statistics and p-values are the same as those using the unscaled police variable and the R-squared also has not changed)</p>
+<p>Interpretation now is an increase of police by 1000 has an associated increase of 3.566 homicides.</p>
+<p>The 95% CI is [3.286,3.847].</p>
+<p>We no longer have to stretch the significant digits for accuracy;in fact the re-scaled results are more accurate than the unscaled ones. Much cleaner and more relevant/clearer interpretation of results given the magnitude of the police variable in the raw data.</p>
+<p>In passing, here are the results keeping only two digits after the decimal. This is even cleaner in terms of presentation and interpretation without giving up anything in terms of relevant level of accuracy:</p>
+<p><span class="math display">\[\begin{align*}
+        \widehat{Homicides}_i &amp; = 2.00 + 3.57 \, Police_i, \qquad R^2=0.94, \, SER=4.22 \\
+            &amp;  \, \quad (0.77) \quad (0.14)
+    \end{align*}\]</span></p>
+</section>
+<section id="q5" class="level3">
+<h3 class="anchored" data-anchor-id="q5">Q5</h3>
+<p>Continuing to use the rescaled police variable, present a separate set of OLS regression results that omit any potential outliers you found in Q2 above.<br>
+Present the a new set of regression results, including discussion of statistical significance of the OLS estimate against a null of no relationship between homicides and police, for the change in homicides associated with a one-unit change in the rescaled police variable.</p>
+<ul>
+<li><p>Also present the 95% confidence interval for the relationship between earnings and a one-unit change in the re-scaled police variable.</p></li>
+<li><p>Compare the results in Q4 and Q5 and comment on the impact of any outliers on the regression results. Do you think the potential outliers should be omitted from the analysis?</p></li>
+<li><p>Present a scatter plot using the homicides and rescaled police variables as well as the estimated regression lines in Q4 and Q5 to visually highlight the impact of outliers on the regression results.</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression results without potential outlier</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>crime_reg3<span class="ot">=</span><span class="fu">lm</span>(homicides[homicides<span class="sc">&lt;</span><span class="dv">100</span>]<span class="sc">~</span>police_1000[homicides<span class="sc">&lt;</span><span class="dv">100</span>], <span class="at">data=</span>mydata2)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(crime_reg3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = homicides[homicides &lt; 100] ~ police_1000[homicides &lt; 
+    100], data = mydata2)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-7.677 -2.629 -0.385  2.548  8.687 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  -0.08363    1.13803  -0.073    0.942    
+police_1000[homicides &lt; 100]  4.46721    0.40001  11.168 7.27e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.999 on 40 degrees of freedom
+Multiple R-squared:  0.7572,    Adjusted R-squared:  0.7511 
+F-statistic: 124.7 on 1 and 40 DF,  p-value: 7.272e-14</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(crime_reg3, <span class="st">'police_1000[homicides &lt; 100]'</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                2.5 %   97.5 %
+police_1000[homicides &lt; 100] 3.658761 5.275659</code></pre>
+</div>
+</div>
+<p>Estimation results using the rescaled police variable and with the outlier removed :</p>
+<p><span class="math display">\[\begin{align*}
+        \widehat{Homicides}_i &amp; = -0.08 + 4.48 \, Police_i, \qquad R^2=0.76, \, SER=4.00 \\
+            &amp;   \qquad (1.14) \quad (0.40)
+    \end{align*}\]</span></p>
+<p>There is a large increase in the coefficient on police. It increases from 3.57 to 4.48, which is a 100 x (4.48-3.57) / 3.57 = 25% increase. The coefficient has a p-value less than 0.000001 so is still statistically significant at conventional levels of significance.<br>
+Interpretation now is an increase of police by 1000 has an associated increase of 4.48 homicides.<br>
+The 95% CI is [3.66,5.28].<br>
+The large change in the slope coefficient estimate strongly suggests that the outlier should be removed.</p>
+<p>Notice in passing how the standard error on the policy coefficient rises substantially, from 0.14 to 0.40, which is a near tripling of the standard error magnitude. Why does this occur?<br>
+Because when we drop the outlier, we get a substantial decrease in the variance of our independent variable, which recall from the class notes is inversely related to the standard error of the OLS regression slope estimate.</p>
+<p>The scatter plot below highlights the differences in the results with and without the outlier using the rescaled police variable. IT clearly shows how the outlier “drags down” the OLS slope coefficient estimate.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata2<span class="sc">$</span>police_1000,mydata2<span class="sc">$</span>homicides,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Homicides and Police Force Across England and Wales Counties"</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Number of Police Officers in 2012 (1000s)"</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Number of Homicides in 2012"</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"forestgreen"</span>,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(crime_reg2, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(crime_reg3, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The following code presents both estimation results in one table using<strong><em>stargazer</em></strong>. In order to obtain this table, we have re-run the second (rescaled) model using the <strong><em>subset</em></strong> command first to create a data frame excluding Metropolitan Police then use this data frame to estimate this model. Also note, the use of the <strong>column.labels=c()</strong> option in stargazer to name both models and also the <strong>covariate.label=c()</strong> option to relabel the intercept and X variable (in this case “Intercept” and Police per 1000” respectively).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## report the results of estimating the rescaled data </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="do">## with and without the outlier in stargazer </span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="do">## to make this easier re-estimate the models </span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="do">## using a new dataframe excluding Metro police</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>mydata3 <span class="ot">&lt;-</span> <span class="fu">subset</span>(mydata2,homicides<span class="sc">&lt;</span><span class="dv">100</span> )</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="do">## then rereun crime-reg3</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>crimereg3a <span class="ot">&lt;-</span> <span class="fu">lm</span>(homicides<span class="sc">~</span>police_1000, <span class="at">data=</span>mydata3)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># then run stargazer (note a few option changes)</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(crime_reg2,crimereg3a ,<span class="at">type=</span><span class="st">"text"</span>,</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"inc. Metro"</span>, <span class="st">"exc. Metro"</span>),</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span><span class="fu">c</span>(<span class="st">"Intercept"</span>,<span class="st">"Police per 1000"</span>),</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">4</span>, <span class="at">align=</span><span class="cn">TRUE</span>,</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">intercept.bottom=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=====================================================================
+                                   Dependent variable:               
+                    -------------------------------------------------
+                                        homicides                    
+                           inc. Metro               exc. Metro       
+                              (1)                      (2)           
+---------------------------------------------------------------------
+Intercept                   1.9964**                 -0.0836         
+                            (0.7718)                 (1.1380)        
+                                                                     
+Police per 1000            3.5662***                4.4672***        
+                            (0.1389)                 (0.4000)        
+                                                                     
+---------------------------------------------------------------------
+Observations                   43                       42           
+R2                           0.9415                   0.7572         
+Adjusted R2                  0.9400                   0.7511         
+Residual Std. Error     4.2214 (df = 41)         3.9989 (df = 40)    
+F Statistic         659.3641*** (df = 1; 41) 124.7190*** (df = 1; 40)
+=====================================================================
+Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+</section>
+<section id="q6" class="level3">
+<h3 class="anchored" data-anchor-id="q6">Q6</h3>
+<p>Finally, provide an economic explanation for the relationship between the number of homicides and the number of police in a county in 2012.</p>
+<ul>
+<li><p>Did you originally find the scatter plot surprising? Why or why not?</p></li>
+<li><p>Provide an economic explanation for why you might find a positive relationship between the number of homicides and the number of police.</p></li>
+<li><p>Provide a separate economic explanation for why you might find a negative relationship between the number of homicides and the number of police.</p></li>
+<li><p>Given your economic explanations for a positive and negative relationship, can you plausibly interpret your OLS estimates of the relationship between homicides and the number of police in Q4 and Q5 above as being “causal”? That is, can you interpret the estimated relationship as the causal impact of increasing the the number of police on the number of homicides?</p></li>
+<li><p>If you think the OLS estimate of the relationship is causal explain why</p></li>
+<li><p>If you do not think the OLS estimate of the relationship is causal, briefly describe an experiment that could be used to estimate the causal impact of increasing the number of police on the crime rate in a county. What would you expect the sign of the OLS estimate of the empirical relationship between the number of homicides and number of police with such experimental data to be?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>I found the scatter plot surprising originally because I focused on the impact of police presence on homicides, which I thought would be negative not positive.</p>
+<ul>
+<li><p>But we could find a <em>positive</em> relationship if the government actively puts more police officers in areas that tend to have higher crime rates. That is, all else equal, higher crime areas would attract more police officers if governments actively targeted the police force to be in high violence/homicide areas to maximise the public benefit from having police officers around.</p></li>
+<li><p>Alternatively, it could be that putting more police officers in an area <em>reduces</em> the homicides since having more police around increases the chances of getting caught and prosecuted as a suspect, and hence increases the cost of engaging in crime, or in the extreme, homicide.</p></li>
+<li><p>The OLS estimates cannot be interpreted as causal since you cannot disentangle the “government targeting” and “homicide reducing” influences on the correlation between homicides and police officers. There may be even more explanations that we cannot disentangle out, but having just two is enough to undermine a causal interpretation of our OLS estimates in Q4 and Q5. That is, the OLS estimates reflect a mix of the“government targeting” and “homicide reducing” influences on the correlation between homicides and police officers which work in opposite directions. The fact that the correlation is positive suggests that the “government targeting” force dominates the “homicide reducing”, but there is no way to figure out how large these two forces are empirically (yet!).</p></li>
+<li><p>An experiment would see you randomly put police officers in some counties and randomly withhold police officers in other counties, and then track the relative homicide rates over time. We would expect at least a negative relationship if having police officers around were a good deterrent for homicides. So we would expect the OLS estimate from a regression using the experimental data relating homicides and police officer counts to be negative.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
