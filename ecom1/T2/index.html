@@ -209,15 +209,14 @@ Please go to the <em>tute2.R</em> file to continue with the next 2 sections of t
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set the working directory for the tutorial file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#setwd("/Users/byrned/Dropbox/Teaching/20001/Tutorials/Tutorial2")</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#..........................</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Note I have not used the line above - use the top menu bar option</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#..........................</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the dataset from a comma separate value</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute2_crime.csv"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the required pacakge(s)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#..........................</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the top menu bar option - Session &gt; Set Working Directory</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#..........................</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the dataset from a comma separate value</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute2_crime.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the required pacakge(s)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Before using the <strong>library(stargazer)</strong> command make sure that the package <strong>stargazer</strong> is installed (we went through ways to install packages in Tutorial 1).</p>
@@ -542,7 +541,7 @@ And there are potentially many other hypotheses. Later in ECOM20001, and through
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Plug in the values for <span class="math inline">\(\mu_X\)</span> in the formula above e.g.&nbsp;for <span class="math inline">\(\mu_X=2\)</span>:</p>
-<p><span class="math display">\[\mu_Y=2+2\times2=4\]</span></p>
+<p><span class="math display">\[6\mu_Y=2+2\times2=6\]</span></p>
 <p><span class="math inline">\(\sigma_Y^2\)</span> remains the same giving.</p>
 <p>For <span class="math inline">\(\mu_x=2 \Rightarrow\)</span> <span class="math inline">\(Y \thicksim N(6,4)\)</span></p>
 </div></div><p>If <span class="math inline">\(\mu_X\)</span> =2, 5, or 10, then the distribution of <span class="math inline">\(Y\)</span> is <span class="math inline">\(N(6,4)\)</span>, <span class="math inline">\(N(12,4)\)</span>, and <span class="math inline">\(N(22,4)\)</span>, respectively.</p>
@@ -760,9 +759,9 @@ Therefore, Studying and Performance are not independent.</p>
 <li><p>Derivation</p>
 <p><span class="math display">\[\begin{align}
 \sum\limits_{i=1}^{n}\left(x_i - \bar{x}   \right) &amp; =  \sum\limits_{i=1}^n {x}_1 -\sum\limits\overline{x} \\
-&amp; = \sum\limits_{i=1}^n {x}_i - n {\color{blue}{\overline{x}}} \\
-&amp; =  \sum\limits_{i=1}^n {x}_i - n \dfrac{{\color{blue}{\sum\limits_{i=1}^n {x_i}}}}{{\color{blue}{n}}} \\
-          &amp; =  \sum\limits_{i=1}^n {x}_i - \sum\limits_{i=1}^n {x}_i = 0
+&amp; = \sum\limits_{i=1}^n {x}_1 - n {\color{blue}{\overline{x}}} \\
+&amp; =  \sum\limits_{i=1}^n {x}_1 - n \dfrac{{\color{blue}{\sum\limits_{i=1}^n {x_i}}}}{{\color{blue}{n}}} \\
+          &amp; =  \sum\limits_{i=1}^n {x}_1 - \sum\limits_{i=1}^n {x}_1 = 0
   \end{align}\]</span></p>
 </li>
 </ol>
