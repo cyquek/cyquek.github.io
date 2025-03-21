@@ -697,8 +697,8 @@ Use a 5% level of significance for your test.</li>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q 1 (a)</span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>mean_a <span class="ot">&lt;-</span> <span class="dv">28</span>   <span class="co"># sample mean</span></span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>mu_a <span class="ot">&lt;-</span> <span class="fl">28.25</span>  <span class="co"># population mean </span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>mean_a <span class="ot">&lt;-</span> <span class="fl">28.25</span>   <span class="co"># sample mean</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>mu_a <span class="ot">&lt;-</span> <span class="dv">28</span>  <span class="co"># population mean </span></span>
 <span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>sd_a <span class="ot">&lt;-</span> <span class="fl">10.66</span>  <span class="co">#  standard deviation </span></span>
 <span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>n_a <span class="ot">&lt;-</span> <span class="dv">5000</span>    <span class="co"># sample size</span></span>
 <span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>se_a <span class="ot">&lt;-</span> sd_a<span class="sc">/</span><span class="fu">sqrt</span>(n_a)       <span class="co"># standard error</span></span>
@@ -711,7 +711,7 @@ Use a 5% level of significance for your test.</li>
 <span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="do">####  print out required results</span></span>
 <span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>t_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -1.658318</code></pre>
+<pre><code>[1] 1.658318</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>abs_t_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -723,7 +723,7 @@ Use a 5% level of significance for your test.</li>
 </div>
 <div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>pv_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0972533</code></pre>
+<pre><code>[1] 1.902747</code></pre>
 </div>
 </div>
 <p><span class="math inline">\(\lvert t_{act} \rvert=1.66&lt;1.96\)</span>, so fail to reject null at 5% level.<br>
@@ -739,7 +739,7 @@ The p-value is computed as 2 x Phi(-|1.66|)=0.097 &gt; 0.05, which equivalently 
 <span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  print the CI (note difference to solutions will be rounding error)</span></span>
 <span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>CI_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 27.70453 28.29547</code></pre>
+<pre><code>[1] 27.95453 28.54547</code></pre>
 </div>
 </div>
 <ol start="3" type="a">
@@ -761,10 +761,10 @@ Explain the intuition for your findings regarding sample size, p-values, and con
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>t_d_2<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">5000</span>))</span>
 <span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>t_d_3<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">10000</span>))</span>
 <span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>t_d_4<span class="ot">=</span>(mean_a<span class="sc">-</span>mu_a)<span class="sc">/</span>(sd_a<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">20000</span>))</span>
-<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>pv_d_1 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_1)</span>
-<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>pv_d_2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_2)</span>
-<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>pv_d_3 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_3)</span>
-<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>pv_d_4 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(t_d_4)</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>pv_d_1 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(t_d_1), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>pv_d_2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(t_d_2), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>pv_d_3 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(t_d_3), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>pv_d_4 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(t_d_4), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>pvalues_d<span class="ot">&lt;-</span> <span class="fu">c</span>(pv_d_1,pv_d_2,pv_d_3,pv_d_4)</span>
 <span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>pvalues_d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -790,19 +790,19 @@ Intuitively, as our estimate if the sample mean gets more precise with larger sa
 <span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  print the CI (note difference to solutions will be rounding error)</span></span>
 <span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>CI_b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 27.58214 28.41786</code></pre>
+<pre><code>[1] 27.83214 28.66786</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>CI_b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 27.70453 28.29547</code></pre>
+<pre><code>[1] 27.95453 28.54547</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>CI_b3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 27.79107 28.20893</code></pre>
+<pre><code>[1] 28.04107 28.45893</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>CI_b3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>CI_b4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 27.79107 28.20893</code></pre>
+<pre><code>[1] 28.10226 28.39774</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CI widths</span></span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>CI_w1 <span class="ot">&lt;-</span> CI_u_b1<span class="sc">-</span>CI_l_b1</span>
