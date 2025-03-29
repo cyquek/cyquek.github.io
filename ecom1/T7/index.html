@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 7   Dummy Variable Trap and Multicollinearity</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 7 <br> Dummy Variable Trap and Multicollinearity</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-a" id="toc-part-a" class="nav-link active" data-scroll-target="#part-a">Part A</a>
+  <ul class="collapse">
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  </ul></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c">Part C</a>
+  <ul class="collapse">
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
+  <li><a href="#q7" id="toc-q7" class="nav-link" data-scroll-target="#q7">Q7</a></li>
+  <li><a href="#q8" id="toc-q8" class="nav-link" data-scroll-target="#q8">Q8</a></li>
+  <li><a href="#q9" id="toc-q9" class="nav-link" data-scroll-target="#q9">Q9</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="part-a" class="level2">
+<h2 class="anchored" data-anchor-id="part-a">Part A</h2>
+<section id="getting-started" class="level3">
+<h3 class="anchored" data-anchor-id="getting-started">Getting Started</h3>
+<p>Please create a Tutorial7 folder on your computer, and then go to the LMS site for ECOM20001 and download the following files into the Tutorial7 folder:</p>
+<ul>
+<li><p><strong>tute7.R</strong></p></li>
+<li><p><strong>tute7_smoke.csv</strong></p></li>
+</ul>
+<p>The first file is the R code for tutorial 7. The second file is a micro dataset1 with the following 14 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>id</em></td>
+<td>baby identifier</td>
+</tr>
+<tr class="even">
+<td><em>birthweight</em></td>
+<td>baby’s birthweight in grams</td>
+</tr>
+<tr class="odd">
+<td><em>smoker</em></td>
+<td>equals one if the mother is a smoker, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>alcohol</em></td>
+<td>equals one if the mother drank alcohol during pregnancy, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>drinks</em></td>
+<td>number of drinks per week during pregnancy</td>
+</tr>
+<tr class="even">
+<td><em>nprevisit</em></td>
+<td>total number of prenatal visits</td>
+</tr>
+<tr class="odd">
+<td><em>tripre1</em></td>
+<td>equals one if 1st prenatal care in 1st trimester, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>tripre2</em></td>
+<td>equals one if 1st prenatal care in 2nd trimester, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>tripre3</em></td>
+<td>equals one if 1st prenatal care in 3rd trimester, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>tripre0</em></td>
+<td>equals one if no prenatal visits, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>unmarried</em></td>
+<td>equals one if the mother is unmarried, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>educ</em></td>
+<td>years of educational attainment of the mother</td>
+</tr>
+<tr class="odd">
+<td><em>age</em></td>
+<td>age of the mother</td>
+</tr>
+<tr class="even">
+<td><em>gambles</em></td>
+<td>equals one if the mother is a problem gambler, 0 otherwise</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the dataset contains this information for n=3000 babies and their mothers.</p>
+<blockquote class="blockquote">
+<p>This dataset is from Almond, D and K. Chay (2005): “The Costs of Low Birth Weight,” <em>Quarterly Journal of Economics</em>, 120(3): 1031-1083</p>
+</blockquote>
+</section>
+</section>
+<section id="part-b" class="level2">
+<h2 class="anchored" data-anchor-id="part-b">Part B</h2>
+<p>With the R file downloaded into your Tutorial7 folder, you are ready to proceed with the tutorial. Please go to the <strong>tute7.R</strong> file to continue with the tutorial.</p>
+</section>
+<section id="part-c" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="part-c">Part C</h2>
+<section id="dummy-variable-trap" class="level4">
+<h4 class="anchored" data-anchor-id="dummy-variable-trap">Dummy Variable Trap</h4>
+</section>
+<section id="q1" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q1">Q1</h3>
+<p>Construct a new variable called constant, which is defined as:</p>
+<p><span class="math display">\[
+constant = tripre0+tripre1+tripre2+tripre3
+\]</span></p>
+<p>Compute summary statistics for <em>constant</em> and explain how it relates to the constant regressor.<br>
+</p>
+<p>Also discuss whether one, and only one, of <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> equals one for each observation in the sample. If this is the case, explain why based on the definitions of <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em> and <em>tripre3</em>.</p>
+<p>The remainder of the tutorial makes extensive use of regressions. In all regressions, report heteroskedasticity-robust standard errors.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load required packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read the data into a data frame </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>mydata1<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute7_smoke.csv"</span>)   </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create the constant variable</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>constant<span class="ot">=</span>mydata1<span class="sc">$</span>tripre0<span class="sc">+</span>mydata1<span class="sc">$</span>tripre1<span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  mydata1<span class="sc">$</span>tripre2<span class="sc">+</span>mydata1<span class="sc">$</span>tripre3 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Obtain summary statistics for the variable <em>constant</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mydata1<span class="sc">$</span>constant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      1       1       1       1       1       1 </code></pre>
+</div>
+</div>
+<p>As the summary statistics for <em>constant</em> show, it is equal one for every observation. This means it is identical to the constant regressor (the intercept).</p>
+<p>The reason why this is the case is because of the definitions of <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em>:</p>
+<ul>
+<li><em>tripre1</em>: dummy for baby first had prenatal care in the 1st trimester (tripre1==1)<br>
+</li>
+<li><em>tripre2</em>: dummy for baby first had prenatal care in the 2nd trimester (tripre2==1)<br>
+</li>
+<li><em>tripre3</em>: dummy for baby first had prenatal care in the 3rd trimester (tripre3==1)<br>
+</li>
+<li><em>tripre0</em>: dummy for baby never had prenatal care in any trimesters (tripre0==1)</li>
+</ul>
+<p>So either a baby never had prenatal care, or they had prenatal care, and they had it for the first time in either 1st, 2nd, or 3rd trimester.<br>
+Having prenatal care or not having prenatal care (for the first time in one of the first three trimesters) are mutually exclusive events, and hence either <em>tripre0</em> equals one, or one and only one, of <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> equals one for every observation in the sample.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="">
+<p>Have a look at the first 8 observations for the variables <em>constant</em>, <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em> and <em>tripre3</em></p>
+</div>
+</div><div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mydata1[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">14</span>)],<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  tripre1 tripre2 tripre3 tripre0 constant
+1       0       1       0       0        1
+2       0       1       0       0        1
+3       0       1       0       0        1
+4       1       0       0       0        1
+5       1       0       0       0        1
+6       0       0       1       0        1
+7       1       0       0       0        1
+8       0       1       0       0        1</code></pre>
+</div>
+</div></div>
+</section>
+<section id="q2" class="level3">
+<h3 class="anchored" data-anchor-id="q2">Q2</h3>
+<section id="perfect-multicollinearity" class="level4">
+<h4 class="anchored" data-anchor-id="perfect-multicollinearity">Perfect Multicollinearity</h4>
+<p>Run 3 separate regressions where <em>birthweight</em> is the dependent variable, and the independent variables in each respective regression are:</p>
+<ul>
+<li><em>alcohol</em>, constant regressor<br>
+</li>
+<li><em>alcohol</em>, but no constant regressor</li>
+</ul>
+<blockquote class="blockquote">
+<p>note: not including a constant regressor is the same as having no constant in the regression. Lecture note 6 discusses the constant regressor.</p>
+</blockquote>
+<ul>
+<li><em>alcohol, constant</em> (the variable you created), but no constant regressor.</li>
+</ul>
+<p>Briefly compare the results in each of the models. If any of the results are identical, explain why.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R code chunks</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Simple linear regression of birthweight on alcohol</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>alcohol,<span class="at">data=</span>mydata1)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">&lt;-</span><span class="fu">coeftest</span>(reg1, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg1, <span class="st">"HC1"</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>se_reg1<span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Simple linear regression of birthweight on alcohol without constant</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>alcohol<span class="sc">+</span><span class="dv">0</span>,<span class="at">data=</span>mydata1)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">&lt;-</span><span class="fu">coeftest</span>(reg2, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg2, <span class="st">"HC1"</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>se_reg2<span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Simple linear regression of birthweight on alcohol without constant, and with</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="do">## "constant=tripre0+tripre1+tripre2+tripre3" variable that we created</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>constant<span class="sc">+</span>alcohol<span class="sc">+</span><span class="dv">0</span>,<span class="at">data=</span>mydata1)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">&lt;-</span><span class="fu">coeftest</span>(reg3, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg3, <span class="st">"HC1"</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>se_reg3<span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Use <strong>stargazer</strong> to report the results</p>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg1,reg2,reg3,<span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels =</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, <span class="st">"constant"</span>,<span class="st">"alcohol"</span> ),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se_reg1,se_reg2,se_reg3),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">intercept.bottom=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+birthweight
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Intercept
+</td>
+<td>
+3,385.731<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(58.187)
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+constant
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+3,385.731<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(58.187)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+alcohol
+</td>
+<td>
+-144.679<sup>***</sup>
+</td>
+<td>
+3,241.052<sup>***</sup>
+</td>
+<td>
+-144.679<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(9.049)
+</td>
+<td>
+(56.930)
+</td>
+<td>
+(9.049)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.001
+</td>
+<td>
+0.017
+</td>
+<td>
+0.970
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.001
+</td>
+<td>
+0.017
+</td>
+<td>
+0.970
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+591.926 (df = 2998)
+</td>
+<td>
+3,405.225 (df = 2999)
+</td>
+<td>
+591.926 (df = 2998)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+3.398<sup>*</sup> (df = 1; 2998)
+</td>
+<td>
+52.542<sup>***</sup> (df = 1; 2999)
+</td>
+<td>
+48,995.710<sup>***</sup> (df = 2; 2998)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="3" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+<p>The first and third regressions are identical because the constant regressor (intercept) is identical to the variable <em>constant</em>.<br>
+The second regression differs because it does not contain a constant at all.</p>
+</section>
+</section>
+<section id="q3" class="level3">
+<h3 class="anchored" data-anchor-id="q3">Q3</h3>
+<p>Attempt to run a regression where <em>birthweight</em> is the dependent variable, and with the following set of independent variables:</p>
+<ul>
+<li><em>alcohol,</em> <em>constant</em> (the variable you created), constant regressor</li>
+</ul>
+<p>Explain why this regression is subject to the dummy variable trap. What does the statistical program R do in order to avoid the dummy variable trap?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Trying to fall into dummy variable trap</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>constant<span class="sc">+</span>alcohol,<span class="at">data=</span>mydata1)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg4, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg4, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+            Estimate Std. Error  t value Pr(&gt;|t|)    
+(Intercept) 3385.731     10.903 310.5228  &lt; 2e-16 ***
+alcohol     -144.679     81.890  -1.7668  0.07737 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run simple original regression without the constant variable</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>alcohol,<span class="at">data=</span>mydata1)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg1, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg1, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+            Estimate Std. Error  t value Pr(&gt;|t|)    
+(Intercept) 3385.731     10.903 310.5228  &lt; 2e-16 ***
+alcohol     -144.679     81.890  -1.7668  0.07737 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The regression is subject to the dummy variable trap because <em>constant</em> and the constant regressor (the intercept) are perfectly collinear (as they are identical).</p>
+<p>The statistical program R drops <em>constant</em> from the regression, and keeps the constant regressor (the intercept) to avoid the dummy variable trap.</p>
+</section>
+<section id="q4" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q4">Q4</h3>
+<p>Attempt to run a regression where birthweight is the dependent variable, and with the following set of independent variables:</p>
+<ul>
+<li><em>alcohol, tripre0, tripre1, tripre2, tripre3</em>, constant regressor</li>
+</ul>
+<p>Explain why this regression is subject to the dummy variable trap.<br>
+What does R do in order to avoid the dummy variable trap?<br>
+Interpret the regression coefficients and their statistical significance for any of the <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> variables that R keeps in the regression.</p>
+<p>Interpret the coefficients relative to the base group chosen by R.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Trying to fall into dummy variable trap</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression trying to fall into the dummy variable trap again</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>alcohol<span class="sc">+</span>tripre0<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3,<span class="at">data=</span>mydata1)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg6, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg6, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 3236.624     68.594 47.1849 &lt; 2.2e-16 ***
+alcohol      -89.275     72.197 -1.2366 0.2163495    
+tripre0     -569.321    161.646 -3.5220 0.0004347 ***
+tripre1      180.603     69.515  2.5980 0.0094218 ** 
+tripre2       55.707     74.540  0.7473 0.4549127    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div><div class="">
+<p>If we have nominal variables with <strong>G</strong> categories (here <strong>G=4</strong>) and we run a regression with dummy variables for each category <em>and</em> an intercept term we run into perfect multicollinearity <span class="math inline">\(\Rightarrow\)</span> Dummy Variable Trap.</p>
+<p>R recognises this mistake and drops the last collinear variable entered in the regression, in this case <em>tripre3.</em></p>
+<p>The omitted category becomes the <em>base</em> or reference group used to interpret the parameter estimates for the other dummy variables.</p>
+</div></div>
+<p>The regression is subject to the dummy variable trap because <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> are together perfectly collinear with the constant regressor (the intercept).<br>
+In the R code provided, R drops <em>tripre3</em> to avoid the dummy variable trap.</p>
+<p>Given this, we interpret the regression coefficient estimates on <em>tripre0</em>, <em>tripre1</em>, <em>tripre2</em> and their significance as follows:</p>
+<ul>
+<li><p><em>tripre0</em>=-569.321 means RELATIVE to <em>tripre3</em>==1, babies with no prenatal care weigh 569 grams LESS than babies that had their first prenatal care in the 3rd trimester, and this difference is statistically significant at the 1% level</p></li>
+<li><p><em>tripre1</em>=180.603 means RELATIVE to <em>tripre3</em>==1, babies with their first prenatal care in the 1st trimester weigh 181 grams MORE than babies that had their first prenatal care in the 3rd trimester, and this difference is statistically significant at the 1% level</p></li>
+<li><p><em>tripre2</em>=55.707 means RELATIVE to <em>tripre3</em>==1, babies with their first prenatal care in the 2nd trimester weigh 56 grams MORE than babies that had their first prenatal care in the 3rd trimester, and this difference is NOT statistically significant at the 1% or 5% level</p></li>
+</ul>
+</section>
+<section id="q5" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q5">Q5</h3>
+<p>Run a regression where birthweight is the dependent variable, and with the following set of independent variables:</p>
+<ul>
+<li><em>alcohol, tripre1, tripre2, tripre3</em>, constant regressor</li>
+</ul>
+<p>What is the base group in this regression?<br>
+Interpret the regression coefficients and their statistical significance for the variables <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> relative to the base group.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression where we explicitly make tripre0==1 the base group</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>reg7<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>alcohol<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3,<span class="at">data=</span>mydata1)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg7, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg7, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 2667.303    146.362 18.2240 &lt; 2.2e-16 ***
+alcohol      -89.275     72.197 -1.2366 0.2163495    
+tripre1      749.925    146.853  5.1066 3.485e-07 ***
+tripre2      625.028    149.298  4.1864 2.915e-05 ***
+tripre3      569.321    161.646  3.5220 0.0004347 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div></div><p>The base group in the regression is <strong><em>tripe0</em></strong>.<br>
+Given this, we interpret the regressioncoefficient estimates on <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> and their statistical significance as follows:</p>
+<ul>
+<li><p><em>tripre1</em>=749.923 means RELATIVE to <em>tripre0</em>==1, babies with their first prenatal care in the 1st trimester weigh 749 grams MORE than babies that had no prenatal care in any trimester, and this difference is statistically significant at the 1% level</p></li>
+<li><p><em>tripre2</em>=625.028 means RELATIVE to <em>tripre0</em>==1, babies with their first prenatal care in the 2nd trimester weigh 625 grams MORE than babies that had no prenatal care in any trimester, and this difference is statistically significant at the 1% level</p></li>
+<li><p><em>tripre3</em>=569.321 means RELATIVE to <em>tripre0</em>==1, babies with their first prenatal care in the 3rd trimester weigh 569 grams MORE than babies that had no prenatal care in any trimester, and this difference is statistically significant at the 1% level</p></li>
+</ul>
+</section>
+<section id="q6" class="level3">
+<h3 class="anchored" data-anchor-id="q6">Q6</h3>
+<p>Which of the regression results in Q4 and Q5 yields a more natural (or easier) interpretation?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>There is a clearer/easier interpretation of results in question 5 with a base group of babies where <em>tripre0</em>==1 relative to question 4 than when our base group was babies where <em>tripre3</em>==1.<br>
+It makes clear that having prenatal care in any trimester has a large positive impact on <em>birthweight</em> relative to having no prenatal care in any trimester at all.</p>
+</section>
+<section id="q7" class="level3">
+<h3 class="anchored" data-anchor-id="q7">Q7</h3>
+<p>Compare the regression coefficient on <em>alcohol</em> and its statistical significance in the regression results in Q4 and Q5.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>The regression coefficients and standard errors on <em>alcohol</em> in the regressions from Q4 and Q5 are identical.</p>
+</section>
+<section id="q8" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q8">Q8</h3>
+<section id="imperfect-multicollinearity" class="level4 page-columns page-full">
+<h4 class="anchored" data-anchor-id="imperfect-multicollinearity">Imperfect Multicollinearity</h4>
+<p>Using the <strong>xtabs()</strong> function in the <strong>tute7.R</strong> code, compute a cross-tabulation of the <em>tripre0</em> and <em>gambles</em> variables.</p>
+<ul>
+<li><p>How many observations out of 3000 does <em>tripre0</em> equal one for?</p></li>
+<li><p>Among the observations where <em>tripre0</em> equals one, how many have gambles equal to one as well?</p></li>
+<li><p>Comment on how your results raise concerns of possible imperfect multicollinearity between <em>tripre0</em> and <em>gambles</em> in a regression where both are included as independent variables.</p></li>
+<li><p>Further comment on the imperfect multicollinearity concerns between <em>gambles</em> and <em>tripre1, tripre2, tripre3</em> together in a regression where all are included as independent variables.</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Cross-tabulation of tripre0 and gambles</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>tripre0<span class="sc">+</span>gambles,<span class="at">data=</span>mydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       gambles
+tripre0    0    1
+      0 2970    0
+      1    4   26</code></pre>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>We can’t use the Pearson, nor the Spearman correlation coefficient here because we are trying to measure the strength of a relationship between two binary [0,1] variables.</p>
+<p>One way to do this is using cross-tabulations.</p>
+</div></div><p>Answering each of the questions in turn as they appear in the tutorial questions.</p>
+<ul>
+<li><p>30 of 3000 observations have <em>tripre0</em> equal one.</p></li>
+<li><p>Among these variables, 26 of 30 observations have <em>gambles</em> equal one as well. The high degree of correlation between the two variables raises a concern of imperfect multicollinearity between <em>tripre0</em> and <em>gambles</em> in a regression where both are included as independent variables.</p></li>
+<li><p>Given that <em>tripre0</em>=1-<em>tripre1</em>-<em>tripre2</em>-<em>tripre3</em>, this directly implies an imperfect multicollinearity concerns between <em>gambles</em> and <em>tripre1</em>, <em>tripre2</em>, <em>tripre3</em> together in a regression where all are included as independent variables.</p></li>
+</ul>
+</section>
+</section>
+<section id="q9" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q9">Q9</h3>
+<p>Run 4 separate regressions where <em>birthweight</em> is the dependent variable, and the independent variables in each respective regression are:</p>
+<ul>
+<li><p><em>smoker, alcohol, drinks, gambles, unmarried, educ, age</em></p></li>
+<li><p><em>smoker, alcohol, drinks, gambles, nprevisit, unmarried, educ, age</em></p></li>
+<li><p><em>smoker, alcohol, drinks, nprevisit, tripre1, tripre2, tripre3, unmarried, educ, age</em></p></li>
+<li><p><em>smoker, alcohol, drinks, gambles, nprevisit, tripre1, tripre2, tripre3, unmarried, educ, age</em></p></li>
+</ul>
+<p>Based on your regression results, answer the following questions:</p>
+<ul>
+<li><p>Interpret the regression coefficient and statistical significance on <em>gambles</em> in the first regression.</p></li>
+<li><p>Interpret the regression coefficients and statistical significance on <em>gambles</em> and <em>nprevisit</em> in the second regression.</p></li>
+<li><p>Comment on the direction of omitted variable bias with the coefficient on <em>gambles</em> in the first regression based on the difference in the regression coefficient in the second regression.</p></li>
+<li><p>What is the source of this omitted variable bias?</p></li>
+<li><p>Interpret the regression coefficients and statistical significance of the coefficients on <em>nprevisit</em>, <em>tripre1</em>, <em>tripre2</em>, and <em>tripre3</em> in the third and fourth regressions.</p></li>
+<li><p>Contrast your coefficient estimates and their statistical significance for <em>tripre1</em>, <em>tripre2</em>, and <em>tripre3</em> in the third and fourth regressions.</p></li>
+<li><p>Discuss the problem that imperfect multicollinearity between <em>gambles</em> and <em>tripre1</em>, <em>tripre2</em>, and <em>tripre3</em> is creating in the fourth regression.</p></li>
+<li><p>Compare the regression coefficient estimate on <em>smoker</em> and its statistical significance across all 4 regressions.</p></li>
+<li><p>If you could only pick 1 of the 4 regression results to present to the Prime Minister, which would you pick and why?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Use these R code chunks to run the required regressions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regressions, storing and outputting the regression results using stargazer()</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># See tute7.pdf and tute7.R for a detailed introduction to stargazer() </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>gambles<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)  </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression estimates for reg1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)     <span class="co"># The next 2 lines produce heteroskedasticity-robust standard errors for reg1</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>gambles<span class="sc">+</span>nprevisit<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg2, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>gambles<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Report the results in <strong>stargazer</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg1, reg2, reg3, reg4, <span class="at">type=</span><span class="st">"text"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1, se2, se3, se4),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">2</span>, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"Baby Birthweight in Grams"</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Smoker"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks Alcohol During Pregnancy"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks per Week During Pregnancy"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Gambles"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Visits"</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 1st Trimester"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 2nd Trimester"</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 3rd Trimester"</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Unmarried"</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Years of Education"</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age"</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>),</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">out=</span><span class="st">"reg_output.txt"</span>)   </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># the last line outputs the  results to your working directory </span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># in a text file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>note I have changed the option type=“text” to type=“html” and the last line out=“reg_output.txt” to out=“reg_output.html” as the HTML output is a little easier to read; however you can use both</p>
+</blockquote>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span> (reg1, reg2, reg3, reg4, <span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1, se2, se3, se4),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">2</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"Baby Birthweight in Grams"</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Smoker"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks Alcohol During Pregnancy"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks per Week During Pregnancy"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Gambles"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Visits"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 1st Trimester"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 2nd Trimester"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 3rd Trimester"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Unmarried"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Years of Education"</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="4">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="4">
+Baby Birthweight in Grams
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Smoker
+</td>
+<td>
+-183.85<sup>***</sup>
+</td>
+<td>
+-176.89<sup>***</sup>
+</td>
+<td>
+-178.21<sup>***</sup>
+</td>
+<td>
+-178.16<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(28.07)
+</td>
+<td>
+(27.34)
+</td>
+<td>
+(27.21)
+</td>
+<td>
+(27.22)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Drinks Alcohol During Pregnancy
+</td>
+<td>
+18.55
+</td>
+<td>
+3.13
+</td>
+<td>
+3.94
+</td>
+<td>
+3.73
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(92.44)
+</td>
+<td>
+(90.13)
+</td>
+<td>
+(90.75)
+</td>
+<td>
+(90.70)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Drinks per Week During Pregnancy
+</td>
+<td>
+-8.88
+</td>
+<td>
+-1.31
+</td>
+<td>
+-3.03
+</td>
+<td>
+-3.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(17.42)
+</td>
+<td>
+(14.87)
+</td>
+<td>
+(16.43)
+</td>
+<td>
+(16.43)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Gambles
+</td>
+<td>
+-559.40<sup>***</sup>
+</td>
+<td>
+-276.52<sup>*</sup>
+</td>
+<td>
+</td>
+<td>
+19.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(151.69)
+</td>
+<td>
+(158.37)
+</td>
+<td>
+</td>
+<td>
+(365.26)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Visits
+</td>
+<td>
+</td>
+<td>
+27.88<sup>***</sup>
+</td>
+<td>
+32.09<sup>***</sup>
+</td>
+<td>
+32.09<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(3.70)
+</td>
+<td>
+(4.25)
+</td>
+<td>
+(4.25)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 1st Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+209.53
+</td>
+<td>
+226.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(148.87)
+</td>
+<td>
+(336.56)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 2nd Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+268.82<sup>*</sup>
+</td>
+<td>
+285.58
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(146.65)
+</td>
+<td>
+(335.29)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 3rd Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+385.35<sup>**</sup>
+</td>
+<td>
+402.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(155.44)
+</td>
+<td>
+(339.15)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Unmarried
+</td>
+<td>
+-229.99<sup>***</sup>
+</td>
+<td>
+-195.19<sup>***</sup>
+</td>
+<td>
+-206.86<sup>***</sup>
+</td>
+<td>
+-206.85<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(31.42)
+</td>
+<td>
+(30.96)
+</td>
+<td>
+(31.30)
+</td>
+<td>
+(31.30)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Years of Education
+</td>
+<td>
+6.89
+</td>
+<td>
+0.50
+</td>
+<td>
+1.83
+</td>
+<td>
+1.83
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(5.60)
+</td>
+<td>
+(5.53)
+</td>
+<td>
+(5.54)
+</td>
+<td>
+(5.54)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+-1.97
+</td>
+<td>
+-2.33
+</td>
+<td>
+-2.14
+</td>
+<td>
+-2.15
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.48)
+</td>
+<td>
+(2.45)
+</td>
+<td>
+(2.46)
+</td>
+<td>
+(2.46)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+3,439.84<sup>***</sup>
+</td>
+<td>
+3,213.76<sup>***</sup>
+</td>
+<td>
+2,923.52<sup>***</sup>
+</td>
+<td>
+2,906.85<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(85.74)
+</td>
+<td>
+(91.58)
+</td>
+<td>
+(159.57)
+</td>
+<td>
+(341.32)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.07
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.06
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+573.25 (df = 2992)
+</td>
+<td>
+565.42 (df = 2991)
+</td>
+<td>
+564.65 (df = 2989)
+</td>
+<td>
+564.74 (df = 2988)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+29.74<sup>***</sup> (df = 7; 2992)
+</td>
+<td>
+37.30<sup>***</sup> (df = 8; 2991)
+</td>
+<td>
+30.94<sup>***</sup> (df = 10; 2989)
+</td>
+<td>
+28.12<sup>***</sup> (df = 11; 2988)
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="4" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div></div><p>Answering each question in turn:</p>
+<ul>
+<li><p>In column (1), we find a statistically significant coefficient on <em>gambles</em> that implies babies with mothers with problem gambling are 559 grams lower in weight relative to babies with mothers without problem gambling.</p></li>
+<li><p>In column (2) the regression coefficient on <em>gambles</em> becomes statistically insignificant as it rises to -276 from -559 once <em>nprevisit</em> is included in the regression. The coefficient on <em>nprevisit</em> is significant, and is 27.88 which implies each additional prenatal visit is associated with a 28 gram higher baby weight.</p></li>
+<li><p><strong>Omitted variable bias</strong>, the large increase in the <em>gambles</em> coefficient when <em>nprevisit</em> is controlled for could arise if <em>nprevisit</em> is positively related to <em>birhtweight</em> AND if <em>nprevisit</em> is negatively related to <em>gambles</em>. This would create a downward bias in the <em>gambles</em> coefficient in column (1) when <em>nprevisit</em> is not controlled for.</p></li>
+<li><p>Only <em>nprevisit</em> and <em>tripre3</em> are statistically significant in column (3). The 32.09 coefficient implies a 32 gram increase in <em>birthweight</em> associated with each additional prenatal visit. The <em>tripre3</em> coefficient implies babies that have their first visit in the 3rd trimester are 385 grams heavier relative to babies who had no prenatal visits.</p></li>
+<li><p>The coefficients on <em>tripre1</em> and <em>tripre2</em> are similarly large at 209 and 269 gram increases in <em>birthweight,</em> but are insignificant.</p></li>
+<li><p>The coefficients on <em>nprevisit, tripre1, tripre2</em>, and <em>tripre3</em> are similar in column (4) to those in column (3). However, there is more than a doubling of the standard errors on <em>tripre1, tripre2</em>, and <em>tripre3</em> in column (4), once gambles is also included as a regressor. This is due precisely to the multicollinearity between <em>gambles</em> and t<em>ripre1, tripre2,</em> and <em>tripre3</em> together discussed above.<br>
+The collinearity makes it hard to disentangle the influence of <em>gambles</em> and <em>tripre1, tripre2</em>, and <em>tripre3</em> together on <em>birthweight,</em> resulting in large standard errors on all of the regression coefficients.</p></li>
+<li><p>The <em>smoke</em>r coefficient is statistically significant and very stable across columns (1)-(4). It ranges between -176.89 and -183.85 grams.<br>
+The collinearity issues related to <em>gambles</em> and <em>tripre1, tripre2,</em> and <em>tripre3</em> have no impact on the smoker regression coefficient estimate and standard errors.</p></li>
+<li><p><strong>Column (3)</strong> is the preferred set of results to present to the Prime Minister. The coefficients on <em>tripre1, tripre2</em>, and <em>tripre3</em> are important for policy and are much more precisely estimated in column (3) than in column (4) as the column (3) results do not suffer from multicollinearity due to the inclusion of <em>gamble</em>s as a regressor. Importantly, the columns (3) and (4) coefficients on <em>tripre1, tripre2</em>, and <em>tripre3</em> are very similar, so there is no major omitted variable bias to be concerned about in column (3) by not including gambles as a regressor.<br>
+That is, <em>gambles</em> only influences the standard errors on <em>tripre1, tripre2</em>, and <em>tripre3</em> not their regression coefficients, meaning it only creates a noisier regression through its inclusion as a regressor.</p></li>
+<li><p>As a general rule: when including additional regressors in regressions, it is critical to assess omitted variable bias on other important regressors in a regression.</p></li>
+<li><p>If the inclusion of a regressor like gambles in a regression has little impact on key regressors in a regression like <em>tripre1, tripre2</em>, and <em>tripre3,</em> but only increases their standard errors, then the best decision is to not include a regressor like <em>gambles</em> in a regression.<br>
+It does not matter in terms of omitted variable bias, and only serves to create imprecise regression coefficients on important regressors because of multicollinearity.</p></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
