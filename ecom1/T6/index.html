@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 6   Omitted Variables, Dummy Variables and Heteroskedasticity</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 6 <br> Omitted Variables, Dummy Variables and Heteroskedasticity</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-a" id="toc-part-a" class="nav-link active" data-scroll-target="#part-a">Part A</a>
+  <ul class="collapse">
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  </ul></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c">Part C</a></li>
+  <li><a href="#baby-birthweight-and-mothers-smoking" id="toc-baby-birthweight-and-mothers-smoking" class="nav-link" data-scroll-target="#baby-birthweight-and-mothers-smoking">Baby Birthweight and Mothers Smoking</a>
+  <ul class="collapse">
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="part-a" class="level2">
+<h2 class="anchored" data-anchor-id="part-a">Part A</h2>
+<section id="getting-started" class="level3">
+<h3 class="anchored" data-anchor-id="getting-started">Getting Started</h3>
+<p>Please create a Tutorial6 folder on your computer, and then go to the LMS site for ECOM20001 and download the following files into the Tutorial6 folder:</p>
+<ul>
+<li><p><strong>tute6.R</strong></p></li>
+<li><p><strong>tute6_smoke.csv</strong></p></li>
+</ul>
+<p>The first file is the R code for tutorial 6. The second file is a micro data set1 with the following 13 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>id</em></td>
+<td>baby identifier</td>
+</tr>
+<tr class="even">
+<td><em>birth weight</em></td>
+<td>baby’s birth weight in grams</td>
+</tr>
+<tr class="odd">
+<td><em>smoker</em></td>
+<td>equals one if the mother is a smoker, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>alcohol</em></td>
+<td>equals one if the mother drank alcohol during pregnancy, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>drinks</em></td>
+<td>number of drinks per week during pregnancy</td>
+</tr>
+<tr class="even">
+<td><em>nprevisit</em></td>
+<td>total number of prenatal visits</td>
+</tr>
+<tr class="odd">
+<td><em>tripre1</em></td>
+<td>equals one if 1st prenatal care in 1st trimester, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>tripre2</em></td>
+<td>equals one if 1st prenatal care in 2nd trimester, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>tripre3</em></td>
+<td>equals one if 1st prenatal care in 3rd trimester, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>tripre0</em></td>
+<td>equals one if no prenatal visits, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>unmarried</em></td>
+<td>equals one if the mother is unmarried, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>educ</em></td>
+<td>years of educational attainment of the mother</td>
+</tr>
+<tr class="odd">
+<td><em>age</em></td>
+<td>age of the mother</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the data set contains this information for n=3000 babies and their mothers.</p>
+<blockquote class="blockquote">
+<p>This dataset is from Almond, D and K. Chay (2005): “The Costs of Low Birth Weight,” <em>Quarterly Journal of Economics</em>, 120(3): 1031-1083</p>
+</blockquote>
+</section>
+</section>
+<section id="part-b" class="level2">
+<h2 class="anchored" data-anchor-id="part-b">Part B</h2>
+<p>Having worked through the <strong>tute6.R</strong> code and graphs please answer the following questions.</p>
+<style>
+div.blue { background-color:cornsilk; border-radius: 5px; padding: 20px;font-size: 18px;}
+</style>
+<div class="blue">
+<p>**REMINDER: INSTALLING PACKAGES: To run the tute6.R code, you first must install the “AER” and “stargazer” packages in R using the install.packages() command in the console window in R Studio. Specifically, enter the following two lines into the console:</p>
+<ul>
+<li><p>install.packages(“AER”)</p></li>
+<li><p>install.packages(“stargazer”)</p></li>
+</ul>
+<p>The “AER” package standards for “Applied Econometrics in R” and it is used to for computing heteroskedasticity-robust standard errors.</p>
+<p>The “stargazer” package is used for creating nice regression output tables in R.</p>
+<p>See the top of the tute6.R code for additional instructions on installing R packages and further descriptions of these packages and what they are used for. We also installed these in tute1.R.</p>
+<p>Both packages are required for doing the remaining tutorials in ECOM20001, as well as assignments 2 and 3.</p>
+</div>
+</section>
+<section id="part-c" class="level2">
+<h2 class="anchored" data-anchor-id="part-c">Part C</h2>
+</section>
+<section id="baby-birthweight-and-mothers-smoking" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="baby-birthweight-and-mothers-smoking">Baby Birthweight and Mothers Smoking</h2>
+<section id="q1" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q1">Q1</h3>
+<p>Compute sample means and standard deviations for birth weight, smoker, alcohol, nprevisit, unmarried, educ, and age. What does a typical observation look like in the sample?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load Stargazer package for summary statistics and regression tables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Load Applied Econometrics package (see above for installing AER package)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#**********************************************************************************************</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. LOAD DATA</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Load data set on income and height</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>mydata1<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute6_smoke.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Summary Statistics</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mydata1,  </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">summary.stat =</span> <span class="fu">c</span>(<span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>),  </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">type=</span><span class="st">"text"</span>, <span class="at">title=</span><span class="st">"Descriptive "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Descriptive
+======================================================
+Statistic     N     Mean    St. Dev. Median  Min  Max 
+------------------------------------------------------
+id          3,000 1,500.500 866.170  1,500.5  1  3,000
+birthweight 3,000 3,382.934 592.163   3,420  425 5,755
+smoker      3,000   0.194    0.395      0     0    1  
+alcohol     3,000   0.019    0.138      0     0    1  
+drinks      3,000   0.058    0.688      0     0   21  
+nprevisit   3,000  10.992    3.672     12     0   35  
+tripre1     3,000   0.804    0.397      1     0    1  
+tripre2     3,000   0.153    0.360      0     0    1  
+tripre3     3,000   0.033    0.179      0     0    1  
+tripre0     3,000   0.010    0.100      0     0    1  
+unmarried   3,000   0.227    0.419      0     0    1  
+educ        3,000  12.907    2.167     12     0   17  
+age         3,000  26.889    5.362     27    14   44  
+------------------------------------------------------</code></pre>
+</div>
+</div>
+<p>Focusing on sample means, a typical observation is a baby that weighs 3383 with a mother who is a smoker 19% of the time, drinks alcohol 2% of the time, has 11 prenatal visits, is unmarried 23% of the time, has 12.9 years of educational attainment, and is 27 years old.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="">
+<p>Note that <em>smoker</em>, <em>alcohol</em>, <em>tripre1</em> , <em>tripre2</em>, <em>tripre3</em> and <em>unmarried</em> are <strong>dummy</strong> variables taking the values [0,1] when interpreting the sample statistics for these variables.</p>
+</div>
+</div></div></section>
+<section id="q2" class="level3">
+<h3 class="anchored" data-anchor-id="q2">Q2</h3>
+<p>Plot the probability density for baby birth weight among smoking and nonsmoking mothers. Also conduct a two-sample t-test for the difference in the mean of birth weight among babies with smoking and non-smoking mothers.<br>
+Briefly interpret your results.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>]), </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">main=</span><span class="st">"Birthweight Among Smoking and Non-Smoking Mothers"</span>, <span class="at">xlab=</span><span class="st">"Birthweight"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Smoker"</span>, <span class="st">"Non-Smoker"</span>), </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" style="width:80.0%"></p>
+</div>
+</div>
+<p>The difference in probability densities highlights a leftward shift in the distribution of birth weight for mothers who smoke.</p>
+<p>From the 2 sample t-tests, the difference in mean of birth weight among babies with smoking and non-smoking mothers is -253 grams, a difference that is statistically significant with a p-value less than 0.0001, and with a 95% CI [-306,-200].</p>
+<p>It’s a large difference: the difference is 100 x 253/3383=7.5% of the sample mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test of difference in birth weight for smokers and non-smokers</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3178.832</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3432.06</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -253.2284</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>],mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  mydata1$birthweight[mydata1$smoker == 1] and mydata1$birthweight[mydata1$smoker == 0]
+t = -9.4414, df = 887.15, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -305.8685 -200.5882
+sample estimates:
+mean of x mean of y 
+ 3178.832  3432.060 </code></pre>
+</div>
+</div>
+</section>
+<section id="q3" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q3">Q3</h3>
+<p>Evaluate the potential for omitted variable bias in a single linear regression of <em>birth weight</em> on <em>smoker</em>.</p>
+<ul>
+<li><p>Alcohol: Plot the probability density for baby birth weight among mothers who drink alcohol and who do not drink alcohol during their pregnancy. Also conduct a two-sample t-test for the difference in the mean of alcohol among babies with smoking and non-smoking mothers.</p></li>
+<li><p>Pre-Natal Care: Plot the probability density for baby birth weight among mothers who had prenatal care and who did not have prenatal care during the pregnancy. Also conduct a two-sample t-test for the difference in the mean of tripre0 among babies with smoking and non-smoking mothers.</p></li>
+<li><p>Education: Plot a scatter plot with years of educational attainment of the mother on the horizontal axis, and birth weight on the vertical axis. Also conduct a two-sample t-test for the difference in the mean of educ among babies with smoking and non-smoking mothers.</p></li>
+</ul>
+<p>Based on your results, explain the direction of the bias of the OLS estimate of the coefficient on smoker in the following single linear regression:</p>
+<p><span class="math display">\[
+birthweight_i = \beta_0+\beta_1\, smoker_i + u_i
+\]</span></p>
+<p><strong>Solution</strong></p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>alcohol<span class="sc">==</span><span class="dv">1</span>]), </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">main=</span><span class="st">"Birthweight Among Drinking and Non-Drinking Mothers"</span>, <span class="at">xlab=</span><span class="st">"Birthweight"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>alcohol<span class="sc">==</span><span class="dv">0</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Drinker"</span>, <span class="st">"Non-Drinker"</span>), </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div></div></div>
+<p><em>Alcohol</em>: The difference in probability densities highlights a leftward shift in the distribution of birth weight for mothers who drink alcohol.</p>
+<p>From the two-sample t-tests, the difference in mean of alcohol between smoking and non-smoking mothers is 0.042 (4.2% higher chance of drinking alcohol during pregnancy if a mother smokes), a statistically significant difference with a p-value less than 0.0001.</p>
+<div class="cell" width="50%">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test of difference in drinking for smokers and non-smokers</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.0532646</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.01116625</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.04209835</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>],mydata1<span class="sc">$</span>alcohol[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  Welch Two Sample t-test</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  mydata1$alcohol[mydata1$smoker == 1] and mydata1$alcohol[mydata1$smoker == 0]</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## t = 4.4043, df = 643.34, p-value = 1.243e-05</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 95 percent confidence interval:</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.02332896 0.06086774</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sample estimates:</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  mean of x  mean of y </span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 0.05326460 0.01116625</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>tripre0<span class="sc">==</span><span class="dv">0</span>]), </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="st">"red"</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">main=</span><span class="st">"Birthweight Among Babies With and Without Prenatal Care"</span>, <span class="at">xlab=</span><span class="st">"Birthweight"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(<span class="fu">density</span>(mydata1<span class="sc">$</span>birthweight[mydata1<span class="sc">$</span>tripre0<span class="sc">==</span><span class="dv">1</span>]), <span class="at">col=</span><span class="st">"blue"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Pre-Natal Care"</span>, <span class="st">"No Pre-Natal Care"</span>), </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div></div></div>
+<p><em>Prenatal Care</em>: The difference in probability densities highlights a rightward shift in the distribution of birth weight for mothers who have pre-natal care.</p>
+<p>From the two-sample t-tests, the difference in mean of tripre0 between smoking and non-smoking mothers is 0.015 (1.5% higher chance of no prenatal care if a mother smokes), a statistically significant difference with a p-value less than 0.016.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test of difference in prenatal care for smokers and non-smokers</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.02233677</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.007030604</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.01530617</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>],mydata1<span class="sc">$</span>tripre0[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  Welch Two Sample t-test</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  mydata1$tripre0[mydata1$smoker == 1] and mydata1$tripre0[mydata1$smoker == 0]</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## t = 2.4059, df = 672.77, p-value = 0.0164</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 95 percent confidence interval:</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.002814408 0.027797924</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sample estimates:</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   mean of x   mean of y </span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 0.022336770 0.007030604</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot between birth weight and education with line of best fit</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>birthweight_educ_reg<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>educ,<span class="at">data=</span>mydata1)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata1<span class="sc">$</span>educ,mydata1<span class="sc">$</span>birthweight,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Birth Weight and Years of Education"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Years of Education"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Birth Weight"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"grey"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(birthweight_educ_reg, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div></div></div>
+<p><em>Education</em>: The scatter plot indicates a positive relationship between education and birth weight.</p>
+<p>From the two-sample t-tests, the difference in mean of educ between smoking and non-smoking mothers is -1.27 (1.27 less years of educational attainment if a mother smokes), a statistically significant difference with a p-value less than 0.0001.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test of difference in education for smokers and non-smokers</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 11.87973</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 13.15426</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>])<span class="sc">-</span><span class="fu">mean</span>(mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -1.274535</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">1</span>],mydata1<span class="sc">$</span>educ[mydata1<span class="sc">$</span>smoker<span class="sc">==</span><span class="dv">0</span>])</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  Welch Two Sample t-test</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">## data:  mydata1$educ[mydata1$smoker == 1] and mydata1$educ[mydata1$smoker == 0]</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## t = -15.8, df = 1164.7, p-value &lt; 2.2e-16</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 95 percent confidence interval:</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  -1.432801 -1.116268</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sample estimates:</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## mean of x mean of y </span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  11.87973  13.15426</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Potential sources of omitted variable bias in the single linear regression model <span class="math inline">\(birthweight_i=\beta_0+\beta_1\, smoker_i+u_i\)</span> :</p>
+<details>
+<summary>
+Interpretation
+</summary>
+<p>
+</p><ul>
+<li><p><em>Alcohol</em>: alcohol is <strong>positively</strong> related to smoking and <strong>negatively</strong> related to birth weight. Therefore, the OLS slope coefficient estimate will be <strong>downward biased</strong>, or too negative relative to the population coefficient for the impact of smoking on birth weight. The OLS estimate captures this direct effect, AND the facts that smokers tend to drink alcohol more and drinking alcohol reduces birth weight.</p></li>
+<li><p><em>Prenatal Care</em>: pre-natal care is <strong>negatively</strong> related to smoking and <strong>positively</strong> related to birth weight. Therefore, the OLS slope coefficient estimate will be <strong>downward biased</strong>, or too negative relative to the population coefficient for the impact of smoking on birth weight. The OLS estimate captures this direct effect, AND the facts that smokers tend to have less prenatal care and prenatal care increases birth weight.</p></li>
+<li><p><em>Education</em>: education is <strong>negatively</strong> related to smoking and <strong>positively</strong> related to birth weight. Therefore, the OLS slope coefficient estimate will be <strong>downward biased</strong>, or too negative relative to the population coefficient for the impact of smoking on birth weight. The OLS estimate captures this direct effect, AND the facts that smokers tend to have less education and education increases birth weight.</p></li>
+</ul>
+</details></section>
+<section id="q4" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q4">Q4</h3>
+<p>Estimate the single linear regression of birth weight on smoker from question 3 under homoskedasticity and heteroskedasticity. Briefly comment on any impacts on OLS coefficient estimates and standard errors.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Single linear regression results relating birth weight and smoking, </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># assuming homoskedasticity</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker,<span class="at">data=</span>mydata1)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = birthweight ~ smoker, data = mydata1)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-3007.06  -313.06    26.94   366.94  2322.94 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  3432.06      11.87 289.115   &lt;2e-16 ***
+smoker       -253.23      26.95  -9.396   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 583.7 on 2998 degrees of freedom
+Multiple R-squared:  0.0286,    Adjusted R-squared:  0.02828 
+F-statistic: 88.28 on 1 and 2998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Single linear regression results relating birth weight and smoking,</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># allowing for heteroskedasticity</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg1, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg1, <span class="st">"HC1"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+            Estimate Std. Error  t value  Pr(&gt;|t|)    
+(Intercept) 3432.060     11.891 288.6380 &lt; 2.2e-16 ***
+smoker      -253.228     26.810  -9.4452 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># report the adjusted R-Squared from the regression</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg1)<span class="sc">$</span>adj.r.squared   <span class="co"># report the adjusted R-Squared from the regression</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02827979</code></pre>
+</div>
+</div>
+<p>Regression results under homoskedasticity :</p>
+<p><span class="math display">\[\begin{align}
+     \widehat{birthweight}_i &amp; = 3432.06-253.23 \, smoker_i \qquad SER=584, \, R^2=0.028 \\
+     &amp; \quad (11.87) \qquad (26.95) \notag
+\end{align}\]</span></p>
+<p>Regression results under heteroskedasticity:</p>
+<p><span class="math display">\[\begin{align}
+\widehat{birthweight}_i &amp; = 3432.06-253.23 \, smoker_i \qquad SER=584, \, R^2=0.028 \\
+     &amp; \quad (11.89) \qquad (26.81) \notag
+\end{align}\]</span></p>
+<p>Throughout, I have elected to not rescale the birth weight variable because it is easier and more appropriate to interpret birth weight in terms of grams, as opposed to decimal values of kilograms (say if we scaled birth weight by a factor of 1000).</p>
+<p>There’s a relatively small impact on the standard errors across the two models. The OLS coefficient estimates, SER and adjusted R-squared are of course unchanged because assuming homoskedasticity vs.&nbsp;heteroskedasticity is irrelevant for their calculation.</p>
+<p>Interpreting the coefficient of interest, we find smoking mothers have babies that are 253.23 grams lighter, a statistically significant estimate with a p-value less than 0.0001.</p>
+<ul>
+<li><p>Note that this number corresponds exactly to the difference in mean birth weight between smoking and non-smoking mothers in question 2 above. This occurs because dummy variable coefficient estimates correspond to differences in means between the two groups defined by the dummy variable in a single linear regression model.</p>
+<p>Estimate the single linear regression of birth weight on smoker from question 3 under homoskedasticity and heteroskedasticity. Briefly comment on any impacts on OLS coefficient estimates and standard errors.</p></li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><span class="math display">\[\begin{align}E[Y_i|D_{\text{smoker}_i}] &amp; = \underbrace{\beta_0+ \beta_1\, D_{\text{smoker}_i}}_{\mu_{smoker}}  \tag{1} \\E[Y_i|D_{\text{nosmoker},i}] &amp; = \underbrace{\beta_0}_{\mu_{nonsomker}} \tag{2} \\(1)-(2) &amp; = \underbrace{\beta_0+ \beta_1\, D_{\text{smoker},i}}_{\mu_{smoker}} - \underbrace{\beta_0}_{\mu_{nonsmoker}} \\    &amp; = \beta_1\, D_{\text{smoker},i}\\ \Rightarrow &amp; H_0:\beta_1\, D_{smoker_i}=0 \\
+\Leftrightarrow &amp;  H_0: \mu_{smoker} - \mu_{nonsmoker} = 0\end{align}\]</span></p>
+</div></div></section>
+<section id="q5" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q5">Q5</h3>
+<p>Estimate four multiple linear regression models with birth weight as the dependent variable, and the following four respective sets of regressors:</p>
+<ul>
+<li><p>smoker</p></li>
+<li><p>smoker, alcohol, drinks</p></li>
+<li><p>smoker, alcohol, drinks, nprevisit, tripre1, tripre2, tripre3</p></li>
+<li><p>smoker, alcohol, drinks, nprevisit, tripre1, tripre2, tripre3, age, educ, unmarried</p></li>
+</ul>
+<p>In each of the 4 models, report heteroskedasticity-robust standard errors.<br>
+For each model, interpret the OLS coefficient estimate on the variable of interest, <em>smoker</em>, and briefly comment on how adding regressors removes omitted variable bias. Also comment on how adding regressors affects the model’s adjusted R-squared.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R code chunks</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Single linear regression with no other controls</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># save regression results for reg1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker,<span class="at">data=</span>mydata1) </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># next 2 lines save the robust standard errors for reg1</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)           </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1)) </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># do the same for reg2-4</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>reg2 <span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>            ,<span class="at">data=</span>mydata1)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg2, <span class="at">type =</span> <span class="st">"HC1"</span>)           </span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2)) </span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>reg3 <span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>           tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>            ,<span class="at">data=</span>mydata1)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)           </span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3)) </span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>reg4 <span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>           tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>           age<span class="sc">+</span>educ<span class="sc">+</span>unmarried</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>            ,<span class="at">data=</span>mydata1)</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)           </span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="co"># run reg4 again NOT accountng for heteroskedasticty</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>reg5 <span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>           tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>           age<span class="sc">+</span>educ<span class="sc">+</span>unmarried</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>            ,<span class="at">data=</span>mydata1)</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>cov5<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"const"</span>)           </span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>se5<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then use <strong>stargazer</strong> to compile the regression results in one table using the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg1, reg2, reg3, reg4, reg5, <span class="at">type=</span><span class="st">"text"</span>,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1, se2, se3, se4, se5),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">2</span>, </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"Baby Birthweight in Grams"</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Smoker"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks Alcohol During Pregnancy"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Drinks per Week During Pregnancy"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Visits"</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 1st Trimester"</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 2nd Trimester"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Prenatal Care in 3rd Trimester"</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age"</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Years of Education"</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Unmarried"</span>,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>),</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">out=</span><span class="st">"reg_output.txt"</span>)   <span class="co"># Output results to your directory in a text file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell column-page">
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+Baby Birthweight in Grams
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+<td>
+(5)
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Smoker
+</td>
+<td>
+-253.23<sup>***</sup>
+</td>
+<td>
+-250.40<sup>***</sup>
+</td>
+<td>
+-218.76<sup>***</sup>
+</td>
+<td>
+-178.21<sup>***</sup>
+</td>
+<td>
+-178.21<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(26.81)
+</td>
+<td>
+(26.88)
+</td>
+<td>
+(25.99)
+</td>
+<td>
+(27.21)
+</td>
+<td>
+(27.44)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Drinks Alcohol During Pregnancy
+</td>
+<td>
+</td>
+<td>
+-21.29
+</td>
+<td>
+1.12
+</td>
+<td>
+3.94
+</td>
+<td>
+3.94
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(98.78)
+</td>
+<td>
+(90.36)
+</td>
+<td>
+(90.75)
+</td>
+<td>
+(94.67)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Drinks per Week During Pregnancy
+</td>
+<td>
+</td>
+<td>
+-12.08
+</td>
+<td>
+-5.40
+</td>
+<td>
+-3.03
+</td>
+<td>
+-3.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(18.85)
+</td>
+<td>
+(17.16)
+</td>
+<td>
+(16.43)
+</td>
+<td>
+(18.86)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Visits
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+33.79<sup>***</sup>
+</td>
+<td>
+32.09<sup>***</sup>
+</td>
+<td>
+32.09<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(4.30)
+</td>
+<td>
+(4.25)
+</td>
+<td>
+(3.41)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 1st Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+299.98<sup>*</sup>
+</td>
+<td>
+209.53
+</td>
+<td>
+209.53<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(155.54)
+</td>
+<td>
+(148.87)
+</td>
+<td>
+(112.34)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 2nd Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+310.43<sup>**</sup>
+</td>
+<td>
+268.82<sup>*</sup>
+</td>
+<td>
+268.82<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(154.06)
+</td>
+<td>
+(146.65)
+</td>
+<td>
+(110.85)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Prenatal Care in 3rd Trimester
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+416.53<sup>**</sup>
+</td>
+<td>
+385.35<sup>**</sup>
+</td>
+<td>
+385.35<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(162.49)
+</td>
+<td>
+(155.44)
+</td>
+<td>
+(119.05)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+-2.14
+</td>
+<td>
+-2.14
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(2.46)
+</td>
+<td>
+(2.27)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Years of Education
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+1.83
+</td>
+<td>
+1.83
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(5.54)
+</td>
+<td>
+(5.56)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Unmarried
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+-206.86<sup>***</sup>
+</td>
+<td>
+-206.86<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+(31.30)
+</td>
+<td>
+(28.80)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+3,432.06<sup>***</sup>
+</td>
+<td>
+3,432.63<sup>***</sup>
+</td>
+<td>
+2,751.84<sup>***</sup>
+</td>
+<td>
+2,923.52<sup>***</sup>
+</td>
+<td>
+2,923.52<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(11.89)
+</td>
+<td>
+(11.94)
+</td>
+<td>
+(146.15)
+</td>
+<td>
+(159.57)
+</td>
+<td>
+(131.86)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+<td>
+3,000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.03
+</td>
+<td>
+0.03
+</td>
+<td>
+0.08
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.03
+</td>
+<td>
+0.03
+</td>
+<td>
+0.07
+</td>
+<td>
+0.09
+</td>
+<td>
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+583.73 (df = 2998)
+</td>
+<td>
+583.83 (df = 2996)
+</td>
+<td>
+569.66 (df = 2992)
+</td>
+<td>
+564.65 (df = 2989)
+</td>
+<td>
+564.65 (df = 2989)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+88.28<sup>***</sup> (df = 1; 2998)
+</td>
+<td>
+29.73<sup>***</sup> (df = 3; 2996)
+</td>
+<td>
+35.51<sup>***</sup> (df = 7; 2992)
+</td>
+<td>
+30.94<sup>***</sup> (df = 10; 2989)
+</td>
+<td>
+30.94<sup>***</sup> (df = 10; 2989)
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="5" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div>
+<p>Regression results for the models produced by <strong>stargazer()</strong> are presented in the table above. Each column corresponds to a regression model, where we progressively add control variables. See the <strong>tute6.R</strong> code for comments on what the stars mean next to the coefficients in the table.</p>
+<p><strong>Interpretation</strong></p>
+<p>We see that:</p>
+<ul>
+<li><p>including the additional controls particularly in columns (3) and (4) have substantial, magnitude-reducing impacts on the OLS coefficient estimate on smoker, which is consistent with our preliminary analysis of omitted variable bias in Q3 above.</p></li>
+<li><p>the R-Squared in the model grows from 0.03 in column (1) to 0.09 in column (4); adding the covariates has a large impact on the ability of the regression model to predict birth weight. However, there remains a substantial degree of unexplained birth weight even in model (4).</p></li>
+<li><p>Interpreting our main finding in column (4), we would conclude that smoking mothers have babies that are 178 grams lighter, which remains a large effect at 100 x 178/3383=5.26% reduction in birth weight relative to the sample mean for birth weight.</p></li>
+</ul>
+</section>
+<section id="q6" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q6">Q6</h3>
+<div class="cell page-columns page-full">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(huxtable)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sandwich)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>lm_robust <span class="ot">&lt;-</span> <span class="fu">coeftest</span>(reg4, <span class="at">vcov. =</span> <span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">'HC1'</span>))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">huxreg</span>(<span class="st">"Model 4"</span> <span class="ot">=</span> lm_robust, <span class="st">"Model 5"</span> <span class="ot">=</span> reg5,<span class="at">bold_signif =</span> <span class="fl">0.10</span>,<span class="at">stars =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">***</span><span class="st">`</span> <span class="ot">=</span> <span class="fl">0.01</span>, <span class="st">`</span><span class="at">**</span><span class="st">`</span> <span class="ot">=</span> <span class="fl">0.05</span>,<span class="st">`</span><span class="at">*</span><span class="st">`</span><span class="ot">=</span><span class="fl">0.10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Original model not retained as part of coeftest object. For additional model summary information (r.squared, df, etc.), consider passing `glance.coeftest()` an object where the underlying model has been saved, i.e.`lmtest::coeftest(..., save = TRUE)`.
+This message is displayed once per session.</code></pre>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  ">
+<colgroup><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 4</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 5</th></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(Intercept)</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">2923.515 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">2923.515 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(159.574)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(131.859)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">smoker</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">-178.207 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">-178.207 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(27.206)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(27.436)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">alcohol</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3.942&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3.942&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(90.753)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(94.675)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">drinks</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-3.027&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-3.027&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(16.427)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(18.861)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">nprevisit</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">32.087 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">32.087 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(4.250)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(3.406)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">tripre1</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">209.527&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">209.527 *&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(148.873)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(112.336)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">tripre2</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">268.819 *&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">268.819 **&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(146.655)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(110.849)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">tripre3</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">385.345 **&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">385.345 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(155.436)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(119.054)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">age</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-2.143&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-2.143&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(2.457)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(2.270)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">educ</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">1.828&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">1.828&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(5.537)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(5.562)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">unmarried</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">-206.856 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">-206.856 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(31.295)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">(28.795)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">N</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">R2</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.094&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">logLik</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-23259.905&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-23259.905&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">AIC</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">46543.810&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">46543.811&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th colspan="3" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> *** p &lt; 0.01;  ** p &lt; 0.05;  * p &lt; 0.1.</th></tr>
+</tbody></table>
+
+</div></div></div>
+<p>Re-report OLS coefficient estimates and standard errors for the fourth regression model in Q5. that includes the full list of regressors, except report standard errors assuming homoskedasticity.<br>
+Briefly comment on the difference in standard errors and p-values for your regression coefficients under heteroskedasticity and homoskedasticity.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Column (5) of the table contains the results assuming homoskedasticity.</p>
+<p>Again, as expected, the OLS coefficient estimates and R-Squared is identical to those in column (4) which reports heteroskedasticity-robust standard errors.</p>
+<p>There are some changes, however, in the standard errors reflecting the fact the we are erroneously not accounting for heteroskedasticity in the data in column (5).</p>
+<p>In fact, we can see that the dummy variable for “Prenatal Care in 1st Trimester” incorrectly becomes statistically significantly different from 0 at the 10% level in column (5) when we fail to account for heteroskedasticity.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
