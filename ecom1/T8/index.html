@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 8   Joint Hypothesis Testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 8 <br> Joint Hypothesis Testing</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This tutorial covers testing more than one parameter at the same time; joint hypothesis tests.</p>
+<p>Again, we are using the same data-set used in the last tutorial, which is named <strong>tute8_smoke.csv</strong> on the Subject Home Page in Canvas.</p>
+</section>
+<section id="q1" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q1">Q1</h2>
+<p>This question is designed to show the difference between using the F statistic routinely reported in <em>R</em> output when estimating a linear regression model that does not account for heteroskedasticity, with two other test that can account for heteroskedasticity.</p>
+<p>After loading the required packages and creating a dataframe (which you should be familiar with by now) we can estimate the following model.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>reg<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>         tripre2<span class="sc">+</span>tripre3<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>giving:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = birthweight ~ smoker + alcohol + drinks + nprevisit + 
+    tripre1 + tripre2 + tripre3 + unmarried + educ + age, data = mydata1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2788.6  -302.5    21.4   360.4  2309.1 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 2923.515    131.859  22.172  &lt; 2e-16 ***
+smoker      -178.207     27.436  -6.495 9.67e-11 ***
+alcohol        3.942     94.675   0.042  0.96679    
+drinks        -3.027     18.861  -0.160  0.87252    
+nprevisit     32.087      3.406   9.421  &lt; 2e-16 ***
+tripre1      209.527    112.336   1.865  0.06226 .  
+tripre2      268.819    110.849   2.425  0.01536 *  
+tripre3      385.345    119.054   3.237  0.00122 ** 
+unmarried   -206.856     28.795  -7.184 8.53e-13 ***
+educ           1.828      5.562   0.329  0.74242    
+age           -2.143      2.270  -0.944  0.34533    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 564.6 on 2989 degrees of freedom
+Multiple R-squared:  0.09381,   Adjusted R-squared:  0.09078 
+F-statistic: 30.94 on 10 and 2989 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The F statistic reported above is for the null that all the slope estimates jointly all zero e.g.&nbsp;<span class="math inline">\(H_0:\beta_1=\beta_2= \dots \beta_{10}=0\)</span> if we reject the null in this test then the model is useless (we are only left with the intercept).<br>
+The other way to think of this is that the null is <span class="math inline">\(\beta_1=0,\beta_2=0,\dots \beta_{10}=0\)</span><br>
+where the <span class="math inline">\(\text{,}\)</span> (commas) mean “and”.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>This is a special case of a joint hypothesis test where we are testing “the overall significance of the model”.</p>
+<p>If we do not reject the null hypothesis then the model is “useless” - it explains none of the variation in the dependent variable.</p>
+</div></div><p>So how is this different than just looking at the p-values for each of the individual parameter estimates?<br>
+This is explained in <strong>Lecture 7</strong> slides 13-14 . We can’t use individual t tests but need a joint test.<br>
+Under the null hypotheses, the test for the overall significance of the model follows a F distribution with <span class="math inline">\((q, n-k-1)\)</span> degrees of freedom (go back to Lecture 2 to see how the F distribution works).</p>
+<p>You could use the critical value approach to determine whether to reject or not reject the null however it is much easier to use the p-value approach.</p>
+<p>So looking at the output above, the F=30.94 with a p-value of 2.2e-16 (pratically zero) so we reject the null and conclude that the model is useful.</p>
+<p>The output also gives the degrees of freedom for this F test e.g.&nbsp;<span class="math inline">\(q=10\)</span> and <span class="math inline">\(n-k-1=2989\)</span> <span class="math inline">\(\Rightarrow F \thicksim (10,2989)\)</span> .</p>
+<p>However, this test statistic assumes that the errors are homoskedastic.<br>
+We saw last week, the consequences of this assumption being violated and said that from now on we would use HC sandard errors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">waldtest</span>(reg, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wald test
+
+Model 1: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+Model 2: birthweight ~ 1
+  Res.Df  Df     F    Pr(&gt;F)    
+1   2989                        
+2   2999 -10 23.88 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>To see the difference in not accounting for any heteroskedasticity compare the values of the F statistic using either the <strong>Wald</strong> or the <strong>LinearHypothesis</strong> test functions in <em>R</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"smoker=0"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"alcohol=0"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"drinks=0"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"nprevisit=0"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"tripre1=0"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"tripre2=0"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"tripre3=0"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"unmarried=0"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"educ=0"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"age=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+smoker = 0
+alcohol = 0
+drinks = 0
+nprevisit = 0
+tripre1 = 0
+tripre2 = 0
+tripre3 = 0
+unmarried = 0
+educ = 0
+age = 0
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df     F    Pr(&gt;F)    
+1   2999                       
+2   2989 10 23.88 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>You can see that both the <strong>LinearHypothesis</strong> and <strong>Wald</strong> test commands yield exactly the same F statistic and that both of these F statistics , accounting for heteroskedastic errors, are smaller than that provided in the <em>R</em> estimation output that does <strong>not</strong> account for heteroskedasicity.</p>
+</section>
+<section id="q2" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q2">Q2</h2>
+<p>OK, we have our preferred model (from last tute) and have provided the Prime Minister (PM) with a report of the results.<br>
+The PM’s office then gets back and wants answers to the following questions in order to put together a policy and ad campaign to promote women adopting more healthy practices leading to more healthy babies.</p>
+<p>First question: it looks as though smoking definitely decreases babies birthweight but drinking alcohol while pregnant doesn’t. Please explain?</p>
+<p>The question arises because the individual t-tests on smoker and alcohol are respectively significant and not significant, but are they <em>jointly</em> significant?</p>
+<p>Test <span class="math inline">\(H_0: \beta_1=0 ,\, \beta_2=0\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"smoker=0"</span>,<span class="st">"alcohol=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+smoker = 0
+alcohol = 0
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F   Pr(&gt;F)    
+1   2991                       
+2   2989  2 21.618 4.77e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>How come?</p>
+<div class="cell">
+
+</div>
+<p>Look at the individual HC 95% CI’s for each parameter estimate are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>robustCI_reg1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  2.5 %      97.5 %
+(Intercept) 2664.971352 3182.058878
+smoker      -232.002904 -124.410495
+alcohol     -181.692922  189.576418
+drinks       -40.008331   33.954997
+nprevisit     25.408610   38.765517
+tripre1      -10.737615  429.790736
+tripre2       51.470822  486.166501
+tripre3      151.908297  618.781877
+unmarried   -263.317320 -150.395622
+educ          -9.078082   12.734485
+age           -6.593808    2.308528</code></pre>
+</div>
+</div>
+<p>Notice that the 95% CI for <em>alcohol</em> contains zero which matches the result of the t-test where <span class="math inline">\(H_0:\beta_2=0\)</span> is not rejected, while the 95% CI for <em>smoker</em> does not contain zero which supports the rejection of <span class="math inline">\(H_0:\beta_1=0\)</span>.</p>
+<p>However, when we run a joint test take into account any correlation (multicollinearity) between the variables so we don’t get CI’s but rather a Confidence Ellipse (CE) e.g.&nbsp;the 95% CE for the joint test <span class="math inline">\(H_0:\beta_1=0,\, \beta_2=0\)</span> is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confidenceEllipse</span>(reg,<span class="at">fill=</span>T,<span class="at">lwd=</span><span class="dv">0</span>,<span class="at">which.coef=</span><span class="fu">c</span>(<span class="st">"smoker"</span>, <span class="st">"alcohol"</span>),</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">main=</span> <span class="st">"95 % confidence ellipse for smoker=0, alcohol=0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Note that the point <span class="math inline">\((0,0)\)</span> is not in the CE which lines up with rejecting the null in the above test.</p>
+<p>Are <em>smoker</em> and <em>alcohol</em> highly correlated?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>smoker<span class="sc">+</span>alcohol,<span class="at">data=</span>mydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      alcohol
+smoker    0    1
+     0 2391   27
+     1  551   31</code></pre>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>A further consequence of imperfect multicollinearity is that individually some parameter estimates are not significant, yet jointly they are significant.</p>
+<p>One cause of this is a high degree of correlation between these explanatory variables.</p>
+</div></div><p>From this 2931/3000 both do not smoke nor drink alcohol during pregnancy so there is a strong association between these variables.</p>
+<p>The causes imperfect multicollinearity which inflates the individual standard errors causing, in this case, for us to not reject that the <em>alcohol</em> parameter is not significant, while rejecting the null that <em>alcohol</em> and <em>smoker</em> are jointly not significant.</p>
+<p>We can also test to what the effect smoking and drinking during prenancey has on babies birthweight.<br>
+For example. <span class="math inline">\(H_0:\beta_1=-200, \, \beta_2=-50\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"smoker=-200"</span>,<span class="st">"alcohol=-50"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                 ,<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+smoker = - 200
+alcohol = - 50
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df     F Pr(&gt;F)
+1   2991                
+2   2989  2 0.547 0.5787</code></pre>
+</div>
+</div>
+<p>We fail to reject the null at the 5% level that smoking during pregnancy reducers a baby’s birthweight by 200 grams <span class="math inline">\(\underline{\smash{\text{and}}}\)</span> that drinking alcohol leads to a 50 gram reduction in birthweight.</p>
+<p>What about the combined effect? Does the sum effect of smoking and drinking on average lower birthweight by 250 grams?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"smoker+alcohol=-250"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+smoker  + alcohol = - 250
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F Pr(&gt;F)
+1   2990                 
+2   2989  1 0.6738 0.4118</code></pre>
+</div>
+</div>
+<p>The F statistic is 0.6738 with a p-value of 0.4118, so we fail to reject the null at the 5% level smoking and drinking have a combined effect of a decrease in birthweight of 250 grams.</p>
+<p>Looking now at pre-natal visits, we can see from the regression output that only <em>tripre3</em> is statistically significant at the 5% level.<br>
+Again, there could be multicollinearity here. While <em>tripre1</em> and <em>tripre2</em> are individually not significant they are the jointly significant (at the 5% level).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg, <span class="fu">c</span>(<span class="st">"tripre1=0"</span>,<span class="st">"tripre2=0"</span>),<span class="at">vcov=</span><span class="fu">vcovHC</span>(reg,<span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+tripre1 = 0
+tripre2 = 0
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F  Pr(&gt;F)  
+1   2991                    
+2   2989  2 3.0373 0.04811 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="q3" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q3">Q3</h2>
+<p>We can undertake the test that <span class="math inline">\(H_0: \beta_5=0, \, \beta_6=0\)</span> another way (however this assumes that the errors are homoskedastic).</p>
+<ol type="1">
+<li>Run the completed model first; call this the <strong>UnRestricted Model</strong> (UR)<br>
+</li>
+<li>Impose the restriction given by the null to the model in 1.<br>
+</li>
+<li>Then estimate the <strong>Restricted Model</strong> (R)</li>
+</ol>
+<p>then use:</p>
+<p><span class="math display">\[F=\dfrac{\left( R_U^2-R_r^2 \right)/k}{\left(1-R_U^2  \right)/(n-k-1)}\]</span><br>
+giving:</p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Run the unrestricted regression and save the unrestricted R-Squared, assuming homoskedasticity</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>R2u<span class="ot">=</span><span class="fu">summary</span>(reg1)<span class="sc">$</span>r.squared</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Run the restricted regression where the coefficients tripre1=0, tripre2=0, tripre3=0</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="do">## and save the restricted R-Squared, assuming homoskedasticity</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>R2r<span class="ot">=</span><span class="fu">summary</span>(reg2)<span class="sc">$</span>r.squared</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the homoskedasticity-only F-statistic (df1=3, df2=3000-10-1=2989)</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>num1<span class="ot">=</span>(R2u<span class="sc">-</span>R2r)<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>denom1<span class="ot">=</span>(<span class="dv">1</span><span class="sc">-</span>R2r)<span class="sc">/</span><span class="dv">2989</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>Fstat1<span class="ot">=</span>num1<span class="sc">/</span>denom1</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute p-value for Fstat using cumulative density function of F-distribution</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="do">## with df1=3, df2=2989 degrees of freedom; see tute3.R for CDF commands if needed</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>pval1<span class="ot">=</span><span class="dv">1</span><span class="sc">-</span><span class="fu">pf</span>(Fstat1,<span class="at">df1=</span><span class="dv">3</span>,<span class="at">df2=</span><span class="dv">2989</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(R2u)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.09380756</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(R2r)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.08901254</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Fstat1)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5.244244</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pval1)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.001310058</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div><p><span class="math display">\[\begin{align*}F &amp; = \dfrac{\left(R_u^2 - R_r^2   \right)/k}{\left(1-R_u^2  \right)/ \left( n-k-1 \right)}  \\  &amp; =\dfrac{(0.0938-0.0890)/3}{(1-0.0938)/2989} \\  &amp; = 5.272\end{align*}\]</span></p>
+<p>We obtain a p-value=1-pf(5.272,df1=3,df2=2989)=0.0013, which implies we reject the null implied by the restrictions under the restricted model at the 1% level of significance.</p>
+<p>In other words, given our sample, there is a sufficiently large drop in the R-Squared from 0.0938 under the unrestricted model to 0.0890 under the restricted model from imposing the joint constraint that the coefficients on <em>tripre1</em>, <em>tripre2</em> and <em>tripre3</em> all equal 0 such that we are able to reject the hypothesis that the data were generated under these restrictions.<br>
+The drop in model fit when the restrictions are relaxed is too large to rationalise these restrictions statistically.</p>
+</section>
+<section id="q4" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q4">Q4</h2>
+<p>One further test we could undertake is that the effect of smoking during pregnancy is the same as an unmarried mother drinking alcohol on a baby’s birthweight.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>The easiest way to identify the number of restrictions is to count the number of “=” signs in the null hypothesis.</p>
+<p>Here there is only one “=” sign so there is one restriction</p>
+</div></div><p>Test <span class="math inline">\(\beta_1 = \beta_2+\beta_{10}\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>reg<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>alcohol<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="sc">+</span>unmarried<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"alcohol+unmarried=smoker"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+- smoker  + alcohol  + unmarried = 0
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F Pr(&gt;F)
+1   2990                 
+2   2989  1 0.0582 0.8094</code></pre>
+</div>
+</div>
+<p>We obtain a F statistic of 0.0582 (with df1=1, df2=2989) with a p-value of 0.0894 so do not reject the null that smoking during pregnancy has the same effect on a baby’s birthweight as an unmarried mother drinking alcohol during pregnancy.</p>
+<blockquote class="blockquote">
+<p>there are a number of other joint tests in Q4 that you should try as practice - see the Rscript file <strong>tute8.R</strong> to run these tests (the solutions are below).</p>
+<p>e.g.</p>
+<ol type="1">
+<li>Test the joint null that the coefficient on <em>smoker</em> equals the coefficient on<br>
+<em>alcohol</em> against the alternative that the equality does not hold.</li>
+<li>Test the joint null that the coefficient on <em>smoker</em> is twice the coefficient of<br>
+<em>alcohol</em> against the alternative that the equality does not hold.</li>
+<li>Test the joint null that the sum of the coefficients on <em>smoker</em> and <em>alcohol</em><br>
+equals -200 against the alternative that the equality does not hold.</li>
+<li>Test the joint null that the coefficient on <em>tripre1</em> equals the coefficient on<br>
+<em>tripre2</em> and that the coefficient on <em>tripre2</em> equals the coefficient on <em>tripre3</em><br>
+against the null that at least one of the equalities does not hold.</li>
+<li>Test the joint null that the coefficient on <em>tripre2</em> equals 2 times the coefficient<br>
+on <em>tripre1</em> and that the coefficient on <em>tripre3</em> equals 2 times the coefficient on<br>
+<em>tripre2</em> against the null that at least one of the equalities does not hold</li>
+</ol>
+</blockquote>
+<details>
+<summary>
+Solutions
+</summary>
+<p>
+</p><ol type="1">
+<li>Test joint null that the coefficient on <em>smoker</em> equals the coefficient on <em>alcohol</em>: <br>F-statistic=3.515, df1=1, df2=2989, p-value=0.061. Fail to reject the null at the 5% level of significance, meaning we cannot reject the null that smoking and drinking alcohol have the same impact on birthweight. <br> Note here while we find individually statistically significant effects for <em>smoker</em> but not <em>alcohol</em> on <em>birthweight</em>, we are unable to detect a statistically significant difference between the effects of <em>smoker</em> and <em>alcohol</em> on <em>birthweight</em>.</li>
+<li>Test joint null that the coefficient on <em>smoker</em> is twice the coefficient <em>alcohol:</em> <br>F-statistic=1.000, df1=1, df2=2989, p-value=0.317. <br>Fail to reject the null at the 5% level of significance, meaning we cannot reject the null that smoking has twice as large an impact on <em>birthweight</em> relative to drinking.</li>
+<li>Test joint null that the sum of the coefficients on <em>smoker</em> and <em>alcohol</em> equals -200: <br>F-statistic=0.078, df1=1, df2=2989, p-value=0.780. Fail to reject the null at the 5% level of significance, meaning we cannot reject the null that smoking and drinking alcohol together yields a 200 gram reduction in <em>birthweight</em>.</li>
+<li>Test joint null that the coefficient on <em>tripre1</em> equals the coefficient on <em>tripre2</em> and that the coefficient on <em>tripre2</em> equals the coefficient on <em>tripre3</em>: <br>Fstatistic= 3.511, df1=2, df2=2989, p-value=0.030. Reject the null at the 5% level of significance, meaning we reject the null that first having prenatal care in the first, second, or third semester has the same impact on <em>birthweight</em>. <br> Looking the individual regression coefficients for tripre1, tripre2 and tripre3 in the regression, they have values of 209, 268, and 385, respectively. <br>So this joint test result formally confirms intuition about differential effects on <em>birthweight</em>, depending on when a baby first receives prenatal care. The large jump in the coefficient on <em>tripre3</em> relative to <em>tripre1</em> and <em>tripre2</em> is preliminary evidence against the joint null hypothesis, which is confirmed by the test’s F-statistic and p-value.</li>
+<li>Test joint null that the on <em>tripre2</em> equals 2 times the coefficient on <em>tripre1</em> and that the coefficient on <em>tripre3</em> equals 2 times the coefficient on <em>tripre2</em>: <br>Fstatistic= 0.4754, df1=2, df2=2989, p-value=0.6217. Fail to reject the null at the 5% level of significance, meaning we fail to reject the null that the effect of when a baby first receives prenatal care on <em>birthweigh</em>t doubles with each successive trimester.</li>
+</ol>
+<p></p>
+</details>
+</section>
+<section id="q5" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q5">Q5</h2>
+<p>Can we conduct a t-test using this hypothesis?</p>
+<p>Yes; because there is only one restriction <span class="math inline">\(\left( q=1 \right)\)</span>.</p>
+<p>However, this can get complicated as the test statistic would be:</p>
+<p><span class="math inline">\(t= \dfrac{\left(\hat{\beta_1}-\hat{\beta_2}- \hat{\beta_3}\right) - \left(\beta_1-\beta_2 -\beta_3 \right)}{se\left(\hat{\beta_1}-\hat{\beta_2}- \hat{\beta_3} \right)}\)</span></p>
+<p>the denominator is</p>
+<p><span class="math inline">\(\widehat{\sqrt{ [{var{\beta_1} + var{\beta_2} + var{\beta_3}-2cov(\beta_1,\beta_2) - 2cov(\beta_1,\beta_3)-2cov(\beta_2,\beta_3)]} }}\)</span></p>
+<p>This is because the OLS estimators, and hence the estimates, are random variables and are not independent.</p>
+<p>however, there is another way to do this.</p>
+<ol type="1">
+<li>Rearrange the null <span class="math inline">\(H_0: \beta_1=\beta_2 + \beta_3\, \Rightarrow \beta_1-\beta_2-\beta_3=0\)</span><br>
+</li>
+<li>multiply the variable associated with <span class="math inline">\(\beta_1\)</span> e.g.&nbsp;<span class="math inline">\(X_1\)</span> by <span class="math inline">\(\beta_2\)</span> and then <span class="math inline">\(\beta_3\)</span><br>
+</li>
+<li>then add and subtract <span class="math inline">\(\beta_2 X_1\)</span> and <span class="math inline">\(\beta_{3} X_1\)</span><br>
+</li>
+<li>next gather like terms and create composite <span class="math inline">\(X\)</span> variables</li>
+</ol>
+<p>In this example we have:</p>
+<p>Let: <span class="math inline">\(Y\)</span> = <span class="math inline">\(birthweight_i\)</span><br>
+<span class="math inline">\(\,\,\quad X_1\)</span> = <span class="math inline">\(smoker_i\)</span><br>
+<span class="math inline">\(\,\,\quad X_2\)</span> = <span class="math inline">\(alcohol_i\)</span><br>
+<span class="math inline">\(\,\,\quad X_3\)</span> = <span class="math inline">\(unmarried_i\)</span></p>
+<p><span class="math display">\[\begin{align*}    Y &amp;= \beta_0 + \beta_1 X_1+ \beta_2 X_2 +\beta_3X_3+u_i\\      &amp;= \beta_0 + \beta_1 X_1+ \beta_2 X_2 +\beta_3X_3+u_i + \color{blue}{\beta_2} X_1 - \beta_2 X_1 + \beta_3 X_1 - \beta_3 X_1 \\      &amp;= \beta_0 + \left(\beta_1-\beta_2-\beta_3 \right) X_1 + \beta_2 X_2 + \beta_3 X_3 + u_i + \beta_2 X_1 + \beta_3 X_1 \\      &amp;= \beta_0 + \underbrace{\left(\beta_1-{\color{blue}{\beta_2-\beta_3}} \right)}_{\gamma} X_1 + \beta_2 \underbrace{\left(X_2+{\color{blue}{X_1}} \right)}_{W_i} + \beta_3 \underbrace{\left(X_3 + {\color{blue}{X_1}}  \right)}_{Z_i} + u_i \\      &amp; = \beta_0 + \gamma X_1 + \beta_2 W_i + \beta_3 Z_i + u_i\end{align*}\]</span></p>
+<p>When we include all the other controls in the transformed regression, we obtain the following regression, which we use to test the joint null hypothesis based on the <em>smoker</em> coefficient, <span class="math inline">\(\gamma\)</span> ,in the <strong>tute8.r</strong> code:</p>
+<p><span class="math display">\[\begin{multline*}birthweight_i = \beta_0 + \gamma smoker_i + \beta_2 W_i + \beta_3 Z_i + \beta_4 drinks_i + \beta_5 nprevisit_i \\ + \beta_6 tripre1_i + \beta_7 tripre2_i + \beta_8 tripre3_i + \beta_9 educ_i + \beta_{10} age_i + u_1\end{multline*}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## construct W</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>W<span class="ot">=</span>mydata1<span class="sc">$</span>alcohol<span class="sc">+</span>mydata1<span class="sc">$</span>smoker</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## construct Z</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>Z<span class="ot">=</span>mydata1<span class="sc">$</span>unmarried<span class="sc">+</span>mydata1<span class="sc">$</span>smoker</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run the transformed regression and conduct t-test</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>regq5<span class="ot">=</span><span class="fu">lm</span>(birthweight<span class="sc">~</span>smoker<span class="sc">+</span>W<span class="sc">+</span>Z<span class="sc">+</span>drinks<span class="sc">+</span>nprevisit<span class="sc">+</span>tripre1<span class="sc">+</span>tripre2<span class="sc">+</span>tripre3<span class="sc">+</span>educ<span class="sc">+</span>age,<span class="at">data=</span>mydata1)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(regq5, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(regq5, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+             Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 2923.5151   159.5741 18.3207 &lt; 2.2e-16 ***
+smoker        24.7080   102.4462  0.2412   0.80943    
+W              3.9417    90.7529  0.0434   0.96536    
+Z           -206.8565    31.2952 -6.6099 4.539e-11 ***
+drinks        -3.0267    16.4270 -0.1842   0.85383    
+nprevisit     32.0871     4.2500  7.5498 5.753e-14 ***
+tripre1      209.5266   148.8734  1.4074   0.15941    
+tripre2      268.8187   146.6549  1.8330   0.06690 .  
+tripre3      385.3451   155.4357  2.4791   0.01323 *  
+educ           1.8282     5.5373  0.3302   0.74130    
+age           -2.1426     2.4573 -0.8720   0.38330    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Running this transformed regression using the <strong><em>coeftest()</em>}</strong>* command we obtain a coefficient estimate on <em>smoker</em> of 24.71 with a standard error of 102.45, and a corresponding p-value = 0.8094 for the test of the null that the coefficient on <em>smoker</em> is equal to 0.</p>
+<p>Based on the transformation calculations in the regression equation, testing whether the coefficient on <em>smoker</em> equals 0 is equivalent to testing the null that the effect of <em>smoker</em> on <em>birthweight</em> is the same as the sum of the effects of <em>alcohol</em> and <em>unmarried</em> on birthweight.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>From Lecture 2 we know that the t statistic is a ratio of a normal random variable divided by the square root of a Chi-square random variable e.g.</p>
+<p>Let <span class="math inline">\(p\)</span> denote the degrees of freedom (e.g.&nbsp;<span class="math inline">\(p=n-k-1\)</span> in the Simple Linear Regression Model), we have</p>
+<p><span class="math inline">\(t=\dfrac{N(0,1)}{\sqrt{\chi_{(p)}^2 /p}}\)</span></p>
+<p>squaring both sides gives</p>
+<div class="">
+<p><span class="math inline">\(t^2=\dfrac{N^2(0,1)}{\chi_{(p)}^2 /p}\)</span> and <span class="math inline">\(N^2(0,1) = \chi_{(1)}^2\)</span></p>
+<p>divide the numerator by <span class="math inline">\(\color{red}{1}\)</span></p>
+<p><span class="math inline">\(\dfrac{\chi_{p}^2/{\color{red}{1}}}{\chi_{(p)}^2/p} \thicksim F({\color{red}{1}}, p)\)</span></p>
+<p><span class="math inline">\(\Rightarrow F({\color{red}{1}},p) =t_p^2\)</span></p>
+</div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You don’t have to know the derivation but you will need this result (last line). Please note this only holds when there is <strong>one</strong> restriction.</p>
+</div>
+</div>
+</div></div><p>Indeed, if we estimate our original (untransformed) regression model and use the <strong><em>linearHypothesis</em></strong> command to carry out the joint test we get the same p-value.</p>
+<p>The take out is, that in the case of testing one restriction there is a relationship between the t and the F statistics e.g.&nbsp;<span class="math inline">\(t^2=F\)</span> and also <span class="math inline">\(t_c^2= F_c\)</span>.</p>
+<p>For example,</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"smoker-alcohol-unmarried=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+smoker - alcohol - unmarried = 0
+
+Model 1: restricted model
+Model 2: birthweight ~ smoker + alcohol + drinks + nprevisit + tripre1 + 
+    tripre2 + tripre3 + unmarried + educ + age
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F Pr(&gt;F)
+1   2990                 
+2   2989  1 0.0582 0.8094</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note that t^2=F  where t=0.2412 is the test statistic for smoker in </span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the transformed regression e.g.</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fl">0.2412</span><span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.05817744</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and t_c^2 =F_c</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>qtq5<span class="ot">&lt;-</span><span class="fu">qt</span>(<span class="fl">0.975</span>,<span class="dv">2989</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>qtq5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.960758</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>qtq5<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.844572</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qf</span>(<span class="fl">0.95</span>,<span class="dv">1</span>,<span class="dv">2989</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.844572</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
