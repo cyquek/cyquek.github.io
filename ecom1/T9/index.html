@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 9   Polynomial Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 9 <br> Polynomial Regression</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Please create a Tutorial9 folder on your computer, and then go to the LMS site for ECOM 20001 and download the following files into the Tutorial9 folder:</p>
+<ul>
+<li>tute9.R</li>
+<li>tute9_cps.csv</li>
+</ul>
+<p>The first file is the R code for tutorial 9, the second file is the .csv file that contains the dataset for the tutorial. The dataset has the following 5 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>year</em></td>
+<td>year in which an individual was randomly surveyed; either 1992 or 2012</td>
+</tr>
+<tr class="even">
+<td><em>ahe</em></td>
+<td>individual’s average hourly earnings (in real terms, 2012=100)</td>
+</tr>
+<tr class="odd">
+<td><em>bachelor</em></td>
+<td>equals one if an individual has a bachelor degree, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>female</em></td>
+<td>equals one if an individual is female, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>age</em></td>
+<td>age of the individual at the time of the survey</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the dataset contains this information for 15,052 individuals in the U.S.</p>
+<p>With the R file downloaded into your Tutorial9 folder, you are ready to proceed with the tutorial. Please go to the tute9.R file to continue with the tutorial.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mydata1<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute9_cps.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="q1" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q1">Q1</h2>
+<p>Using either the <strong><em>ggplot()</em></strong> command in RStudio, create a scatter plot with <em>age</em> on the horizontal axis and <em>ahe</em> on the vertical axis.<br>
+Note that the <strong><em>ggplot()</em></strong> code in the tute9.R file overlays predicted values from quadratic or cubic regressions with <em>ahe</em> as the dependent variable and <em>age</em> as the independent variable, which helps with interpreting the results.</p>
+<ul>
+<li><p>Does there appear to be a nonlinear relationship between <em>age</em> and <em>ahe</em>?</p></li>
+<li><p>Provide an economic explanation for the relationship you find.</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>It is much easier to create the polynomial variables first e.g.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create nonlinear terms for polynomial regressions</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>age2<span class="ot">=</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>age3<span class="ot">=</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>age4<span class="ot">=</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age<span class="sc">*</span>mydata1<span class="sc">$</span>age</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we can look at a scatter-plot of earnings (<em>ahe</em>) and <em>age</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ahe<span class="sc">~</span>age,<span class="at">data=</span><span class="fu">subset</span>(mydata1),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Earnings and Age"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Age"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Average Household Earnings (1000s)"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"darkgrey"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">34</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">80</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">1</span>, <span class="at">cex=</span><span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>However, we can produce a better looking graph using <strong>ggplot()</strong>.<br>
+The plot on the left includes a fitted quadratic line while the one the right includes a fitted cubic line.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Nicer scatter plot for fitting quadratic function with the ggplot package</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Quadratic function of degree 2 specified on the line where it states "formula = y ~ poly(x,2)"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"scat_ahe_age_ggplot_quad.pdf"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mydata1, <span class="fu">aes</span>(<span class="at">y=</span>ahe, <span class="at">x=</span>age)) <span class="sc">+</span>                                    <span class="co"># Define the dataset, x and y variables for scatter plot</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span>                                              <span class="co"># Allow for shading of the points in the scatter plot to help visualisation</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x,<span class="dv">2</span>), <span class="at">col=</span><span class="st">"blue"</span>) <span class="sc">+</span>     <span class="co"># Fit a polynomial of DEGREE 2 (QUADRATIC)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Relationship Between Earnings and Age"</span>) <span class="sc">+</span>                    <span class="co"># Scatter plot title</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>                       <span class="co"># Center the scatter plot title</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name=</span><span class="st">"Age"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">34</span>),<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">25</span>,<span class="dv">34</span>,<span class="dv">1</span>)) <span class="sc">+</span>                              <span class="co"># x-axis title, limits, lines</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name=</span><span class="st">"Average Household Earnings (1000s)"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,<span class="dv">10</span>))  <span class="co"># y-axis title, limits, lines</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Nicer scatter plot for fitting quadratic function with the ggplot package</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Cubic function of degree 2 specified on the line where it states "formula = y ~ poly(x,3)"</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"scat_ahe_age_ggplot_cube.pdf"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mydata1, <span class="fu">aes</span>(<span class="at">y=</span>ahe, <span class="at">x=</span>age)) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x,<span class="dv">3</span>), <span class="at">col=</span><span class="st">"blue"</span>) <span class="sc">+</span>     <span class="co"># Fit a polynomial of DEGREE 3 (CUBIC)</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Relationship Between Earnings and Age"</span>) <span class="sc">+</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name=</span><span class="st">"Age"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">34</span>),<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">25</span>,<span class="dv">34</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name=</span><span class="st">"Average Household Earnings (1000s)"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">80</span>),<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">80</span>,<span class="dv">10</span>))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div><p>There appears to be a quadratic relationship between <em>age</em> and <em>ahe</em>.</p>
+<p>Intuitively, at younger ages earnings rise faster as people initially progress through their career within their jobs and moving across jobs.<br>
+As they get older however, people settle into their jobs, and income growth stabilises as their labour markets stable.</p>
+</section>
+<section id="q2" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q2">Q2</h2>
+<p>Using sequential hypothesis testing (see slide 31 of lecture note 8) estimate 4 polynomial regressions, where <em>ahe</em> is the dependent variable in each regression, and where the sets of regressors in each respective regression are:</p>
+<ul>
+<li><em>age</em>, <em>age2</em>, <em>age3</em>, <em>age4</em>, <em>bachelor</em>, <em>female</em><br>
+</li>
+<li><em>age</em>, <em>age2</em>, <em>age3</em>, <em>bachelor</em>, <em>female</em><br>
+</li>
+<li><em>age</em>, <em>age2</em>, <em>bachelor</em>, <em>female</em><br>
+</li>
+<li><em>age</em>, <em>bachelor</em>, <em>female</em></li>
+</ul>
+<p>Report heteroskedasticity-robust standard errors for each regression above, as well as for every regression used for the remainder of the tutorial.<br>
+Please answer the following questions:</p>
+<ol type="a">
+<li><p>Using the sequential hypothesis testing method, which is the preferred polynomial regression model?</p></li>
+<li><p>Do any of the polynomial regressions appear to suffer from imperfect multicollinearity?</p></li>
+<li><p>Report the overall regression F-statistic for your preferred regression model and interpret the joint test result.</p></li>
+<li><p>Which test result confirms, statistically, that there is indeed a nonlinear relationship between ahe and age, holding fixed education and gender?</p></li>
+</ol>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>First run the following models:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Quartic earnings-age relationship, holding education and gender fixed</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>age2<span class="sc">+</span>age3<span class="sc">+</span>age4<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Cubic earnings-age relationship, holding education and gender fixed</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>age2<span class="sc">+</span>age3<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg2, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Quadratic earnings-age relationship, holding education and gender fixed</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>age2<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear earnings-age relationship, holding education and gender fixed</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then use stargazer to report the results</p>
+<blockquote class="blockquote">
+<p>you will see that an additional line has been inserted e.g.&nbsp;<code>omit.stats="f"</code>,which omits the overall (homoskedastic) F statistic from the stargazer output.</p>
+<p>I have also changed the order that the variables appear in the output so that the intercept term now appears at the top of the regression output using the <code>intercept.bottom-FALSE</code> option (this also means that you have to change the <code>covariate.labels</code> option so that “Constant” appears as the first variable label).</p>
+</blockquote>
+<p>This gives:</p>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg1, reg2, reg3, reg4, <span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1, se2, se3, se4),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">intercept.bottom =</span> <span class="cn">FALSE</span>,<span class="at">digits=</span><span class="dv">2</span>, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="st">"f"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"Annual Household Earnings (AHE)"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>( <span class="st">"Constant"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Squared"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Cubed"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Quartic"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Bachelor Degree"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Female"</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>             ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="4">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="4">
+Annual Household Earnings (AHE)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+1,525.86
+</td>
+<td>
+-98.28
+</td>
+<td>
+-19.79<sup>**</sup>
+</td>
+<td>
+1.28<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1,327.65)
+</td>
+<td>
+(105.11)
+</td>
+<td>
+(8.73)
+</td>
+<td>
+(0.77)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+-212.59
+</td>
+<td>
+10.04
+</td>
+<td>
+1.98<sup>***</sup>
+</td>
+<td>
+0.54<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(182.18)
+</td>
+<td>
+(10.81)
+</td>
+<td>
+(0.60)
+</td>
+<td>
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Squared
+</td>
+<td>
+11.10
+</td>
+<td>
+-0.30
+</td>
+<td>
+-0.02<sup>**</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(9.34)
+</td>
+<td>
+(0.37)
+</td>
+<td>
+(0.01)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Cubed
+</td>
+<td>
+-0.26
+</td>
+<td>
+0.003
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.21)
+</td>
+<td>
+(0.004)
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Quartic
+</td>
+<td>
+0.002
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.002)
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Bachelor Degree
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+8.98 (df = 15045)
+</td>
+<td>
+8.98 (df = 15046)
+</td>
+<td>
+8.98 (df = 15047)
+</td>
+<td>
+8.99 (df = 15048)
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="4" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  ">
+<caption style="caption-side: top; text-align: center;">Sequential Hypothesis Testing</caption><colgroup><col><col><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(1)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(2)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(3)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(4)</th></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(Intercept)</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">1525.857&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-98.282&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-19.792 *&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">1.279&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(1350.234)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(106.733)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(8.867)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.782)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">age</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-212.591&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">10.038&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">1.979 **&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">0.541 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(184.829)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(10.938)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.603)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.026)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">age2</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">11.100&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-0.299&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-0.024 *&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(9.454)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.372)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.010)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">age3</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-0.255&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.003&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.214)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.004)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">age4</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.002&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.002)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">bachelor</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">7.751 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">7.748 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">7.749 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">7.753 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.148)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.148)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.148)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.148)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">female</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-3.530 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-3.527 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-3.526 ***</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(0, 255, 0); font-weight: normal;">-3.525 ***</td></tr>
+<tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.149)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.149)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.149)&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">(0.149)&nbsp;&nbsp;&nbsp;</td></tr>
+<tr>
+<th colspan="5" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-style: italic;"> *** p &lt; 0.001;  ** p &lt; 0.01;  * p &lt; 0.05.</th></tr>
+</tbody></table>
+
+</div></div></div>
+<p><br> <br></p>
+<p>To carry out sequential hypothesis testing start at the highest order polynomial in this case <span class="math inline">\(\text{age}^4\)</span> and determine whether this parameter is significant (Model 1); if not, drop this variable and rerun the regression (Model 2).</p>
+<p>Here the parameter <span class="math inline">\(age^3\)</span> is not significant; so drop this variable and rerun the regression.</p>
+<p>In Model3 we see that <span class="math inline">\(age^2\)</span> is significant so stop at this point - the quadratic model is our preferred specification .</p>
+<ol type="a">
+<li>So, sequential hypothesis testing suggests using a quadratic model as the cubic and quartic regressors in <em>age</em> are statistically insignificant</li>
+</ol>
+<p>To obtain the HC F statistic that tests for the overall significance of the model use the following (to obtain a HAC F statistic):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Overall regression F-statistic for the quadratic regression, </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># accounting for heteroskedasticity</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg3,<span class="fu">c</span>(<span class="st">"age=0"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"age2=0"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"bachelor=0"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"female=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg3, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Linear hypothesis test:
+age = 0
+age2 = 0
+bachelor = 0
+female = 0
+
+Model 1: restricted model
+Model 2: ahe ~ age + age2 + bachelor + female
+
+Note: Coefficient covariance matrix supplied.
+
+  Res.Df Df      F    Pr(&gt;F)    
+1  15051                        
+2  15047  4 784.73 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>The overall HC F-statistic for the quadratic regression is F=784.73 with df1=4 and df2=15047, and associated p-value&lt;0.00001.<br>
+The test result implies that we reject the null at the 1% level of significance that the model has no ability to explain variation in ahe. In other words, the quadratic regression is useful, statistically, for explaining <em>ahe</em>.</li>
+</ol>
+<!-- -->
+<ol start="3" type="a">
+<li>There’s clearly an imperfect collinearity problem with the cubic and quartic regressions.<br>
+This can be seen by how the standard errors blow up on the regression coefficients for <em>age</em>, <em>age2</em>, <em>age3</em> and <em>age4</em> when either <em>age3</em> or <em>age4</em> is included in the regression.</li>
+</ol>
+<ul>
+<li><p>This is a very common problem to be aware of when formulating and estimating polynomial regressions: higher-order polynomials can lead to imperfect multicollinearity problems when there is not sufficient curvature in the relationship of interest (in our case <em>age</em> and <em>ahe</em>) for the data to allow one to estimate a higher-order polynomial (like cubic or quartic in our case).</p></li>
+<li><p>Also notable is how the quartic regression coefficients themselves appear to explode compared to the cubic, quadratic and linear models.<br>
+This reflects the fact that the collinearity problem is so severe with the quartic model is basically bordering on a perfect collinearity problem, and is causing the OLS estimator to completely break down.</p></li>
+<li><p>In contrast, there is no problem of imperfect multicollinearity with the quadratic and linear models.</p></li>
+</ul>
+<ol start="4" type="a">
+<li>The test statistic is</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute standard errors for reg3 based on the reg_output.txt file</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## to obtain the t-statistic on Age Squared for the test of nonlinearity in the relationship</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## between AHE and Age (relevant t-stat in the results is -2.3960)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg3, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg3, <span class="st">"HC1"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+              Estimate Std. Error  t value  Pr(&gt;|t|)    
+(Intercept) -19.792496   8.731825  -2.2667 0.0234222 *  
+age           1.979367   0.597622   3.3121 0.0009283 ***
+age2         -0.024318   0.010149  -2.3960 0.0165856 *  
+bachelor      7.749312   0.152421  50.8415 &lt; 2.2e-16 ***
+female       -3.526058   0.145316 -24.2648 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The t-statistic and p-value on the <em>age2</em> coefficient in the quadratic reject are -2.40 and 0.017, respectively.<br>
+That is, we reject the null that the <em>age2</em> coefficient equals 0 at the 5% level of significance. This implies we reject the null of no nonlinearity in the relationship between <em>age</em> on <em>ahe</em>.</p>
+</section>
+<section id="q3" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="q3">Q3</h2>
+<p>Run another nonlinear regression with the following set of regressors, without any other control variables:</p>
+<ul>
+<li><em>age</em>, <em>age2</em></li>
+</ul>
+<p>Compare your regression results to the results that you found in question 2 where you estimate a quadratic regression model where bachelor and females are included as controls.<br>
+Is it important to include <em>bachelor</em> and <em>female</em> as control variables in estimating the nonlinear relationship between <em>ahe</em> and <em>age</em>.</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following R script chunk given in Canvas;</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Quadratic earnings-age relationship, holding education and gender fixed</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>reg5<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cov5<span class="ot">=</span><span class="fu">vcovHC</span>(reg5, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>se5<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov5))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Quadratic earnings-age relationship, without controling for education or gender</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>age2,<span class="at">data=</span>mydata1)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>cov6<span class="ot">=</span><span class="fu">vcovHC</span>(reg6, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>se6<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Output the results to a HTML file using stargazer:<br>
+</p>
+<div class="cell column-page">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg1,reg2,reg3,reg4, reg5, <span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1,se2,se3,se4, se5),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">2</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="st">"f"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"Annual Household Earnings (AHE)"</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Age"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Squared"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Cubed"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Age Quartic"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Bachelor Degree"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Female"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+Annual Household Earnings (AHE)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+<td>
+(5)
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+-212.59
+</td>
+<td>
+10.04
+</td>
+<td>
+1.98<sup>***</sup>
+</td>
+<td>
+0.54<sup>***</sup>
+</td>
+<td>
+2.24<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(182.18)
+</td>
+<td>
+(10.81)
+</td>
+<td>
+(0.60)
+</td>
+<td>
+(0.03)
+</td>
+<td>
+(0.66)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Squared
+</td>
+<td>
+11.10
+</td>
+<td>
+-0.30
+</td>
+<td>
+-0.02<sup>**</sup>
+</td>
+<td>
+</td>
+<td>
+-0.03<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(9.34)
+</td>
+<td>
+(0.37)
+</td>
+<td>
+(0.01)
+</td>
+<td>
+</td>
+<td>
+(0.01)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Cubed
+</td>
+<td>
+-0.26
+</td>
+<td>
+0.003
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.21)
+</td>
+<td>
+(0.004)
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age Quartic
+</td>
+<td>
+0.002
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.002)
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Bachelor Degree
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+7.75<sup>***</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+-3.53<sup>***</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+(0.15)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+1,525.86
+</td>
+<td>
+-98.28
+</td>
+<td>
+-19.79<sup>**</sup>
+</td>
+<td>
+1.28<sup>*</sup>
+</td>
+<td>
+-21.05<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1,327.65)
+</td>
+<td>
+(105.11)
+</td>
+<td>
+(8.73)
+</td>
+<td>
+(0.77)
+</td>
+<td>
+(9.57)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+8.98 (df = 15045)
+</td>
+<td>
+8.98 (df = 15046)
+</td>
+<td>
+8.98 (df = 15047)
+</td>
+<td>
+8.99 (df = 15048)
+</td>
+<td>
+9.86 (df = 15049)
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="5" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div>
+<ul>
+<li><p>There are large changes in the coefficient on <em>age</em> (1.979 vs.&nbsp;2.242), and on <em>age2</em> (-0.024 vs.&nbsp;-0.029).</p></li>
+<li><p>We also see a substantial rise in the R-squared in column 3 to 0.188 from 0.021, once bachelor and female are controlled for.</p></li>
+<li><p>These large changes in the coefficients and R-Squared’s suggests that the quadratic regression with <em>bachelor</em> and <em>female</em> as controls is the most appropriate model for the age on ahe relationship.</p></li>
+</ul>
+</section>
+<section id="q4" class="level2">
+<h2 class="anchored" data-anchor-id="q4">Q4</h2>
+<p>Using an estimated quadratic regression model with <em>ahe</em> as the dependent variable and <em>age</em>, <em>age2</em>, <em>bachelor</em>, and <em>female</em> as regressors, interpret two separate partial effects of increasing <em>age</em> from 25 to 28, and from 28 to 31, using only the estimated regression coefficient on <em>age</em>, and ignoring the regression coefficient on <em>age2</em>.<br>
+Are the two (incorrect) partial effects the same?</p>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>If we only focused on the coefficient on age for estimating the partial effect of increasing <strong><em>age</em></strong> from 25 to 28, and from 28 to 31 on <em>ahe</em> we would obtain a partial effect of <span class="math inline">\(1.979 \times 3 \times \$1000 = \$5937\)</span> increase in earnings from either change.<br>
+The incorrect partial effects are the same because working with a linear model assumes the same partial effects everywhere, no matter the level of age.</p>
+</section>
+<section id="q5" class="level2">
+<h2 class="anchored" data-anchor-id="q5">Q5</h2>
+<p>Using the quadratic regression model you estimated in question 4, compute the nonlinear partial effects on <em>ahe</em> from:<br>
+- increasing age from 25 to 28<br>
+- increasing age from 28 to 31<br>
+- increasing age from 31 to 35</p>
+<p>Use the general approach described in slides 16 to 18 of lecture note 8 for your calculations.</p>
+<ul>
+<li>Contrast your partial effects from increasing age from 25 to 28 and from 28 to 31 to the (incorrect) partial effects you computed in question 4. Why do your results differ in questions 4. and 5.?<br>
+</li>
+<li>Interpret and contrast each of the 3 (correct) partial effects you have computed. Are they larger or smaller in magnitude with higher levels of age?</li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Here we have a little more coding required:</p>
+<p>First run this,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run quadratic regression with controls for computing partial effects</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>reg<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>age2<span class="sc">+</span>bachelor<span class="sc">+</span>female,<span class="at">data=</span>mydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, create two new data frames for <em>age</em>=25 and <em>age</em>=28 for computing the partial effect of going from <em>age</em>=25 and <em>age</em>=28 years old.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=25 </span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>newdata1<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">25</span>,<span class="at">age2=</span><span class="dv">25</span><span class="sc">*</span><span class="dv">25</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=28 </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>newdata2<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">28</span>,<span class="at">age2=</span><span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=25 based on 'reg' model and values</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2, bachelor, and female in newdata1</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>ahe1<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata1)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=28 based on 'reg' model and values</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2, bachelor, and female in newdata2</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>ahe2<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata2)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co"># then </span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute partial effect on ahe from changing from age=25 to age=28</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>dahe<span class="ot">=</span>ahe2<span class="sc">-</span>ahe1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Running these chunks you should get to the following:</p>
+<ul>
+<li>the results of running the regression above<br>
+</li>
+<li>creation of 2 data frames (one for 25 y.o, another for 28 y.o.)<br>
+</li>
+<li>using the <strong>predict</strong> function to obtain the respective predicted values for <em>age</em><br>
+</li>
+<li>then calculate the partial effect (to print out the results you can use the <strong>paste</strong> command - this was used in the <span class="math inline">\(R\)</span> script for tutorial 3 - see lines 356-357 in <strong>tute3.R</strong> for example <span class="math inline">\(\rightarrow\)</span> this highlights the need to have a look at the code provided each tute.</li>
+</ul>
+<p>So, don’t just hit the <strong>Source</strong> button in <span class="math inline">\(R\)</span> Studio when running the <span class="math inline">\(R\)</span> script given on Canvas , rather try to work through the code that Aaron has provided each week.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=25 </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>newdata1<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">25</span>,<span class="at">age2=</span><span class="dv">25</span><span class="sc">*</span><span class="dv">25</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=28 </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>newdata2<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">28</span>,<span class="at">age2=</span><span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=25 based on 'reg' model and values</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2,  bachelor, and female in newdata1</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>ahe1<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata1)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"the predicted value of ahe for age=25 based on 'reg' model and values of age, age2, bachelor, and female in newdata1"</span> ,ahe1)   </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "the predicted value of ahe for age=25 based on 'reg' model and values of age, age2, bachelor, and female in newdata1 18.7162991368223"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=28 based on 'reg' model and values</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2, bachelor, and female in newdata2</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>ahe2<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata2)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"the predicted value of ahe for age=28 based on 'reg' model and values of age, age2, bachelor, and female in newdata1"</span> ,ahe2)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "the predicted value of ahe for age=28 based on 'reg' model and values of age, age2, bachelor, and female in newdata1 20.7878661295068"</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># then </span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute partial effect on ahe from changing from age=25 to age=28</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>dahe<span class="ot">=</span>ahe2<span class="sc">-</span>ahe1</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"partial effect on ahe from changing from age=25 to age=28"</span>, dahe)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "partial effect on ahe from changing from age=25 to age=28 2.07156699268443"</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>dahe</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="do">##        1 </span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 2.071567</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then work out the partial effect for 28 to 31 years olds:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=25 </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>newdata3<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">31</span>,<span class="at">age2=</span><span class="dv">31</span><span class="sc">*</span><span class="dv">31</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=25 based on 'reg' model and values</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2,  bachelor, and female in newdata3</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>ahe3<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata3)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"the predicted value of ahe for age=25 based on 'reg' model and values of age, age2, bachelor, and female in newdata3"</span> ,ahe3)   </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "the predicted value of ahe for age=25 based on 'reg' model and values of age, age2, bachelor, and female in newdata3 22.4217121233129"</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># then </span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute partial effect on ahe from changing from age=28 to age=31</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>dahe2<span class="ot">=</span>ahe3<span class="sc">-</span>ahe2</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"partial effect on ahe from changing from age=25 to age=28"</span>, dahe)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "partial effect on ahe from changing from age=25 to age=28 2.07156699268443"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and the partial effect for 31 to 35 year olds:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Construct dataframe for predicting ahe based on 'reg' model for age=25 </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>newdata4<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">35</span>,<span class="at">age2=</span><span class="dv">35</span><span class="sc">*</span><span class="dv">35</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the predicted value of ahe for age=25 based on 'reg' model and values</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## of age, age2,  bachelor, and female in newdata3</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ahe4<span class="ot">=</span><span class="fu">predict</span>(reg, <span class="at">newdata=</span>newdata4)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"the predicted value of ahe for age=35 based on 'reg' model and values of age, age2, bachelor, and female in newdata3"</span> ,ahe4)   </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "the predicted value of ahe for age=35 based on 'reg' model and values of age, age2, bachelor, and female in newdata3 23.9192741167994"</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># then </span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute partial effect on ahe from changing from age=28 to age=31</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>dahe3<span class="ot">=</span>ahe4<span class="sc">-</span>ahe3</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"partial effect on ahe from changing from age=31 to age=35"</span>, dahe3)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "partial effect on ahe from changing from age=31 to age=35 1.49756199348645"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Consistent with the graphs we saw in Question 1 (particularly the <strong>ggplot()</strong> scatter plot using the quadratic model) we see a positive partial effect that is diminishing with larger values of <em>age</em>. This also lines up with our parameter estimates in the quadratic model where the estimated coefficient on <em>age2</em> is negative (indicating a concave function).</p>
+<p><span class="math display">\[
+\Delta \widehat{Y} = \widehat{f} \left( X_1 + \Delta X_1,X_2, \dots , X_k \right)-\widehat{f} \left(X_1,X_2, \dots, X_k  \right)
+\]</span></p>
+<p>where <span class="math inline">\(\widehat{f} \left(X_1,X_2, \dots, X_k \right)\)</span></p>
+<p>is the estimated nonlinear model.</p>
+<p>For example, we get the following partial effect for a change in <em>ahe</em> from 25 to 28 years of age as:</p>
+<p><span class="math display">\[\begin{align*}\Delta \widehat{ahe} &amp; - \left( -19.7925 + 1.97937 \times 28 - 0.02432 \times 28^2 + 7.748 - 3.52606 \right)\\               &amp; = - \left(  -19.7925 + 1.97937 \times 25 - 0.02432 \times 25^2 + 7.748 - 3.52606   \right) \\               &amp; = 2.07123\end{align*}\]</span></p>
+</section>
+<section id="q6" class="level2">
+<h2 class="anchored" data-anchor-id="q6">Q6</h2>
+<p>Compute the standard errors and 95% confidence intervals (CIs) for each of the three partial effects you computed in question 5.<br>
+Use the general approach described in slides 19-21 of lecture note 8 for your calculations.</p>
+<ul>
+<li><p>Report the standard errors and briefly interpret each of the 95% CIs</p></li>
+<li><p>Are the 95% CIs the same width around each of the three partial effects that you calculated?</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>Run the following <strong>Code</strong> to obtain the CI for the partial effect for 25 to 28 year olds. To obtain the CIs for the partial effects associated with the other two age groups you will have to change the code (please see the <span class="math inline">\(R\)</span> script provided in the tute).<br>
+The F test for the 28 to 31 year olds is <span class="math inline">\(H_0: 3 \hat{\beta_1}+177\hat{\beta_2}\)</span> and for the 31 to 35 year od group <span class="math inline">\(H_0:4\hat{\beta_1}+264\hat{\beta_2}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tutorial Exercises (Question 5.)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You will have to change the code on line 220 to do parts b. and c.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a. age changes from 25 (newdata1) to 28 (newdata2): null is 3*age+159*age2=0  </span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">NOTE</span><span class="co">: (how tute9.R is originally set-up, for question 6 part a. with age=28 and age=31)</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># b. age changes from 28 (newdata1) to 31 (newdata2): null is 3*age+177*age2=0 </span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># c. age changes from 31 (newdata1) to 35 (newdata2): null is 4*age+264*age2=0 </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Fstatistic for the joint test of the null that dahe=0</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## change to 3*age+177*age2=0 for question 6 part b. </span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">## change to 4*age+264*age2=0 for question 6 part c. </span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>Ftest<span class="ot">=</span><span class="fu">linearHypothesis</span>(reg,<span class="fu">c</span>(<span class="st">"3*age+159*age2=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="st">"HC1"</span>))</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>Ftest</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear hypothesis test:</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 age  + 159 age2 = 0</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1: restricted model</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2: ahe ~ age + age2 + bachelor + female</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Note: Coefficient covariance matrix supplied.</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="do">##   Res.Df Df      F    Pr(&gt;F)    </span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  15048                        </span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  15047  1 114.51 &lt; 2.2e-16 ***</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Recover the Fstat from the joint test results in Ftest</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>Fstat<span class="ot">=</span>Ftest[<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the standard error for the partial effect we computed, dahe </span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co"># (see slide 22 of Lecture note 8) </span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>se_dahe<span class="ot">=</span><span class="fu">abs</span>(dahe)<span class="sc">/</span><span class="fu">sqrt</span>(Fstat)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for the partial effect we computed, dahe</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>dahe_ci95L<span class="ot">=</span>dahe<span class="sc">-</span>se_dahe<span class="sc">*</span><span class="fl">1.96</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>dahe_ci95H<span class="ot">=</span>dahe<span class="sc">+</span>se_dahe<span class="sc">*</span><span class="fl">1.96</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>dahe_ciwidth<span class="ot">=</span>dahe_ci95H<span class="sc">-</span>dahe_ci95L</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="do">## Outputting results</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"partial effect: %f"</span>, dahe)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "partial effect: 2.071567"</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"SE of partial effect: %f"</span>, se_dahe)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "SE of partial effect: 0.193589"</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI lower bound for partial effect: %f"</span>, dahe_ci95L)</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "95 CI lower bound for partial effect: 1.692133"</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI upper bound for partial effect: %f"</span>, dahe_ci95H)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "95 CI upper bound for partial effect: 2.451001"</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Width of 95 CI for partial effect: %f"</span>, dahe_ciwidth)</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "Width of 95 CI for partial effect: 0.758867"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Standard errors and 95% CIs for the partial effect on <em>age</em> from</p>
+<ol type="i">
+<li>increasing <em>age</em> from 25 to 28 years</li>
+</ol>
+<ul>
+<li>se=0.194 <span class="math inline">\(\Rightarrow\)</span> $194</li>
+<li>95% CI = [1.692, 2.451] <span class="math inline">\(\Rightarrow\)</span> [$1692,$2451]</li>
+<li>95% CI width = 0.759 <span class="math inline">\(\Rightarrow\)</span> $759</li>
+</ul>
+<ol start="2" type="i">
+<li>increasing <em>age</em> from 28 to 31 years</li>
+</ol>
+<ul>
+<li>se=0.078 <span class="math inline">\(\Rightarrow\)</span> $784</li>
+<li>95% CI = [1.482, 1.786] <span class="math inline">\(\Rightarrow\)</span> [$1482,$1786]</li>
+<li>95% CI width = 0.304 <span class="math inline">\(\Rightarrow\)</span> $304</li>
+</ul>
+<ol start="3" type="i">
+<li>increasing <em>age</em> from 31 to 35 years</li>
+</ol>
+<ul>
+<li>se=0.309 <span class="math inline">\(\Rightarrow\)</span> $309</li>
+<li>95% CI = [0.892, 2.103] <span class="math inline">\(\Rightarrow\)</span> [$892,$2103]</li>
+<li>95% CI width = 1.211 <span class="math inline">\(\Rightarrow\)</span> $1211</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<p>The 95% CIs indeed differ across the three partial effects. This again is a function of the non-linearity in the regression model.</p>
+<p>The confidence intervals are tighter around the partial effect for the change in <em>age</em> from 28 to 31 years relative to the other partial effects because there are more data points in the sample for this age range relative to the 25 to 28 year group and the 31 to 35 year old group.</p>
+<p>The method used here is the same as that Lecture Note 8 Slides 22-28.</p>
+<p>For example, to obtain the required standard error in the estimation of the 95% CI for the partial effect of <em>age</em> between 25 to 28 years, use</p>
+<p><span class="math display">\[\begin{align*}
+\Delta \widehat{ahe}_{i} &amp;=\left({\beta}_{0}+{\beta}_{1}28+{\beta}_{2}28^{2}+{\beta}_{3}bachelor_{i}+{\beta}_{4}female_{i}\right)\\&amp;-\left({\beta}_{0}+{\beta}_{1}25+{\beta}_{2}25^{2}+{\beta}_{3}bachelor_{i}+{\beta}_{4}female_{i}\right) \\ &amp;={\beta}_{1}28+{\beta}_{2}28^{2}-{\beta}_{1}25-{\beta}_{2}25^{2} \\ &amp;={\beta}_{1}28+{\beta}_{2}784-{\beta}_{1}25-{\beta}_{2}625 \\ &amp;=3{\beta}_{1}+159{\beta}_{2} \end{align*}\]</span></p>
+<p>then test</p>
+<p><span class="math inline">\(H_0: 3{\beta}{1}+159{\beta}{2}=0\)</span></p>
+<p>obtain the F statistic, and then compute:</p>
+<p><span class="math inline">\(SE(\Delta \widehat{ahe}_{i})=\frac{|\Delta \widehat{ahe}_{i}|}{\sqrt{F}}\)</span></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
