@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ECOM20001 Semester 1 2025   Tutorial 10   Logarithmic Regression and Interactions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style_rb.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">ECOM20001 Semester 1 2025 <br> Tutorial 10 <br> Logarithmic Regression and Interactions</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#logarithmic-regressions" id="toc-logarithmic-regressions" class="nav-link" data-scroll-target="#logarithmic-regressions">Logarithmic Regressions</a>
+  <ul class="collapse">
+  <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
+  <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
+  </ul></li>
+  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions">Interactions</a>
+  <ul class="collapse">
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Please create a Tutorial10 folder on your computer, and then go to the LMS site for ECOM 20001 and download the following files into the Tutorial_10 folder:</p>
+<ul>
+<li>tute10.R</li>
+<li>tute10_cps.csv</li>
+</ul>
+<p>The first file is the R code for tutorial 10, the second file is the .csv file that contains the dataset for the tutorial.<br>
+The dataset has the following 5 variables:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>year</em></td>
+<td>year in which an individual was randomly surveyed; either 1992 or 2012</td>
+</tr>
+<tr class="even">
+<td><em>ahe</em></td>
+<td>individual’s average hourly earnings (in real terms, 2012=100)</td>
+</tr>
+<tr class="odd">
+<td><em>bachelor</em></td>
+<td>equals one if an individual has a bachelor degree, 0 otherwise</td>
+</tr>
+<tr class="even">
+<td><em>female</em></td>
+<td>equals one if an individual is female, 0 otherwise</td>
+</tr>
+<tr class="odd">
+<td><em>age</em></td>
+<td>age of the individual at the time of the survey</td>
+</tr>
+</tbody>
+</table>
+<p>In total, the dataset contains this information for 15,052 individuals in the U.S.</p>
+<p>With the R file downloaded into your Tutorial_10 folder, you are ready to proceed with the tutorial.<br>
+Please go to the tute10.R file to continue with the tutorial.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mydata1<span class="ot">=</span><span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"tute10_cps.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="logarithmic-regressions" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="logarithmic-regressions">Logarithmic Regressions</h2>
+<section id="q1" class="level3">
+<h3 class="anchored" data-anchor-id="q1">Q1</h3>
+<p>Construct three new logarithmic variables using the dataset:</p>
+<ul>
+<li><em>log(ahe)</em> = logarithm of <em>ahe</em><br>
+</li>
+<li><em>log(age)</em> = logarithm of <em>age</em><br>
+</li>
+<li><em>d1992</em> = dummy variable equals 1 if the year is 1992, and is 0 otherwise</li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>It is much easier to create the polynomial variables first e.g.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create logarthimic variables for ahe and age</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>log_ahe<span class="ot">=</span><span class="fu">log</span>(mydata1<span class="sc">$</span>ahe)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>log_age<span class="ot">=</span><span class="fu">log</span>(mydata1<span class="sc">$</span>age)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The as.numeric() command can be used to create dummy variables in R</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Create year of sample dummy variables for the regression</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>d1992<span class="ot">=</span><span class="fu">as.numeric</span>(mydata1<span class="sc">$</span>year<span class="sc">==</span><span class="dv">1992</span>)  <span class="co">#d1992 is a dummy variable that equals one if year=1992, and 0 otherwise</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>d2012<span class="ot">=</span><span class="fu">as.numeric</span>(mydata1<span class="sc">$</span>year<span class="sc">==</span><span class="dv">2012</span>)  <span class="co">#d2012 is a dummy variable that equals one if year=2012, and 0 otherwise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="q2" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q2">Q2</h3>
+<p>Run the following 4 regressions and interpret the sign, magnitude and statistical significance of any independent variables that involve <em>age</em>:</p>
+<ul>
+<li>Regression 1: Linear
+<ul>
+<li>Dependent variable: <em>ahe</em><br>
+</li>
+<li>Independent variables: <em>age</em>, <em>bachelor</em>, <em>female</em>, <em>d1992</em><br>
+</li>
+</ul></li>
+<li>Regression 2: Linear-Log
+<ul>
+<li>Dependent variable: <em>ahe</em><br>
+</li>
+<li>Independent variables: <em>log_age</em>, <em>bachelor</em>, <em>female</em>, <em>d1992</em><br>
+</li>
+</ul></li>
+<li>Regression 3: Log-Linear
+<ul>
+<li>Dependent variable: <em>log_ahe</em><br>
+</li>
+<li>Independent variables: <em>age</em>, <em>bachelor</em>, <em>female</em>, <em>d1992</em><br>
+</li>
+</ul></li>
+<li>Regression 4: Log-Log
+<ul>
+<li>Dependent variable: <em>log_ahe</em><br>
+</li>
+<li>Independent variables: <em>log_age</em>, <em>bachelor</em>, <em>female</em>, <em>d1992</em></li>
+</ul></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>First estimate the models (the code for these is in the <span class="math inline">\(R\)</span> script provided in Canvas)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of ahe on age + controls</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of ahe on log(age) + controls</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>log_age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg2, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of log(ahe) on age + controls</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(log_ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of log(ahe) on log(age) + controls</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(log_ahe<span class="sc">~</span>log_age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Then use <strong>stargazer</strong> to tabulate the results</p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="4">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+AHE
+</td>
+<td colspan="2">
+Log(AHE)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+0.541<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+0.026<sup>***</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.026)
+</td>
+<td>
+</td>
+<td>
+(0.001)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Log(Age)
+</td>
+<td>
+</td>
+<td>
+15.951<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+0.780<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.759)
+</td>
+<td>
+</td>
+<td>
+(0.039)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Bachelor Degree
+</td>
+<td>
+7.796<sup>***</sup>
+</td>
+<td>
+7.794<sup>***</sup>
+</td>
+<td>
+0.411<sup>***</sup>
+</td>
+<td>
+0.410<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.153)
+</td>
+<td>
+(0.153)
+</td>
+<td>
+(0.008)
+</td>
+<td>
+(0.008)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female
+</td>
+<td>
+-3.530<sup>***</sup>
+</td>
+<td>
+-3.530<sup>***</sup>
+</td>
+<td>
+-0.178<sup>***</sup>
+</td>
+<td>
+-0.178<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.145)
+</td>
+<td>
+(0.145)
+</td>
+<td>
+(0.008)
+</td>
+<td>
+(0.008)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+1992 Dummy
+</td>
+<td>
+0.294<sup>**</sup>
+</td>
+<td>
+0.292<sup>**</sup>
+</td>
+<td>
+0.038<sup>***</sup>
+</td>
+<td>
+0.038<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.147)
+</td>
+<td>
+(0.147)
+</td>
+<td>
+(0.008)
+</td>
+<td>
+(0.008)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+1.124
+</td>
+<td>
+-36.834<sup>***</sup>
+</td>
+<td>
+1.924<sup>***</sup>
+</td>
+<td>
+0.066
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.777)
+</td>
+<td>
+(2.567)
+</td>
+<td>
+(0.041)
+</td>
+<td>
+(0.134)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.188
+</td>
+<td>
+0.188
+</td>
+<td>
+0.189
+</td>
+<td>
+0.190
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.187
+</td>
+<td>
+0.188
+</td>
+<td>
+0.189
+</td>
+<td>
+0.189
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error (df = 15047)
+</td>
+<td>
+8.985
+</td>
+<td>
+8.984
+</td>
+<td>
+0.462
+</td>
+<td>
+0.462
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic (df = 4; 15047)
+</td>
+<td>
+869.114<sup>***</sup>
+</td>
+<td>
+870.195<sup>***</sup>
+</td>
+<td>
+879.134<sup>***</sup>
+</td>
+<td>
+880.735<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="4" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div></div><p>Interpreting the age-related coefficients in the columns:</p>
+<ul>
+<li><p>Column (1), <strong>Linear-Linear</strong>: a one year (<span class="math inline">\(\color{blue}{\text{unit}}\)</span>) increase in age is associated with 0.54 or $0.54 (<span class="math inline">\(\color{blue}{\text{unit}}\)</span>) increase in average hourly earnings, <em>ahe</em>, a relationship that is statistically significant at the 5% level.</p></li>
+<li><p>Column (2), <strong>Linear-Log</strong>: a one <span class="math inline">\(\color{green}{\text{percent}}\)</span> increase in age is associated with a 0.01 <span class="math inline">\(\times\)</span> 15.951 = $0.16 (<span class="math inline">\(\color{blue}{\text{unit}}\)</span>) increase in average hourly earnings, <em>ahe</em>, a relationship that is statistically significant at the 5% level.</p></li>
+<li><p>Column (3), <strong>Log-Linear</strong>: a one year (<span class="math inline">\(\color{blue}{\text{unit}}\)</span>) increase in age is associated with a 100 <span class="math inline">\(\times\)</span> 0.026 = 2.6 <span class="math inline">\(\color{green}{\text{percent}}\)</span> increase in average hourly earnings, <em>ahe</em>, a relationship that is statistically significant at the 5% level.</p></li>
+<li><p>Column (4), <strong>Log-Log</strong>: a one <span class="math inline">\(\color{green}{\text{percent}}\)</span> increase in age is associated with a 0.78 <span class="math inline">\(\color{green}{\text{percent}}\)</span> increase in average hourly earnings, <em>ahe</em>, a relationship that is statistically significant at the 5% level.<br>
+That is, the <strong><em>elasticity</em></strong> of average hourly earnings <em>ahe</em> with respect to age is 0.78.</p></li>
+</ul>
+</section>
+</section>
+<section id="interactions" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="interactions">Interactions</h2>
+<section id="q3" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q3">Q3</h3>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="tip-example" class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Data Transformations
+</div>
+</div>
+<div id="tip-example" class="callout-body-container callout-body">
+<p>You’ll see we have been creating polynomial variables first and then using these in our model statements.</p>
+<p>You could incorporate polynomial terms directly into the equation specification however it is not as easy as just including <span class="math inline">\(x^2\)</span> because R does not recognise this as a squared term e.g.&nbsp;you would need to use <code>I(x^2)</code>; plus inclusion of this polynomial term directly does not create a separate variable (which may be of use later).</p>
+<p>The same goes for interactions.</p>
+<p>It is possible to include a term e.g.&nbsp;<code>x1*x2</code> directly in the model specification however you again have to be careful using this (depending on how you set it up the output may not be what you expect).</p>
+<p>So better in both cases to create these variables first and use them in the model specification where required.</p>
+</div>
+</div>
+</div></div><p>Construct two new interactive variables using the dataset:</p>
+<ul>
+<li><em>female_age</em> = <em>female</em> x <em>age</em></li>
+<li><em>female_bachelor</em> = <em>female</em> x <em>bachelor</em></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>see the <strong>Code</strong> provided to create the interaction terms</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create interactive variables involving female, age, and bachelor</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>female_age<span class="ot">=</span>mydata1<span class="sc">$</span>female<span class="sc">*</span>mydata1<span class="sc">$</span>age</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mydata1<span class="sc">$</span>female_bachelor<span class="ot">=</span>mydata1<span class="sc">$</span>female<span class="sc">*</span>mydata1<span class="sc">$</span>bachelor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="q4" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="q4">Q4</h3>
+<p>Run the following 2 regressions, comment on the statistical significance of the coefficients involving age, female, or bachelor, and compute the following partial effects involving age, female, or bachelor:</p>
+<p>Regression 5:</p>
+<ul>
+<li>Dependent variable: <em>ahe</em><br>
+</li>
+<li>Independent variables: <em>age</em>, <em>bachelor</em>, <em>female</em>, <em>female_age</em>, <em>d1992</em></li>
+</ul>
+<p>Compute the following partial effects:</p>
+<ul>
+<li>partial effect of being one year older if male</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>partial effect of being one year older if female</p></li>
+<li><p>partial effect of being female if 25 years old</p></li>
+<li><p>partial effect of being female if 30 years old</p></li>
+<li><p>partial effect of having a bachelors degree</p></li>
+</ul>
+<p>Regression 6:</p>
+<ul>
+<li>Dependent variable: <em>ahe</em><br>
+</li>
+<li>Independent variables: <em>age</em>, <em>bachelor</em>, <em>female</em>, <em>female_bachelor</em>, <em>d1992</em></li>
+</ul>
+<p>Compute the following partial effects:</p>
+<ul>
+<li><p>partial effect of being one year older</p></li>
+<li><p>partial effect of having a bachelor’s degree if female</p></li>
+<li><p>partial effect of having a bachelor’s degree if male</p></li>
+<li><p>partial effect of being female if you have a bachelor’s degree</p></li>
+<li><p>partial effect of being female if you don;t have a bachelor’s degree</p></li>
+</ul>
+<p><span style="background-color:lightblue;"><strong>Solution</strong></span></p>
+<p>see the <strong>Code</strong> to run Regression 5 and 6</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of ahe on age, allowing for differential gender effects with age, + controls</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reg5<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>female_age<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cov5<span class="ot">=</span><span class="fu">vcovHC</span>(reg5, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>se5<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov5))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of ahe on age, allowing for differential gender effects with bachelor, + controls</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(ahe<span class="sc">~</span>age<span class="sc">+</span>bachelor<span class="sc">+</span>female<span class="sc">+</span>female_bachelor<span class="sc">+</span>d1992,<span class="at">data=</span>mydata1)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>cov6<span class="ot">=</span><span class="fu">vcovHC</span>(reg6, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>se6<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then tabulate the results using stargazer (see <strong>Code</strong>)</p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression output table</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Discuss the results from stargazer() as asked in the question on the assignment sheet.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(reg5, reg6, <span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se5, se6),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">3</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"Reg 5"</span>, <span class="st">"Reg 6"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels=</span><span class="fu">c</span>(<span class="st">"AHE"</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Age"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Bachelor Degree"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Female"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Female x Age"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Female x Bachelor"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"1992 Dummy"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+AHE
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Reg 5
+</td>
+<td>
+Reg 6
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Age
+</td>
+<td>
+0.648<sup>***</sup>
+</td>
+<td>
+0.541<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.036)
+</td>
+<td>
+(0.026)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Bachelor Degree
+</td>
+<td>
+7.773<sup>***</sup>
+</td>
+<td>
+7.769<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.153)
+</td>
+<td>
+(0.222)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female
+</td>
+<td>
+3.977<sup>***</sup>
+</td>
+<td>
+-3.560<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.501)
+</td>
+<td>
+(0.162)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female x Age
+</td>
+<td>
+-0.253<sup>***</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.051)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Female x Bachelor
+</td>
+<td>
+</td>
+<td>
+0.062
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.296)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+1992 Dummy
+</td>
+<td>
+0.292<sup>**</sup>
+</td>
+<td>
+0.295<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.147)
+</td>
+<td>
+(0.147)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-2.051<sup>*</sup>
+</td>
+<td>
+1.129
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.080)
+</td>
+<td>
+(0.778)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+15,052
+</td>
+<td>
+15,052
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.189
+</td>
+<td>
+0.188
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.189
+</td>
+<td>
+0.187
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error (df = 15046)
+</td>
+<td>
+8.979
+</td>
+<td>
+8.986
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic (df = 5; 15046)
+</td>
+<td>
+700.963<sup>***</sup>
+</td>
+<td>
+695.255<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="2" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div></div><p>Interpreting any age, female, bachelor-related coefficients in the columns, remembering that average hourly earnings:</p>
+<ul>
+<li>Regression 5 (or column (1) in the table) partial effects of interest:
+<ul>
+<li>Being 1 year older (change in <em>age</em> =1) yields a (0.648 - <span class="math inline">\(\color{blue}{\text{female}}\)</span> x 1 x 0.253) increase in average household earnings
+<ul>
+<li>If female (<em>female</em>=1): 1 year older yields a <span class="math inline">\((0.648 - {\color{blue}{1}} \times 1 \times 0.253) = \$0.39\)</span> increase in <em>ahe</em><br>
+</li>
+<li>If male (<em>female</em>=0): 1 year older yields a <span class="math inline">\((0.648 - {\color{blue}{0}} \times 1 \times 0.253) = \$0.65\)</span> increase in <em>ahe</em><br>
+</li>
+</ul></li>
+<li>Being female (<em>female</em>=1) yields a (3.977 - 1 x <span class="math inline">\(\color{blue}{\text{age}}\)</span> x 0.253) change in average household earnings
+<ul>
+<li>if 25 years old (<em>age</em>=25), being <em>female</em> yields a (3.977 - <strong>1</strong> x 25 x 0.253) = -$2.35 (decrease) in earnings in <em>ahe</em><br>
+</li>
+<li>if 30 years old (<em>age</em>=30), being <em>female</em> yields a (3.977 - <strong>1</strong> x 30 x 0.253) = -$3.61 (decrease) in earnings in <em>ahe</em><br>
+</li>
+</ul></li>
+<li>Having a bachelor’s (<em>bachelor</em>=1) degree yields a $7.773 = $7.77 increase in <em>ahe</em></li>
+</ul></li>
+<li>Regression 6 (or column (2) in the table) partial effects of interest, remembering that average hourly earnings is measured in dollars:
+<ul>
+<li>Being 1 year older (change in <em>age</em>=1) yields a $0.541 = $0.54 increase in <em>ahe</em><br>
+</li>
+<li>Having a bachelor’s degree (<em>bachelor</em>=1) yields a partial effect of ($7.769 +<span class="math inline">\(\color{blue}{\text{female}}\)</span> x 1 x 0.062)
+<ul>
+<li>if female (<em>female</em>=1), having a bachelor degree yields a partial effect of $(7.769 + 1 x 1 x 0.062)=$7.83 increase in <em>ahe</em> relative to someone without a bachelor’s degree.<br>
+</li>
+<li>if male (<em>female</em>=0), having a bachelor degree yields a partial effect of ($7.769 + 0 x 1 x 0.062)=$7.77 increase in <em>ahe</em> relative to someone without a bachelor’s degree.<br>
+</li>
+</ul></li>
+</ul></li>
+<li><strong>Note</strong>: the 0.062 coefficient on female_bachelor in column (2) of the table above is statistically insignificant, which implies males and females do not have statistically significantly different earnings gains from earning a bachelor’s degree. In fact, this is a <strong><em>difference-in-difference</em></strong> estimate of the differential influence of a bachelor’s degree on income levels among females.
+<ul>
+<li>Being female (<em>female</em>=1) yields a partial effect of $(-3.560+0.062 x 1 x <span class="math inline">\(\color{blue}{\text{bachelor}}\)</span>) on average hourly earnings
+<ul>
+<li>if someone has a bachelor’s degree (<em>bachelor</em>=1), the partial effect of being female on earnings is $(-3.560+0.062 x 1 x 1)=-$3.50 (decrease) in <em>ahe</em> relative to being male.<br>
+</li>
+<li>if someone does not have a bachelor’s degree (<em>bachelor</em>=0), the partial effect of being female on earnings is $(-3.560+0.062 x 1 x 0)=-$3.56 (decrease) in <em>ahe</em> relative to being male.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="q5" class="level3">
+<h3 class="anchored" data-anchor-id="q5">Q5</h3>
+<p>Using Regression 5 in question 4 compute the partial effect of being female on <em>ahe</em> at age=28 and also report the 95% confidence interval (CI) for the partial effect.</p>
+<p><strong>Solution</strong></p>
+<p>We follow the general approach to computing standard errors for partial effects with non-linear models that is covered in slides 19-23 of the lecture note 8. In Regression 5, the estimated regression equation’s predicted value can be written out as follows:</p>
+<p><br>
+<span class="math inline">\(\hat{Y} = \hat{\beta}_0+ \hat{\beta}_1\, age + \hat{\beta}_2\, bachelor + \hat{\beta}_3\, female + \hat{\beta}_4\, female \times age+\hat{\beta}_5\, d1992\)</span><br>
+Using this equation, the partial effect on the outcome variable (Y=<em>ahe</em>) from changing <em>female</em>=0 (individual is male) to <em>female</em>=1 (individual is female) at <em>age</em>=28 is:</p>
+<p><span class="math display">\[\begin{align*}
+\Delta \hat{Y} &amp; = (\hat{\beta}_0 + \hat{\beta}_1 28 + \hat{\beta}_2\,bachelor+\hat{\beta}_3\,1+\hat{\beta}_4 \, 1\times28 + \hat{\beta}_5\,d1992)\, -\\
+  &amp;  (\hat{\beta}_0 + \hat{\beta}_1 28 + \hat{\beta}_2\,bachelor+\hat{\beta}_3\,0+\hat{\beta}_4 \, 0\times28 + \hat{\beta}_5\,d1992) \\
+  &amp; = \hat{\beta}_3+28\hat{\beta}_4
+\end{align*}\]</span></p>
+<p>Given our estimates for the regression coefficients from column (1) in the table in question 4 in the second line of these equations, we obtain a partial effect of being female at age 28 on, <em>ahe</em>, of 3.997-28 x 0.253=-3.087 (note: in the <em>tute10.R</em> code the partial effect is computed as -3.106 because of rounding).<br>
+This implies a partial effect of $3.09 per hour in average hourly earnings.</p>
+<p>Following the general approach to computing standard errors for non-linear effects on slides 16-24 of lecture note 8, we obtain the F-statistic from the following joint test based on the partial effect for <em>Y</em> we just derived.</p>
+<p>Set up the data frames for 28 year olds then calculate the partial effect of being female at age 28.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Data frame for female aged 28, predicted value for ahe for female aged 28 based on reg7, other variables (bachelor, d1992) irrelevant</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>newdata1<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">28</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">1</span>,<span class="at">female_age=</span><span class="dv">28</span>,<span class="at">d1992=</span><span class="dv">0</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ahe1<span class="ot">=</span><span class="fu">predict</span>(reg5, <span class="at">newdata=</span>newdata1)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Data frame for male aged 28, predicted value for ahe for male aged 28 bsaed on reg7, other variables (bachelor, d1992)  irrelevant</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## (all female variables and interactions are 0 in this dataframe)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>newdata2<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">age=</span><span class="dv">28</span>,<span class="at">bachelor=</span><span class="dv">1</span>,<span class="at">female=</span><span class="dv">0</span>,<span class="at">female_age=</span><span class="dv">0</span>,<span class="at">d1992=</span><span class="dv">0</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ahe2<span class="ot">=</span><span class="fu">predict</span>(reg5, <span class="at">newdata=</span>newdata2)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Partial effect of being female at age 28</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>dahe<span class="ot">=</span>ahe1<span class="sc">-</span>ahe2</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"partial effect for 28 y.o. females"</span>,dahe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "partial effect for 28 y.o. females -3.10597505469637"</code></pre>
+</div>
+</div>
+<p>Then the F test</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fstatistic for Test of Difference in ahe if female=1 or female=0</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Ftest<span class="ot">=</span><span class="fu">linearHypothesis</span>(reg5,<span class="fu">c</span>(<span class="st">"female+28*female_age=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg5, <span class="st">"HC1"</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Recover the Fstat from the joint test results in Ftest</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Fstat<span class="ot">=</span>Ftest[<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Fstat %f"</span>, Fstat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fstat 386.258226"</code></pre>
+</div>
+</div>
+<p>Then compute the standard error</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the standard error for the partial effect we computed, dahe (see slide 21 of Lecture note 8) </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>se_dahe<span class="ot">=</span><span class="fu">abs</span>(dahe)<span class="sc">/</span><span class="fu">sqrt</span>(Fstat)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"standard error of the partial effect"</span>, se_dahe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "standard error of the partial effect"</code></pre>
+</div>
+</div>
+<p>Last, obtain the 95% prediction interval</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the standard error for the partial effect we computed, dahe (see slide 21 of Lecture note 8) </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>se_dahe<span class="ot">=</span><span class="fu">abs</span>(dahe)<span class="sc">/</span><span class="fu">sqrt</span>(Fstat)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for the partial effect we computed, dahe</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>dahe_ci95L<span class="ot">=</span>dahe<span class="sc">-</span>se_dahe<span class="sc">*</span><span class="fl">1.96</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>dahe_ci95H<span class="ot">=</span>dahe<span class="sc">+</span>se_dahe<span class="sc">*</span><span class="fl">1.96</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Outputting results</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"partial effect of age for females: %f"</span>, dahe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "partial effect of age for females: -3.105975"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"SE of partial effect of age for females: %f"</span>, se_dahe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "SE of partial effect of age for females: 0.158037"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI lower bound for partial effect of age for females: %f"</span>, dahe_ci95L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95 CI lower bound for partial effect of age for females: -3.415728"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI upper bound for partial effect of age for females: %f"</span>, dahe_ci95H)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95 CI upper bound for partial effect of age for females: -2.796222"</code></pre>
+</div>
+</div>
+<p>The 95% CI of the partial effect of being female at age 28 on earnings, <em>ahe</em>, is then computed as [-3.087-1.96*0.157,-3.087+1.96*0.157]=[-3.395,-2.779].<br>
+(note: in the <em>tute10.R</em> code the 95% CI is [-3.416, -2.796] because of rounding).<br>
+This implies a 95% CI of [-$3.39,-$2.78] for the partial effect of being female at age 28 on average hourly earnings.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
