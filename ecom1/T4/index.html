@@ -580,8 +580,8 @@ Given the influential impact of Malta on the results, we should drop it as an ou
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(growth_reg1)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression of growth on tradeshare exclusing potential outlier (Malta)</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>growth_reg2<span class="ot">=</span><span class="fu">lm</span>(growth[tradeshare<span class="sc">&lt;</span><span class="fu">max</span>(tradeshare)]<span class="sc">~</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                 tradeshare[tradeshare<span class="sc">&lt;</span><span class="fu">max</span>(tradeshare)],<span class="at">data=</span>data2)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>growth_reg2<span class="ot">=</span><span class="fu">lm</span>(growth <span class="sc">~</span> tradeshare, </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> <span class="fu">subset</span>(data2,tradeshare<span class="sc">&lt;</span><span class="fu">max</span>(tradeshare)))</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(growth_reg2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -620,17 +620,17 @@ F-statistic: 8.892 on 1 and 63 DF,  p-value: 0.00407</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = growth[tradeshare &lt; max(tradeshare)] ~ tradeshare[tradeshare &lt; 
-    max(tradeshare)], data = data2)
+lm(formula = growth ~ tradeshare, data = subset(data2, tradeshare &lt; 
+    max(tradeshare)))
 
 Residuals:
     Min      1Q  Median      3Q     Max 
 -4.4247 -0.9383  0.2091  0.9265  5.3776 
 
 Coefficients:
-                                         Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept)                                0.9574     0.5804   1.650   0.1041  
-tradeshare[tradeshare &lt; max(tradeshare)]   1.6809     0.9874   1.702   0.0937 .
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)   0.9574     0.5804   1.650   0.1041  
+tradeshare    1.6809     0.9874   1.702   0.0937 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
