@@ -129,7 +129,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#q1" id="toc-q1" class="nav-link" data-scroll-target="#q1">Q1</a></li>
   <li><a href="#q2" id="toc-q2" class="nav-link" data-scroll-target="#q2">Q2</a></li>
-  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a></li>
+  <li><a href="#q3" id="toc-q3" class="nav-link" data-scroll-target="#q3">Q3</a>
+  <ul class="collapse">
+  <li><a href="#the-correlogram-and-significance-bands" id="toc-the-correlogram-and-significance-bands" class="nav-link" data-scroll-target="#the-correlogram-and-significance-bands">The correlogram and significance bands</a></li>
+  <li><a href="#r-example" id="toc-r-example" class="nav-link" data-scroll-target="#r-example">R Example</a></li>
+  <li><a href="#table-of-acf-values" id="toc-table-of-acf-values" class="nav-link" data-scroll-target="#table-of-acf-values">Table of ACF values</a></li>
+  </ul></li>
   <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
   <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
   <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
@@ -153,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li>tute12_petrol.csv</li>
 </ul>
-<p>The first file is the <span class="math inline">\(\texttt{R}\)</span> code for tutorial 12, the second file is the .csv file that contains the dataset for the tutorial.</p>
+<p>The first file is the <strong><em>R</em></strong> code for tutorial 12, the second file is the .csv file that contains the dataset for the tutorial.</p>
 <p>The dataset has the following 3 variables:</p>
 <table class="table">
 <tbody>
@@ -180,10 +185,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>In total, the dataset contains this information for 48 weeks in 2013 in Perth.</p>
-<p>Having worked through the <strong>tute12.R</strong> code and graphs, please answer the following:</p>
 </section>
-<section id="q1" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q1">Q1</h2>
+<section id="q1" class="level1">
+<h1>Q1</h1>
+<p>The first thing we are asked to do is to construct the following variables</p>
 <p>Construct the following variables:</p>
 <ul>
 <li>First and second lags of search, price, and cost<br>
@@ -194,11 +199,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li>Dummy variables for the four quarters (or seasons) of the year</li>
 </ul>
-<p>Explain why any lags, differences, or seasonal dummies that you constructed do not have observations.</p>
-<p><strong>Solution</strong></p>
-<p>See the R code provided e.g.</p>
-
-<div class="no-row-height column-margin column-container"><div class="cell">
+<p>thenxplain why any lags, differences, or seasonal dummies that you constructed do not have observations.</p>
+<p>We can do this in <strong><em>R</em></strong> by running the following code:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load Applied Econometrics Package for testing and heteroskedasticity robust standard errors</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER) </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load stargazer()</span></span>
@@ -212,45 +215,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search<span class="ot">=</span>mydata<span class="sc">$</span>search<span class="sc">/</span><span class="dv">10000</span>  </span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># First and second lag of price</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use View(mydata) to check that these are indeed lagged prices</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Shifts the price variable forward 1 places, fills in first data point with NA</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>price_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>price, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Shifts the price variable forward 2 places, fills in first data point with NA</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>price_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>price, <span class="sc">-</span><span class="dv">2</span>))   </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># First and second lag of cost</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>cost_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>cost, <span class="sc">-</span><span class="dv">1</span>))      </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>cost_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>cost, <span class="sc">-</span><span class="dv">2</span>))   </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># First and second lag of search</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>search, <span class="sc">-</span><span class="dv">1</span>))      </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>search, <span class="sc">-</span><span class="dv">2</span>))   </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute first difference of price variable and its two lags</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that the "NA" part fills in "NA" for the first observation for the differenced</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># variable, which we cannot compute because no value comes before the first observation</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price))</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price_lag1))</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price_lag2))</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># First difference of the cost variable</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost))</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost_lag1))</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost_lag2))</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># First difference of the search variable</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search))</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search_lag1))</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search_lag2))</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># C. SEASONAL DUMMIES</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Run preliminary seasonality regressions with search, prices, costs</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Create quarterly dummy variables, week 1 is the first week of January 2018</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>sum<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">1</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">13</span>)    <span class="co"># Summer dummy (Quarter 3)</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>aut<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">14</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">26</span>)   <span class="co"># Autumn dummy (Quarter 4)</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>win<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">27</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">39</span>)   <span class="co"># Winter dummy (Quarter 1)</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>spr<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">40</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">52</span>)   <span class="co"># Spring dummy (Quarter 2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div><p>Check to see if the variables have been created correctly:</p>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>price_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>price, <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>price_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>price, <span class="sc">-</span><span class="dv">2</span>))   </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># First and second lag of cost</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>cost_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>cost, <span class="sc">-</span><span class="dv">1</span>))      </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>cost_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>cost, <span class="sc">-</span><span class="dv">2</span>))   </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># First and second lag of search</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>search, <span class="sc">-</span><span class="dv">1</span>))      </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="fu">head</span>(mydata<span class="sc">$</span>search, <span class="sc">-</span><span class="dv">2</span>))   </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute first difference of price variable and its two lags</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price_lag1))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_price_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>price_lag2))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># First difference of the cost variable</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost))</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost_lag1))</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_cost_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>cost_lag2))</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># First difference of the search variable</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search_lag1<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search_lag1))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>d_search_lag2<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="fu">diff</span>(mydata<span class="sc">$</span>search_lag2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then check to see if the variables have been created correctly</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mydata,<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -268,16 +260,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 4      8.0774      7.9815   -0.66        -1.27         0.93   0.16       -1.33
 5      7.5318      8.0774    1.72        -0.66        -1.27   2.60        0.16
 6      7.8780      7.5318    3.70         1.72        -0.66   3.70        2.60
-  d_cost_lag2 d_search d_search_lag1 d_search_lag2 sum aut win spr
-1          NA       NA            NA            NA   1   0   0   0
-2          NA   0.4550            NA            NA   1   0   0   0
-3          NA   0.0959        0.4550            NA   1   0   0   0
-4       -0.61  -0.5456        0.0959        0.4550   1   0   0   0
-5       -1.33   0.3462       -0.5456        0.0959   1   0   0   0
-6        0.16   0.9638        0.3462       -0.5456   1   0   0   0</code></pre>
+  d_cost_lag2 d_search d_search_lag1 d_search_lag2
+1          NA       NA            NA            NA
+2          NA   0.4550            NA            NA
+3          NA   0.0959        0.4550            NA
+4       -0.61  -0.5456        0.0959        0.4550
+5       -1.33   0.3462       -0.5456        0.0959
+6        0.16   0.9638        0.3462       -0.5456</code></pre>
 </div>
 </div>
-<p>Looking at the dataframe:</p>
 <ul>
 <li>The first lags and differences are NA for the first observation because the first observation does not have any observations before it.<br>
 </li>
@@ -286,48 +277,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The third observation for the difference in the second lag does not exist because the first observation has NA for its first difference, meaning the lagged value of the first difference two periods after the first observation (e.g., the third observation) is also NA.</li>
 </ul>
 </section>
-<section id="q2" class="level2">
-<h2 class="anchored" data-anchor-id="q2">Q2</h2>
-<p>Construct the following two time series plots and provide a brief interpretation of your findings:</p>
-<ul>
-<li>Plot 1: price and cost on the vertical axis, week on the horizontal axis<br>
-</li>
-<li>Plot 2: search on the vertical axis, week on the horizontal axis</li>
-</ul>
-<p><strong>Solution</strong></p>
-<div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting retail prices and costs (note you could also do this in ggplot2() if you like)</span></span>
+<section id="q2" class="level1">
+<h1>Q2</h1>
+<p>Next thing to do is plot the series for <code>price</code>, <code>cost</code> and the number of searches on the web site, <code>search</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the price series </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>price, <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"blue"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">120</span>,<span class="dv">160</span>),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Retail Price, Wholesale Cost (cpl)"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Retail Petrol Prices"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Retail Petrol Price and Cost"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="fu">lines</span>(mydata<span class="sc">$</span>cost, <span class="at">col =</span> <span class="st">"forestgreen"</span>,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Retail Price"</span>, <span class="st">"Wholesale Cost"</span>), </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"forestgreen"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">cex =</span> <span class="fl">0.7</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"forestgreen"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">cex =</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting web search activity</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>search,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"red"</span>,<span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Total Weekly Website Hits"</span>,<span class="at">main=</span><span class="st">"Platform Website Hits"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
-</div>
 </div>
 <p>The petrol price and cost graph shows retail prices track with costs closely week-to-week, with approximately a 10 cpl difference between the two. We also see two large spikes early in the year (Australian summer) and around week 30 of the year (North American summer), suggesting some seasonality in prices and costs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting web search activity</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>search,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"red"</span>,<span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Total Weekly Website Hits"</span>,<span class="at">main=</span><span class="st">"Platform Website Hits"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p>The search figure highlights similar seasonal fluctuation in search activity around the times when retail price levels spike throughout the year, suggesting a link between the time series for search intensity and prices.</p>
 </section>
-<section id="q3" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q3">Q3</h2>
-<p>Compute autocorrelation functions for price, cost, and search and the first differences of price, cost, and search.</p>
+<section id="q3" class="level1">
+<h1>Q3</h1>
+<p>We are then asked to compute autocorrelation functions for <code>price</code>, <code>cost</code>, and <code>search</code> and the first differences of <code>price</code>, <code>cost</code>, and <code>search</code>. Then, briefly comment on the persistence of these variables both in levels (the first 3 autocorrelations plots) and in first differences (the second 3 autocorrelations plots) and, what does first differencing do to the autocorrelations?</p>
+<p>So, let’s quickly review what we are doing here.</p>
+<p>If a series is (weakly) <b style="color:blue;">stationary</b><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> —its mean and variance are constant over time and serial dependence depends only on lag—then the <strong>autocorrelation structure</strong> is informative for modelling and forecasting. A simple way to see this is via the <strong>autocorrelation function (ACF)</strong> and the <strong>correlogram</strong>.</p>
+<p>Definitions</p>
+<p><span style="color:red;"><em>background - no need to remember the formula</em></span></p>
+<p>Let <span class="math inline">\(\{X_t\}_{t=1}^T\)</span> be a weakly stationary time series with mean <span class="math inline">\(\mu = \mathbb{E}[X_t]\)</span> and variance <span class="math inline">\(\sigma^2 = \mathbb{V}[X_t]\)</span>.</p>
 <ul>
-<li>Briefly comment on the persistence of these variables both in levels (the first 3 autocorrelations plots) and in first differences (the second 3 autocorrelations plots).<br>
-</li>
-<li>What does first differencing do to the autocorrelations?</li>
+<li><strong>Autocovariance function</strong> at lag <span class="math inline">\(h\)</span>:</li>
 </ul>
-<p><strong>Solution</strong></p>
-<p><br></p>
-
-<div class="no-row-height column-margin column-container"><div class="">
+<p><span class="math display">\[
+\gamma(h) = \mathrm{Cov}(X_t, X_{t-h})
+= \mathbb{E}\!\left[(X_t-\mu)(X_{t-h}-\mu)\right].
+\]</span></p>
+<ul>
+<li><strong>Autocorrelation function (ACF)</strong> at lag <span class="math inline">\(h\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\rho(h) = \frac{\gamma(h)}{\gamma(0)}, \quad \gamma(0)=\sigma^2.
+\]</span></p>
+<p>Given data <span class="math inline">\(x_1,\dots,x_T\)</span> with sample mean<br>
+<span class="math display">\[
+\bar{x} = \frac{1}{T}\sum_{t=1}^T x_t,
+\]</span><br>
+the <strong>sample autocovariance</strong> (biased, denominator <span class="math inline">\(T\)</span>; matches R’s <code>acf()</code> default) is</p>
+<p><span class="math display">\[
+\hat{\gamma}(h) = \frac{1}{T}\sum_{t=h+1}^{T} (x_t - \bar{x})(x_{t-h}-\bar{x}), \quad h=0,1,2,\dots
+\]</span></p>
+<p>and the <strong>sample ACF</strong> is</p>
+<p><span class="math display">\[
+\hat{\rho}(h) = \frac{\hat{\gamma}(h)}{\hat{\gamma}(0)}.
+\]</span></p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -338,78 +347,628 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>ignore</strong> the first spike at <strong>lag 0</strong></p>
+<p>Some texts divide by <span class="math inline">\(T-h\)</span> instead of <span class="math inline">\(T\)</span>. <strong><em>R</em></strong> uses denominator <span class="math inline">\(T\)</span> in its <code>acf()</code> function.</p>
 </div>
 </div>
-</div></div><div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid"></p>
+<section id="the-correlogram-and-significance-bands" class="level2">
+<h2 class="anchored" data-anchor-id="the-correlogram-and-significance-bands">The correlogram and significance bands</h2>
+<p>A <strong>correlogram</strong> is a bar plot of <span class="math inline">\(\hat{\rho}(h)\)</span> versus lag <span class="math inline">\(h\)</span>.<br>
+To eyeball which spikes are “significant,” we add approximate confidence bands:</p>
+<ul>
+<li><strong>White noise bands (default in <em>R</em>):</strong></li>
+</ul>
+<p><span class="math display">\[
+\text{SE}(\hat{\rho}(h)) \approx \frac{1}{\sqrt{T}}, \quad
+95\% \text{ bands: } \pm \frac{1.96}{\sqrt{T}}.
+\]</span></p>
+<ul>
+<li><strong>Bartlett’s formula (more general):</strong></li>
+</ul>
+<p>For lag <span class="math inline">\(k\)</span>, <span class="math display">\[
+\mathrm{Var}\big(\hat{\rho}(k)\big) \approx \frac{1}{T}\!\left(1 + 2\sum_{h=1}^{k-1}\rho(h)^2\right),
+\]</span></p>
+<p>so 95% bands are <span class="math display">\[
+\pm 1.96 \sqrt{\frac{1}{T}\!\left(1 + 2\sum_{h=1}^{k-1}\hat{\rho}(h)^2\right)}.
+\]</span></p>
+</section>
+<section id="r-example" class="level2">
+<h2 class="anchored" data-anchor-id="r-example">R Example</h2>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) with phi = 0.6</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>e   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(T)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>x   <span class="ot">&lt;-</span> <span class="fu">numeric</span>(T)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>T) x[t] <span class="ot">&lt;-</span> phi <span class="sc">*</span> x[t<span class="dv">-1</span>] <span class="sc">+</span> e[t]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(x, <span class="at">main =</span> <span class="st">"series x: ACF"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid"></p>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
 </div>
 </div>
-</div>
-<p>Looking at the correlograms (plots of the autocorrelation functions) for price,cost, and search and their first differences, we see that:</p>
-<ol type="1">
-<li>Both price and cost have very persistent time series with up to the fourth lag (one month of lags) having a statistically significant autocorrelation.<br>
-</li>
-<li>Search is also persistent, although less so with up to the third lag being statistically significant.</li>
-<li>The ACFs for the first differences show that differencing removes the persistence in each respective time series, however we still find statistically significant autocorrelations for prices and costs with a one-week lag.</li>
-</ol>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid"></p>
-</div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid"></p>
-</div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid"></p>
-</div>
+<div class="callout-body-container callout-body">
+<p>No need to worry about the spike at lag 0 (this will always equal one). Concentrate on the spikes from lag 1 onwards and see which of these cut the dotted blue lines; these lags are (statistically) significant.</p>
 </div>
 </div>
 </section>
-<section id="q4" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q4">Q4</h2>
-<p>Run three separate regressions where in each respective regression the dependent variable is price, cost, and search, and where the regressors in each regression are the quarter dummy variables you constructed in question 1.</p>
-<ul>
-<li>Interpret the regression coefficients, and explain how you have avoided the dummy variable trap in the regressions.<br>
-</li>
-<li>Do your results suggest seasonal differences in the levels of any of the dependent variables?</li>
-</ul>
-<p><strong>Solution</strong></p>
-<p>First run the regressions and then output the results using <strong>stargazer</strong></p>
-<div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of observations in the time series (used below)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>T<span class="ot">=</span><span class="dv">48</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># B. PRELIMINARY SEASONALITY REGRESSIONS</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Search seasonality regression check</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>seas1<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(seas1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Prices seasonality regression check</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>seas2<span class="ot">=</span><span class="fu">lm</span>(price<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(seas2, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Cost seasonality regression check</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>seas3<span class="ot">=</span><span class="fu">lm</span>(cost<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(seas3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="table-of-acf-values" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-acf-values">Table of ACF values</h2>
+<p>The table below corresponds to the AR(1) series <code>x</code> and uses the same lag range as the correlogram above.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose lag range</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>max_lag <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample ACF (biased denom T, matches R's acf default)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>acf_x <span class="ot">&lt;-</span> <span class="fu">acf</span>(x, <span class="at">lag.max =</span> max_lag, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">type =</span> <span class="st">"correlation"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>lags  <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(acf_x<span class="sc">$</span>lag)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>rhat  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(acf_x<span class="sc">$</span>acf)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>Tn    <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># White-noise bands</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>se_wn <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(Tn), <span class="fu">length</span>(lags))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>wn_upper <span class="ot">&lt;-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wn</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>wn_lower <span class="ot">&lt;-</span> <span class="sc">-</span>wn_upper</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Bartlett bands</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>bartlett_se <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_along</span>(lags), <span class="cf">function</span>(k) {</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>((<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(rhat[<span class="fu">seq_len</span>(<span class="fu">max</span>(<span class="dv">0</span>, k<span class="dv">-1</span>))]<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> Tn)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>bart_upper <span class="ot">&lt;-</span> <span class="fl">1.96</span> <span class="sc">*</span> bartlett_se</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>bart_lower <span class="ot">&lt;-</span> <span class="sc">-</span>bart_upper</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>acf_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lag          =</span> lags,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">acf          =</span> <span class="fu">round</span>(rhat, <span class="dv">3</span>),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_white_lo  =</span> <span class="fu">round</span>(wn_lower, <span class="dv">3</span>),</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_white_hi  =</span> <span class="fu">round</span>(wn_upper, <span class="dv">3</span>),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_bart_lo   =</span> <span class="fu">round</span>(bart_lower, <span class="dv">3</span>),</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_bart_hi   =</span> <span class="fu">round</span>(bart_upper, <span class="dv">3</span>),</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">outside_bart =</span> <span class="fu">ifelse</span>(rhat <span class="sc">&lt;</span> bart_lower <span class="sc">|</span> rhat <span class="sc">&gt;</span> bart_upper, <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">outside_white =</span> <span class="fu">ifelse</span>(rhat <span class="sc">&lt;</span> wn_lower <span class="sc">|</span> rhat <span class="sc">&gt;</span> wn_upper, <span class="st">"Yes"</span>, <span class="st">"No"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  acf_table,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Sample ACF for AR(1) series x with 95% white-noise and Bartlett bands."</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Sample ACF for AR(1) series x with 95% white-noise and Bartlett bands.</caption>
+<colgroup>
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">lag</th>
+<th style="text-align: right;">acf</th>
+<th style="text-align: right;">ci_white_lo</th>
+<th style="text-align: right;">ci_white_hi</th>
+<th style="text-align: right;">ci_bart_lo</th>
+<th style="text-align: right;">ci_bart_hi</th>
+<th style="text-align: left;">outside_bart</th>
+<th style="text-align: left;">outside_white</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.529</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.252</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.122</td>
+<td style="text-align: right;">0.122</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.120</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.127</td>
+<td style="text-align: right;">0.127</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.128</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-0.023</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.128</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.059</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.128</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-0.005</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">-0.048</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">-0.081</td>
+<td style="text-align: right;">-0.098</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<p>The table confirms what we saw in the correlogram:</p>
+<ul>
+<li><p>The sample autocorrelations (<span class="math inline">\(\approx\)</span> 0.53) at lag 1, and at lag 2 (<span class="math inline">\(\approx\)</span> 0.25) are well outside both the white-noise and Bartlett confidence bands <span class="math inline">\(\rightarrow\)</span> strong evidence of persistence.</p></li>
+<li><p>At higher lags, the autocorrelations decline geometrically and stay within the bands <span class="math inline">\(\rightarrow\)</span> consistent with an AR(1) process where dependence quickly dies out.</p></li>
+</ul>
+<p>So, first let’s look at thte correlogram for <code>price</code> in levels and first diffrences .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for Price</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(mydata<span class="sc">$</span>cost,<span class="at">main=</span><span class="st">"Autocorrelations for Price"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for first difference of price</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(mydata<span class="sc">$</span>price),<span class="at">main=</span><span class="st">"Autocorrelations for Difference of Price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Both <code>price</code> and <code>cost</code> have very persistent time series with up to the fourth lag (one month of lags) having a statistically significant autocorrelation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for Cost</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(mydata<span class="sc">$</span>cost,<span class="at">main=</span><span class="st">"Autocorrelations for Cost"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for first difference of Cost  </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(mydata<span class="sc">$</span>cost),<span class="at">main=</span><span class="st">"Autocorrelations for Difference of Cost"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><code>search</code> is also persistent, although less so with up to the third lag being statistically significant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for Search</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(mydata<span class="sc">$</span>search,<span class="at">main=</span><span class="st">"Autocorrelations for Website Hits"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelations for first difference of Search  </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(mydata<span class="sc">$</span>search),<span class="at">main=</span><span class="st">"Autocorrelations for Difference of Website Hits"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>The ACFs for the first differences show that differencing removes the persistence in each respective time series, however we still find statistically significant autocorrelations for prices and costs with a one-week lag.</li>
+</ul>
+</section>
+</section>
+<section id="q4" class="level1 page-columns page-full">
+<h1>Q4</h1>
+<p>We are then asked to run 3 separate regressions where in each respective regression the dependent variable is <code>price</code>, <code>cost</code>, and <code>search</code>, and where the regressors in each regression are quarterly dummy variables .</p>
+<p>First we need to construct the quarterly dummy variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create quarterly dummy variables, week 1 is the first week of January 2018</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>sum<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">1</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">13</span>)    <span class="co"># Summer dummy (Quarter 3)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>aut<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">14</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">26</span>)   <span class="co"># Autumn dummy (Quarter 4)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>win<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">27</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">39</span>)   <span class="co"># Winter dummy (Quarter 1)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>spr<span class="ot">=</span><span class="fu">as.numeric</span>(mydata<span class="sc">$</span>week<span class="sc">&gt;=</span><span class="dv">40</span> <span class="sc">&amp;</span> mydata<span class="sc">$</span>week<span class="sc">&lt;=</span><span class="dv">52</span>)   <span class="co"># Spring dummy (Quarter 2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>then run the regressions</p>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of observations in the time series (used below)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>T<span class="ot">=</span><span class="dv">48</span>   </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Search seasonality regression check</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>seas1<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(seas1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Prices seasonality regression check</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>seas2<span class="ot">=</span><span class="fu">lm</span>(price<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(seas2, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Cost seasonality regression check</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>seas3<span class="ot">=</span><span class="fu">lm</span>(cost<span class="sc">~</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(seas3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression output table </span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Discuss the results from stargazer() as asked in the question on the assignment sheet.</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(seas1, seas2, seas3, <span class="at">type=</span><span class="st">"html"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">se=</span><span class="fu">list</span>(se1, se2, se3),</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">2</span>, </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels=</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="st">"Summer"</span>,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Autumn"</span>,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Winter"</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Constant"</span>)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>       )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+search
+</td>
+<td>
+price
+</td>
+<td>
+cost
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Summer
+</td>
+<td>
+0.82<sup>**</sup>
+</td>
+<td>
+-0.64
+</td>
+<td>
+0.37
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.38)
+</td>
+<td>
+(1.31)
+</td>
+<td>
+(1.24)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Autumn
+</td>
+<td>
+0.52<sup>*</sup>
+</td>
+<td>
+-4.75<sup>***</sup>
+</td>
+<td>
+-3.58<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.30)
+</td>
+<td>
+(1.47)
+</td>
+<td>
+(1.44)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Winter
+</td>
+<td>
+1.61<sup>***</sup>
+</td>
+<td>
+5.56<sup>***</sup>
+</td>
+<td>
+5.95<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.33)
+</td>
+<td>
+(0.81)
+</td>
+<td>
+(0.98)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+7.94<sup>***</sup>
+</td>
+<td>
+145.61<sup>***</sup>
+</td>
+<td>
+134.26<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.24)
+</td>
+<td>
+(0.52)
+</td>
+<td>
+(0.55)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+48
+</td>
+<td>
+48
+</td>
+<td>
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.34
+</td>
+<td>
+0.54
+</td>
+<td>
+0.51
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.29
+</td>
+<td>
+0.51
+</td>
+<td>
+0.47
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error (df = 44)
+</td>
+<td>
+0.83
+</td>
+<td>
+3.67
+</td>
+<td>
+3.66
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic (df = 3; 44)
+</td>
+<td>
+7.49<sup>***</sup>
+</td>
+<td>
+17.31<sup>***</sup>
+</td>
+<td>
+14.97<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="3" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
 <p>Note that search has been rescaled in terms of 10000 website hits to ensure well-scaled regression results.</p>
 <ul>
 <li>The dummy variable trap is avoided in these regressions by omitting the dummy variable for spring. So all of the coefficient estimates correspond to changes in search/price/cost in a given quarter relative to the baseline/ omitted category of spring.</li>
@@ -702,20 +1261,21 @@ F Statistic (df = 3; 44)
 
 </tbody></table>
 </div></div><ul>
-<li><p>Interpreting the statistically significant results (at the 5% level) in the table, we find that:</p>
+<li>Interpreting the statistically significant results (at the 5% level) in the table, we find that:
 <ul>
-<li><p>For search, which recall is in terms of 10,000 website visits on the Fuelwatch platform, there are 0.82 <span class="math inline">\(\times\)</span> 10000 = 8200 and 1.61 <span class="math inline">\(\times\)</span> 10,000= 16,100 more searchers on average in a given week in summer and winter relative to average weekly search levels in spring.</p></li>
-<li><p>For petrol prices (in cpl) we find that relative to spring, petrol prices are on average 4.76 cpl lower and 5.56 cpl higher in autumn and winter, respectively.<br>
-</p></li>
-<li><p>Similarly, for petrol costs (in cpl), we find that relative to spring, petrol costs are on average 3.58 cpl lower and 5.92 cpl higher in autumn and winter, respectively.</p></li>
+<li>For <code>search</code>, which recall is in terms of 10,000 website visits on the Fuelwatch platform, there are 0.82 <span class="math inline">\(\times\)</span> 10000 = 8200 and 1.61 <span class="math inline">\(\times\)</span> 10,000= 16,100 more searchers on average in a given week in summer and winter relative to average weekly search levels in spring.<br>
+</li>
+<li>For petrol prices (in cpl) we find that relative to spring, petrol prices are on average 4.76 cpl lower and 5.56 cpl higher in autumn and winter, respectively.<br>
+</li>
+<li>Similarly, for petrol costs (in cpl), we find that relative to spring, petrol costs are on average 3.58 cpl lower and 5.92 cpl higher in autumn and winter, respectively.</li>
 </ul></li>
-<li><p>The results suggest seasonal increases in search in the (Australian) summer and winter, and respective seasonal decreases and increases in petrol prices and costs in the (Australian) autumn and winter.<br>
-The winter-related seasonality in petrol prices is, in part, likely due to higher seasonal demand for petroleum during the Northern Hemisphere summer months due to higher rates of travel, and hence petrol demand. This ultimately pushes up global crude oil prices, and hence petrol retailers’ costs and prices.</p></li>
+<li>The results suggest seasonal increases in search in the (Australian) summer and winter, and respective seasonal decreases and increases in petrol prices and costs in the (Australian) autumn and winter.<br>
+The winter-related seasonality in petrol prices is, in part, likely due to higher seasonal demand for petroleum during the Northern Hemisphere summer months due to higher rates of travel, and hence petrol demand. This ultimately pushes up global crude oil prices, and hence petrol retailers’ costs and prices.</li>
 </ul>
 </section>
-<section id="q5" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q5">Q5</h2>
-<p>Estimate the following set of 6 time series regressions below, where search is the dependent variable in each.<br>
+<section id="q5" class="level1 page-columns page-full">
+<h1>Q5</h1>
+<p>Now, estimate the following set of 6 time series regressions below, where search is the dependent variable in each.<br>
 Briefly interpret your results in each in terms of their economic and statistical significance.<br>
 Also compute the BIC and AIC for each model, and conclude which model would be chosen based on these two information criteria.</p>
 <ul>
@@ -731,85 +1291,70 @@ Also compute the BIC and AIC for each model, and conclude which model would be c
 </li>
 <li>ADL(1,2,2) + seasonal dummies with search, price, and cost</li>
 </ul>
-<p><strong>Solution</strong></p>
-<p>Estimate the models (using the R code provided)</p>
-<div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) model with search</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1,<span class="at">data=</span>mydata)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>K1<span class="ot">=</span><span class="dv">2</span>                             <span class="co"># Number of parameters in regression reg1</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ssr1<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg1)<span class="sc">^</span><span class="dv">2</span>)      <span class="co"># SSR from the regression reg1</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>BIC1<span class="ot">=</span><span class="fu">log</span>(ssr1<span class="sc">/</span>T)<span class="sc">+</span>K1<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)   <span class="co"># BIC from the regression reg1</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>AIC1<span class="ot">=</span><span class="fu">log</span>(ssr1<span class="sc">/</span>T)<span class="sc">+</span>K1<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T)   <span class="co"># BIC from the regression reg1</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) model with search with seasonal dummies</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg2, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg2, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-t test of coefficients:
-
-            Estimate Std. Error t value  Pr(&gt;|t|)    
-(Intercept)  2.64855    1.20860  2.1914   0.03402 *  
-search_lag1  0.64571    0.13922  4.6380 3.417e-05 ***
-sum          0.55057    0.32839  1.6766   0.10106    
-aut          0.38227    0.28985  1.3188   0.19437    
-win          0.71155    0.31684  2.2458   0.03004 *  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>After estimating the models (with HC standard errors)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) model with search</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1,<span class="at">data=</span>mydata)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>cov1<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>se1<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov1))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>K1<span class="ot">=</span><span class="dv">2</span>                             <span class="co"># Number of parameters in regression reg1</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ssr1<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg1)<span class="sc">^</span><span class="dv">2</span>)      <span class="co"># SSR from the regression reg1</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>BIC1<span class="ot">=</span><span class="fu">log</span>(ssr1<span class="sc">/</span>T)<span class="sc">+</span>K1<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)   <span class="co"># BIC from the regression reg1</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>AIC1<span class="ot">=</span><span class="fu">log</span>(ssr1<span class="sc">/</span>T)<span class="sc">+</span>K1<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)   <span class="co"># BIC from the regression reg1</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) model with search with seasonal dummies</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>cov2<span class="ot">=</span><span class="fu">vcovHC</span>(reg1, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>se2<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov2))</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg2, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg2, <span class="st">"HC1"</span>))</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>K2<span class="ot">=</span><span class="dv">5</span>                            </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>ssr2<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg2)<span class="sc">^</span><span class="dv">2</span>)     </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>BIC2<span class="ot">=</span><span class="fu">log</span>(ssr2<span class="sc">/</span>T)<span class="sc">+</span>K2<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>AIC2<span class="ot">=</span><span class="fu">log</span>(ssr2<span class="sc">/</span>T)<span class="sc">+</span>K2<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(2) model with search with seasonal dummies</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>search_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>K3<span class="ot">=</span><span class="dv">6</span>                          </span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>ssr3<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg3)<span class="sc">^</span><span class="dv">2</span>)     </span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>BIC3<span class="ot">=</span><span class="fu">log</span>(ssr3<span class="sc">/</span>T)<span class="sc">+</span>K3<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>AIC3<span class="ot">=</span><span class="fu">log</span>(ssr3<span class="sc">/</span>T)<span class="sc">+</span>K3<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># D. ESTIMATE ADL(p,q) MODELS</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(0,2) model with search and price</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>K4<span class="ot">=</span><span class="dv">6</span>                             </span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>ssr4<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg4)<span class="sc">^</span><span class="dv">2</span>)     </span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>BIC4<span class="ot">=</span><span class="fu">log</span>(ssr4<span class="sc">/</span>T)<span class="sc">+</span>K4<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>AIC4<span class="ot">=</span><span class="fu">log</span>(ssr4<span class="sc">/</span>T)<span class="sc">+</span>K4<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(1,1) model with search and price</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>reg5<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>cov5<span class="ot">=</span><span class="fu">vcovHC</span>(reg5, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>se5<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov5))</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>K5<span class="ot">=</span><span class="dv">7</span>                            </span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>ssr5<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg5)<span class="sc">^</span><span class="dv">2</span>)     </span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>BIC5<span class="ot">=</span><span class="fu">log</span>(ssr5<span class="sc">/</span>T)<span class="sc">+</span>K5<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>AIC5<span class="ot">=</span><span class="fu">log</span>(ssr5<span class="sc">/</span>T)<span class="sc">+</span>K5<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co"># E. ESTIMATE ADL(p,q1,q2) MODELS</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(1,1,2) model with search, price, and cost</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>cost_lag1<span class="sc">+</span>cost_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>cov6<span class="ot">=</span><span class="fu">vcovHC</span>(reg6, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>se6<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov6))</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>K6<span class="ot">=</span><span class="dv">9</span>                           </span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>ssr6<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg6)<span class="sc">^</span><span class="dv">2</span>)     </span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>BIC6<span class="ot">=</span><span class="fu">log</span>(ssr6<span class="sc">/</span>T)<span class="sc">+</span>K6<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)  </span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>AIC6<span class="ot">=</span><span class="fu">log</span>(ssr6<span class="sc">/</span>T)<span class="sc">+</span>K6<span class="sc">*</span>(<span class="dv">2</span><span class="sc">/</span>T)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>K2<span class="ot">=</span><span class="dv">5</span>                            </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ssr2<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg2)<span class="sc">^</span><span class="dv">2</span>)     </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>BIC2<span class="ot">=</span><span class="fu">log</span>(ssr2<span class="sc">/</span>T)<span class="sc">+</span>K2<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>AIC2<span class="ot">=</span><span class="fu">log</span>(ssr2<span class="sc">/</span>T)<span class="sc">+</span>K2<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(2) model with search with seasonal dummies</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>search_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>cov3<span class="ot">=</span><span class="fu">vcovHC</span>(reg3, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>se3<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov3))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>K3<span class="ot">=</span><span class="dv">6</span>                          </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ssr3<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg3)<span class="sc">^</span><span class="dv">2</span>)     </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>BIC3<span class="ot">=</span><span class="fu">log</span>(ssr3<span class="sc">/</span>T)<span class="sc">+</span>K3<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>AIC3<span class="ot">=</span><span class="fu">log</span>(ssr3<span class="sc">/</span>T)<span class="sc">+</span>K3<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># D. ESTIMATE ADL(p,q) MODELS</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(0,2) model with search and price</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>cov4<span class="ot">=</span><span class="fu">vcovHC</span>(reg4, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>se4<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov4))</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>K4<span class="ot">=</span><span class="dv">6</span>                             </span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>ssr4<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg4)<span class="sc">^</span><span class="dv">2</span>)     </span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>BIC4<span class="ot">=</span><span class="fu">log</span>(ssr4<span class="sc">/</span>T)<span class="sc">+</span>K4<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>AIC4<span class="ot">=</span><span class="fu">log</span>(ssr4<span class="sc">/</span>T)<span class="sc">+</span>K4<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(1,1) model with search and price</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>reg5<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>cov5<span class="ot">=</span><span class="fu">vcovHC</span>(reg5, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>se5<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov5))</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>K5<span class="ot">=</span><span class="dv">7</span>                            </span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>ssr5<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg5)<span class="sc">^</span><span class="dv">2</span>)     </span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>BIC5<span class="ot">=</span><span class="fu">log</span>(ssr5<span class="sc">/</span>T)<span class="sc">+</span>K5<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>AIC5<span class="ot">=</span><span class="fu">log</span>(ssr5<span class="sc">/</span>T)<span class="sc">+</span>K5<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T)</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># E. ESTIMATE ADL(p,q1,q2) MODELS</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ADL(1,1,2) model with search, price, and cost</span></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>cost_lag1<span class="sc">+</span>cost_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>cov6<span class="ot">=</span><span class="fu">vcovHC</span>(reg6, <span class="at">type =</span> <span class="st">"HC1"</span>)    </span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>se6<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov6))</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>K6<span class="ot">=</span><span class="dv">9</span>                           </span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>ssr6<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">residuals</span>(reg6)<span class="sc">^</span><span class="dv">2</span>)     </span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>BIC6<span class="ot">=</span><span class="fu">log</span>(ssr6<span class="sc">/</span>T)<span class="sc">+</span>K6<span class="sc">*</span>(<span class="fu">log</span>(T)<span class="sc">/</span>T)  </span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>AIC6<span class="ot">=</span><span class="fu">log</span>(ssr6<span class="sc">/</span>T)<span class="sc">+</span>K6<span class="sc">*</span>(<span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>then output the results to <strong>stargazer</strong></p>
-<div class="column-page">
+<p>report the results using <strong>stargazer</strong></p>
 
 <table style="text-align:center">
 <tbody><tr>
@@ -1552,39 +2097,683 @@ F Statistic
 </tr>
 
 </tbody></table>
-</div>
-<p>Estimation results for each of the 6 models are presented in the table above, along with their BIC and AIC scores (see Lecture Note 9 for their formulae and interpretation of trading off model fit for model size when “scoring” a time series model).<br>
+<p>Estimation results for each of the 8 models are presented in the table above, along with their BIC and AIC scores (see Lecture Note 9 for their formulae and interpretation of trading off model fit for model size when “scoring” a time series model).<br>
 We keep with the rescaled search dependent variable in terms of 10,000 website hits.<br>
 Interpreting the results for each model, we find:</p>
 <ul>
-<li>AR(1) with search reveals significant and larger persistence in search at a one-week lag.<br>
+<li>AR(1) with search (Model 1) reveals significant and larger persistence in search at a one-week lag.<br>
 </li>
-<li>AR(1) + seasonal dummies with search reveals that part of the persistence in search is driven by seasonality; once the seasonal dummies are in the regression to control for seasonality in search, the level of persistence in search (conditional on seasonal controls) falls.<br>
+<li>AR(1) + seasonal dummies (Model 2) with search reveals that part of the persistence in search is driven by seasonality; once the seasonal dummies are in the regression to control for seasonality in search, the level of persistence in search (conditional on seasonal controls) falls.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+Search
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Search, Lag 1
+</td>
+<td>
+0.65<sup>***</sup>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.21)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Search, Lag 2
+</td>
+<td>
+-0.01
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.15)
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price, Lag 1
+</td>
+<td>
+</td>
+<td>
+0.28<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.06)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price, Lag 2
+</td>
+<td>
+</td>
+<td>
+-0.16<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.05)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Cost, Lag 1
+</td>
+<td>
+0.56
+</td>
+<td>
+0.87<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.35)
+</td>
+<td>
+(0.35)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Cost, Lag 2
+</td>
+<td>
+0.38
+</td>
+<td>
+1.01<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.29)
+</td>
+<td>
+(0.36)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Summer
+</td>
+<td>
+0.72<sup>**</sup>
+</td>
+<td>
+0.88<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.33)
+</td>
+<td>
+(0.35)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Autumn
+</td>
+<td>
+2.72<sup>**</sup>
+</td>
+<td>
+-8.27<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.17)
+</td>
+<td>
+(2.81)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.60
+</td>
+<td>
+0.67
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.55
+</td>
+<td>
+0.63
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="2" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div></div><ul>
+<li>AR(2) + seasonal dummies with search (Model 3) reveals that controlling for seasonality, only search lagged at one week has a persistent influence on current search. Twice-lagged search does not.<br>
 </li>
-<li>AR(2) + seasonal dummies with search reveals that controlling for seasonality, only search lagged at one week has a persistent influence on current search. Twice-lagged search does not.<br>
-</li>
-<li>ADL(0,2) + seasonal dummies with search and price reveals prices one and two weeks lagged explain current search, as indicated by the statistically significant coefficient on the lagged prices. There’s a positive impact of lagged higher prices lagged one week on search, and a tapering, search reducing influence of higher prices lagged by two weeks.<br>
-</li>
-<li>ADL(1,2) + seasonal dummies with search and price reveals prices one and two weeks lagged continue to explain current search, as indicated by the statistically significant coefficient on the lagged prices.<br>
+<li>ADL(0,2) + seasonal dummies with search and price (Model 4) reveals prices one and two weeks lagged explain current search, as indicated by the statistically significant coefficient on the lagged prices. There’s a positive impact of lagged higher prices lagged one week on search, and a tapering, search reducing influence of higher prices lagged by two weeks.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+Search
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(5)
+</td>
+<td>
+(6)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Search, Lag 1
+</td>
+<td>
+0.34<sup>*</sup>
+</td>
+<td>
+0.44<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.20)
+</td>
+<td>
+(0.20)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Search, Lag 2
+</td>
+<td>
+0.20<sup>***</sup>
+</td>
+<td>
+0.18<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.07)
+</td>
+<td>
+(0.07)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price, Lag 1
+</td>
+<td>
+-0.15<sup>***</sup>
+</td>
+<td>
+0.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.05)
+</td>
+<td>
+(0.05)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price, Lag 2
+</td>
+<td>
+</td>
+<td>
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Cost, Lag 1
+</td>
+<td>
+</td>
+<td>
+-0.27
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Cost, Lag 2
+</td>
+<td>
+0.63<sup>*</sup>
+</td>
+<td>
+0.88<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.35)
+</td>
+<td>
+(0.35)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Summer
+</td>
+<td>
+0.64<sup>*</sup>
+</td>
+<td>
+0.82<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.37)
+</td>
+<td>
+(0.37)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Autumn
+</td>
+<td>
+0.72<sup>**</sup>
+</td>
+<td>
+0.90<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.33)
+</td>
+<td>
+(0.33)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Winter
+</td>
+<td>
+-2.73
+</td>
+<td>
+-3.86
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3.74)
+</td>
+<td>
+(3.74)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.70
+</td>
+<td>
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.65
+</td>
+<td>
+0.69
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="2" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div></div><ul>
+<li>ADL(1,2) + seasonal dummies with search and price (Model 5) reveals prices one and two weeks lagged continue to explain current search, as indicated by the statistically significant coefficient on the lagged prices.<br>
 Lagged search still has a persistent effect (which is significant at the 10% level but not 5% level),but it is much smaller than what we documented in the AR(1) and AR(2) models.<br>
 This highlights how omitted variable bias from not having lagged prices in the time series models was creating upward bias on the coefficient on lagged search in the AR(1) and AR(2) model.<br>
 Part of the high degree of persistence in those models was driven by persistent positive impact of oneweek lagged prices.<br>
 </li>
-<li>ADL(1,2,2) + seasonal dummies with search, price, and cost reveals that when lagged costs are included in the model then it appears that lagged prices have smaller magnitude impacts on current search, while lagged costs by two weeks has a negative impact on current search levels.<br>
-It is notable that the coefficient on the one-week lagged search and one-week lagged price are similar in magnitude to those from the AD(1,2) model, with the former now being statistically significant at the 5% level, and the latter being statistically significant at the 10% level (has a 0.088 p-value - see the RStudio output).<br>
-This model also has the best within-sample fit in terms of RSquared.</li>
+<li>ADL(1,2,2) + seasonal dummies with search, price, and cost (Model 6) reveals that when lagged costs are included in the model then it appears that lagged prices have smaller magnitude impacts on current search, while lagged costs by two weeks has a negative impact on current search levels.<br>
+It is notable that the coefficient on the one-week lagged search and one-week lagged price are similar in magnitude to those from the AD(1,2) model, with the former now being statistically significant at the 5% level, and the latter being statistically significant at the 10% level (has a 0.088 p-value ).<br>
+This model also has the best within-sample fit in terms of adjusted <span class="math inline">\(R^2\)</span>.</li>
 </ul>
-<p>The table below reports the BIC and AIC for models (1)-(6), which is also computed in the tute12.R code.<br>
+<p>The table below reports the BIC and AIC for models (1)-(6), which is also computed in the <strong>tute12.R</strong> code (see above - this is included in the <strong><em>R</em></strong> code chunks for estimatig the ARDL models).<br>
 The BIC-minimising model and AIC-minimising model that this information criteria would select is model (6), the ADL(1,1,2) model.</p>
 <table class="table">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 17%">
+<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1636,48 +2825,18 @@ The BIC-minimising model and AIC-minimising model that this information criteria
 </tr>
 </tbody>
 </table>
-<p><strong>Notes</strong>: Model-minimising BIC and AIC scores are highlighted in <strong>bold</strong></p>
+<p><strong>Note</strong>: Model-minimising BIC and AIC scores are highlighted in <strong>bold</strong></p>
 </section>
-<section id="q6" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q6">Q6</h2>
-<p>Using the ADL(1,1) + seasonal dummies you estimated in question 5, compute the predicted values from the regression, which yield the within-sample forecasts of search for each week.</p>
+<section id="q6" class="level1">
+<h1>Q6</h1>
+<p>Despite Model (6) being the preferred model, we are then asked to use the ADL(1,1) + seasonal dummy variable, Model(5), to compute the predicted values from the regression, which yield the within-sample forecasts of search for each week.</p>
+<p>Then</p>
 <ul>
-<li><p>Plot your within-sample forecasts for search against the actual search values that were realised and comment on your results.<br>
-Do any weeks yield particularly poor within-sample forecasts?<br>
-</p></li>
-<li><p>What is the sample average and standard deviation of the within-sample forecast error?</p></li>
+<li><p>Plot your within-sample forecasts for search against the actual search values that were realised and comment on your results. Do any weeks yield particularly poor within-sample forecasts?</p></li>
+<li><p>and find the sample average and standard deviation of the within-sample forecast error.</p></li>
 </ul>
-<p><strong>Solution</strong></p>
-<p>We first need to obtain the forecasts (see the R code provided)</p>
-<div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. FORECASTING</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A. RE-RUN ADL REGRESSION FOR FORECASTING</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>reg5<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(reg5, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg5, <span class="st">"HC1"</span>))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># B. WITHIN-SAMPLE FORECASTING</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Use dataset and predict() function to generate in-sample predictions based on reg5 regression model estimates</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>search_fcast_in<span class="ot">=</span><span class="fu">predict</span>(reg5, <span class="at">data=</span>mydata) </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the within-sample forecasts and forecast errors t othe mydata dataset</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Need to make the first 2 observations in search_fcast_in "NA" because you cannot compute forecast error for first 2 observations</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># due to the first and second lags of price in the regression model, which means the first and second observations</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># do not have a within-sample prediction</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_fcast_in<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,search_fcast_in)   </span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add forecast errors to mydata</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_fcast_in_error<span class="ot">=</span>mydata<span class="sc">$</span>search<span class="sc">-</span>mydata<span class="sc">$</span>search_fcast_in</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Output some within-sample forecasting results</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Within-sample forecast for period T=48: %f"</span>, mydata<span class="sc">$</span>search_fcast_in[T])</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Within-sample forecast error for period T=48: %f"</span>, mydata<span class="sc">$</span>search_fcast_in_error[T])</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Average forecast error: %f"</span>, <span class="fu">mean</span>(mydata<span class="sc">$</span>search_fcast_in_error,<span class="at">na.rm=</span><span class="cn">TRUE</span>))         <span class="co"># Compute mean without NA data points</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Std. Dev. of forecast error: %f"</span>, <span class="fu">sd</span>(mydata<span class="sc">$</span>search_fcast_in_error,<span class="at">na.rm=</span><span class="cn">TRUE</span>))      <span class="co"># Compute std. dev. without NA data points</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-warnings="false">
+<p>The forecasts, using <strong><em>R</em></strong> are</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 t test of coefficients:
@@ -1707,111 +2866,138 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>Then obtain the plot of actual vs.&nbsp;forecast</p>
+<div class="cell" data-fig.asp="0.8">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>search, <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"blue"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Retail Price, Forecast (cpl)"</span>,<span class="at">main=</span><span class="st">"Number of Website Searches (10000s)"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">lines</span>(mydata<span class="sc">$</span>search_fcast_in, <span class="at">col =</span> <span class="st">"orange"</span>,<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Website Hits"</span>, <span class="st">"Within-Sample Forecast"</span>), </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"orange"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Within-sample forecasts against actual search values using predicted values from the ADL(1,2) + seasonal dummies model are plotted shown above.</p>
 <ul>
-<li>The sample average and standard deviation of the within-sample forecast error are 0.00 cpl and 0.54 cpl, respectively. On average, the within-sample forecasts “get it right.”</li>
-</ul>
-<!-- -->
-<ul>
-<li>The weeks that have particularly poor within-sample forecasts are week 8 (forecast error = 1.17 <span class="math inline">\(\times\)</span> 10000 = 11700 searches), an underestimate of search), week 30 (forecast error = 1.21 <span class="math inline">\(\times\)</span> 10000 = 12100 searches), an underestimate of search), and week 48 (-1.87 <span class="math inline">\(\times\)</span> 10000 = -18700 searches), an overestimate of search).<br>
+<li>The sample average and standard deviation of the within-sample forecast error are 0.00 cpl and 0.54 cpl, respectively. On average, the within-sample forecasts “get it right.”<br>
+</li>
+<li>The weeks that have particularly poor within-sample forecasts are week 8 (forecast error = 1.17 <span class="math inline">\(\times\)</span> 10000 = 11700 searches), an underestimate of <code>search</code>), week 30 (forecast error = 1.21 <span class="math inline">\(\times\)</span> 10000 = 12100 searches), an underestimate of <code>search</code>), and week 48 (-1.87 <span class="math inline">\(\times\)</span> 10000 = -18700 searches), an overestimate of <code>search</code>).<br>
 We can see that even though seasonality is included in the model, the model finds it hard to predict the large seasonal peaks in web search in the Australian winter and summer.</li>
 </ul>
+<p>Any better using Model (6)?</p>
 <div class="cell" data-fig.asp="0.8">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>search_fcast_in_6<span class="ot">=</span><span class="fu">predict</span>(reg6, <span class="at">data=</span>mydata) </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>search_fcast_in_6<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,search_fcast_in_6) </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>search, <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"blue"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Retail Price, Forecast (cpl)"</span>,<span class="at">main=</span><span class="st">"Number of Website Searches (10000s)"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>     <span class="fu">lines</span>(mydata<span class="sc">$</span>search_fcast_in_6, <span class="at">col =</span> <span class="st">"orange"</span>,<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>     <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Website Hits"</span>, <span class="st">"Within-Sample Forecast"</span>), </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"orange"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">cex =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mydata<span class="sc">$</span>week,mydata<span class="sc">$</span>search, <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"blue"</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Week"</span>,<span class="at">ylab=</span><span class="st">"Retail Price, Forecast (cpl)"</span>,<span class="at">main=</span><span class="st">"Number of Website Searches (10000s)"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">lines</span>(mydata<span class="sc">$</span>search_fcast_in, <span class="at">col =</span> <span class="st">"orange"</span>,<span class="at">type=</span><span class="st">"l"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"Website Hits"</span>, <span class="st">"Within-Sample Forecast"</span>), </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"orange"</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div></section>
-<section id="q7" class="level2">
-<h2 class="anchored" data-anchor-id="q7">Q7</h2>
-<p>Using the ADL(1,1) + seasonal dummies model you estimated in question 5, compute the out-of-sample forecast for search in week 49 of 2013 (e.g., one week after the sample ends) and the 95% confidence interval for this forecast.</p>
-<p><strong>Solution</strong></p>
+<p>maybe, a little, better?</p>
+</section>
+<section id="q7" class="level1">
+<h1>Q7</h1>
+<p>Now, using the ADL(1,1) + seasonal dummies model you estimated in question 5, compute the out-of-sample forecast for <code>search</code> in week 49 of 2013 (e.g., one week after the sample ends) and the 95% confidence interval for this forecast.</p>
 <div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OUT-OF-SAMPLE FORECASTING</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Data frame for the last observation in the sample of T=48 (defined on line 70) for generating a forfecast</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>newdata1<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">search_lag1=</span>mydata<span class="sc">$</span>search_lag1[T],<span class="at">price_lag1=</span>mydata<span class="sc">$</span>price_lag1[T],<span class="at">price_lag2=</span>mydata<span class="sc">$</span>price_lag2[T],</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sum=</span>mydata<span class="sc">$</span>sum[T],<span class="at">aut=</span>mydata<span class="sc">$</span>aut[T],<span class="at">win=</span>mydata<span class="sc">$</span>win[T])</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the predict() command to forecast out the next observation in period T+1 out of the sample</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>search_fcast_out<span class="ot">=</span><span class="fu">predict</span>(reg5, <span class="at">newdata=</span>newdata1) </span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard error of search_fcast_in_error=RMSFE (see slides 27 and 28 in Lecture Note 9)</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>RMSFE<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">residuals</span>(reg5)))</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for out-of-sample forecast</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIL<span class="ot">=</span>search_fcast_out<span class="fl">-1.96</span><span class="sc">*</span>RMSFE</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIH<span class="ot">=</span>search_fcast_out<span class="fl">+1.96</span><span class="sc">*</span>RMSFE</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Output results</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Out-of-sample forecast for period T=49: %f"</span>, search_fcast_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># C. OUT-OF-SAMPLE FORECASTING</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Build T+1 row from base series, Spring at T+1 ⇒ sum=aut=win=0</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>newdata1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">search_lag1 =</span> mydata<span class="sc">$</span>search[T],   <span class="co"># y_T</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">price_lag1  =</span> mydata<span class="sc">$</span>price[T],    <span class="co"># p_T</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">price_lag2  =</span> mydata<span class="sc">$</span>price[T<span class="dv">-1</span>],  <span class="co"># p_{T-1}</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sum =</span> <span class="dv">0</span>, <span class="at">aut =</span> <span class="dv">0</span>, <span class="at">win =</span> <span class="dv">0</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)[ , <span class="fu">setdiff</span>(<span class="fu">names</span>(<span class="fu">coef</span>(reg5)), <span class="st">"(Intercept)"</span>), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the predict() command to forecast out the next observation in period T+1 out of the sample</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>search_fcast_out <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg5, <span class="at">newdata =</span> newdata1)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>search_fcast_out </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Out-of-sample forecast for period T=49: 8.289138"</code></pre>
+<pre><code>       1 
+7.877009 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI lower bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIL)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard error of search_fcast_in_error=RMSFE (see slides 27 and 28 in Lecture Note 9)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>RMSFE<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">residuals</span>(reg5)))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for out-of-sample forecast</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIL<span class="ot">=</span>search_fcast_out<span class="fl">-1.96</span><span class="sc">*</span>RMSFE</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIH<span class="ot">=</span>search_fcast_out<span class="fl">+1.96</span><span class="sc">*</span>RMSFE</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Output results  </span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Out-of-sample forecast for period T=49: %f"</span>, search_fcast_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "95 CI lower bound for out-of-sample forecast: 7.227995"</code></pre>
+<pre><code>[1] "Out-of-sample forecast for period T=49: 7.877009"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI upper bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI lower bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIL)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "95 CI upper bound for out-of-sample forecast: 9.350281"</code></pre>
+<pre><code>[1] "95 CI lower bound for out-of-sample forecast: 6.815866"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI upper bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95 CI upper bound for out-of-sample forecast: 8.938152"</code></pre>
 </div>
 </div>
 <p>Using the ADL(1,1) + seasonal dummies from question 5, the out-of-sample forecast for search in week 49 of 2013 is 8.289 (or 82890 searches) with a 95% confidence interval of [7.2028, 9.350] (or [72028, 93500] searches).<br>
-See the the R code for its computation, which uses the methods described in Lecture Note 9 on slide 28.</p>
-</section>
-<section id="q8" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="q8">Q8</h2>
-<p>Using the ADL(1,2,2) + seasonal dummies with search, price, and cost model you estimated in question 5, conduct a Granger Causality test to determine whether <em>price</em> Granger causes <em>search</em>.</p>
-<p><strong>Solution</strong></p>
-<p>Re-estimate the ADL(1,2,2) model</p>
+See the <strong><em>R</em></strong> code (above) for its computation, which uses the methods described in Lecture Note 9 on slide 28.</p>
+<p>What if we used Model (6)?</p>
 <div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GRANGER CAUSALITY</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run the ADL(1,2,2) regression</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>cost_lag1<span class="sc">+</span>cost_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">##  FIX: build T+1 row from base series, Spring at T+1 ⇒ sum=aut=win=0</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>newdata1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">search_lag1 =</span> mydata<span class="sc">$</span>search[T],   <span class="co"># y_T</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">price_lag1  =</span> mydata<span class="sc">$</span>price[T],    <span class="co"># p_T</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">price_lag2  =</span> mydata<span class="sc">$</span>price[T<span class="dv">-1</span>],  <span class="co"># p_{T-1}</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  cost_lag1  <span class="ot">&lt;-</span> mydata<span class="sc">$</span>cost[T<span class="dv">-1</span>],   <span class="co"># c_{T-1}</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  cost_lag2   <span class="ot">&lt;-</span>  mydata<span class="sc">$</span>cost[T<span class="dv">-2</span>],   <span class="co"># c_{T-2}</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sum =</span> <span class="dv">0</span>, <span class="at">aut =</span> <span class="dv">0</span>, <span class="at">win =</span> <span class="dv">0</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>)[ , <span class="fu">setdiff</span>(<span class="fu">names</span>(<span class="fu">coef</span>(reg5)), <span class="st">"(Intercept)"</span>), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the predict() command to forecast out the next observation in period T+1 out of the sample</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>search_fcast_out <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg6, <span class="at">newdata =</span> newdata1)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>search_fcast_out </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = search ~ search_lag1 + price_lag1 + price_lag2 + 
-    cost_lag1 + cost_lag2 + sum + aut + win, data = mydata)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.87056 -0.20372 -0.00636  0.22834  1.05756 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept) -3.85989    4.78781  -0.806   0.4253  
-search_lag1  0.44285    0.18249   2.427   0.0202 *
-price_lag1   0.17695    0.19600   0.903   0.3724  
-price_lag2   0.03313    0.08491   0.390   0.6986  
-cost_lag1    0.09875    0.11744   0.841   0.4058  
-cost_lag2   -0.26604    0.11587  -2.296   0.0274 *
-sum          0.87738    0.33763   2.599   0.0134 *
-aut          0.81921    0.35475   2.309   0.0266 *
-win          0.90401    0.37482   2.412   0.0209 *
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.5431 on 37 degrees of freedom
-  (2 observations deleted due to missingness)
-Multiple R-squared:  0.7487,    Adjusted R-squared:  0.6943 
-F-statistic: 13.78 on 8 and 37 DF,  p-value: 5.081e-09</code></pre>
+<pre><code>       1 
+8.034771 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard error of search_fcast_in_error=RMSFE (see slides 27 and 28 in Lecture Note 9)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>RMSFE<span class="ot">=</span><span class="fu">sqrt</span>(<span class="fu">var</span>(<span class="fu">residuals</span>(reg6)))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for out-of-sample forecast</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIL<span class="ot">=</span>search_fcast_out<span class="fl">-1.96</span><span class="sc">*</span>RMSFE</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>search_fcast_out_CIH<span class="ot">=</span>search_fcast_out<span class="fl">+1.96</span><span class="sc">*</span>RMSFE</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Output results  </span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"Out-of-sample forecast for period T=49: %f"</span>, search_fcast_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Out-of-sample forecast for period T=49: 8.034771"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI lower bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIL)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95 CI lower bound for out-of-sample forecast: 7.069582"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">"95 CI upper bound for out-of-sample forecast: %f"</span>, search_fcast_out_CIH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "95 CI upper bound for out-of-sample forecast: 8.999959"</code></pre>
 </div>
 </div>
-<p>then we need to test for Granger causality</p>
+</section>
+<section id="q8" class="level1">
+<h1>Q8</h1>
+<p>Lastly, using the ADL(1,2,2) + seasonal dummies with <code>search</code>, <code>price</code>, and <code>cost</code> [Model (5)] you estimated in question 5, conduct a Granger Causality test to determine whether <code>price</code> Granger causes <code>search</code></p>
 <div class="cell" data-warnings="false">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Conduct the Granger Causality Test</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg6,<span class="fu">c</span>(<span class="st">"price_lag1=0"</span>,</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"price_lag2=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg6, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GRANGER CAUSALITY</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run the ADL(1,2,2) regression</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>reg6<span class="ot">=</span><span class="fu">lm</span>(search<span class="sc">~</span>search_lag1<span class="sc">+</span>price_lag1<span class="sc">+</span>price_lag2<span class="sc">+</span>cost_lag1<span class="sc">+</span>cost_lag2<span class="sc">+</span>sum<span class="sc">+</span>aut<span class="sc">+</span>win,<span class="at">data=</span>mydata)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Conduct the Granger Causality Test</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(reg6,<span class="fu">c</span>(<span class="st">"price_lag1=0"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"price_lag2=0"</span>),<span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg6, <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Linear hypothesis test:
@@ -1831,18 +3017,14 @@ Note: Coefficient covariance matrix supplied.
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(\beta_2\)</span> and <span class="math inline">\(\beta_3\)</span> be the regression coefficients on <code>price_lag1</code> and <code>price_lag2</code> in the ADL(1,2,2) model. The null and alternative hypotheses for the Granger causality test is then:<br>
+<span class="math display">\[\begin{align*}
+H_0: &amp;\, \beta_2=\beta_3=0 \\
+H_1: &amp; \,\text{at least one of } \beta_2 \neq 0 \text{ or } \beta_3 \neq 0
+\end{align*}\]</span></p>
+<p>Using the <em>linearHypothesis()</em> command (see the above code), we can conduct this joint hypothesis test.<br>
+Doing so, yields a F-statistic of F=2.7014 with 2 and 37 degrees of freedom.<br>
+The corresponding p-value for the test is 0.08, which implies that we would fail to reject the null at the 5% level. That is, according to this test, <code>price</code> does not Granger cause <code>search</code>.</p>
 <p>How are the degrees of freedom computed?<br>
 Here, we return to slides 47-49 of the Lecture Note 10 on time series regression.</p>
 <ul>
@@ -1850,21 +3032,38 @@ Here, we return to slides 47-49 of the Lecture Note 10 on time series regression
 </li>
 <li>df2 = 48 - max(1,2,2) - 1 - (2 + 2) - 3 - 1 = 37</li>
 </ul>
-<p>Notice here, unlike in slides 47-49, we also have a <strong>-3</strong> for df2 corresponding to the 3 seasonal dummy variables, <em>sum</em>, <em>aut</em>, and <em>win</em>, which are parameters that also reduce df2.</p>
-</div>
-</div>
-</div></div><p>The null and alternative hypotheses are:</p>
+<p>Notice here, unlike in slides 47-49, we also have a <strong>-3</strong> for df2 corresponding to the 3 seasonal dummy variables, <code>sum</code>, <code>aut</code>, and <code>win</code>, which are parameters that also reduce df2.</p>
+<p>For example (from the Lecture example) the estimated ADL(2,3,1) was <span class="math display">\[
+\begin{align*}
+P_t &amp; = 1.17 +0.357\, P_{t-1}+0.303\, P_{t-2}\\
+&amp;  + 0.932\, C_{t-1}-0.8993\, C_{t-2}+0.206 C_{t-3}\\
+&amp; = +15.031 \, E_{t-1}
+\end{align*}
+\]</span><br>
+so df2 is <span class="math inline">\(T-max(p_1, q_1, \dots\, ,q_k)-p - \sum\limits_{\iota=1}^K q_{\iota}-1\)</span> where <span class="math inline">\(T=157\)</span>, <span class="math inline">\(max(p_1, q_1, \dots\, ,q_k)=3\)</span>, <span class="math inline">\(p=2\)</span>, <span class="math inline">\(\sum\limits_{\iota=1}^K q_{\iota}=(3+1)\)</span> and <span class="math inline">\(-1\)</span> for the constant term giving df2 = 157 - 3-2 -(3+1)-1 = 147)</p>
+<p>An alternative way to work out the df2 would be to use df2= T - maximum number of lags - number of variables - constant e.g.&nbsp;in the above example:</p>
+<p>df2=<span class="math inline">\(157-3-6-1=147\)</span></p>
+<p>In our ADL(1,2,2) model we estimated</p>
 <p><span class="math display">\[
-\begin{align}
-H_0:&amp; \beta_2=0,\beta_3=0\\
-H_A: &amp; \beta_2 \neq0 \quad \text{and/or} \quad \beta_3 \neq 0
-\end{align}
-\]</span></p>
-<p>Using the linearHypothesis() command above, yields a F-statistic of F=2.7014 with 2 and 37 degrees of freedom.<br>
-The corresponding p-value for the test is 0.08, which implies that we would fail to reject the null at the 5% level. That is, according to this test, price does not Granger cause search.</p>
+\begin{align*}
+\text{search}_t &amp; = -3.86 +0.443\,\text{search}_{t-1} \\
+   &amp; + 0.177\,\text{price}_{t-1} +0.033\, \text{price}_{t-2} \\
+   &amp; +0.099\, \text{cost}_{t-1} - 0.0266\, \text{cost}_{t-2}\\
+   &amp; + 0.877\, \text{Sum}+0.819\, \text{Aut}+0.904\, \text{Win}
+\end{align*}
+\]</span> with <span class="math inline">\(T=48\)</span> so <span class="math inline">\(max(p_1, q_1, \dots\, ,q_k)=2\)</span>, <span class="math inline">\(p=1\)</span>, <span class="math inline">\(\sum\limits_{\iota=1}^K q_{\iota}=(2+2)\)</span> and <span class="math inline">\(\text{constant}=1\)</span> but we also have the seasonal dummies <span class="math inline">\(1+1+1\)</span> giving df2= 48-11=37.</p>
+<p>Alternatively, the maximum lag length is 2 and there are 8 variables in the model<br>
+(<span class="math inline">\(\text{search}_{t-1}, \text{price}_{t-1},\text{price}_{t-2}, \text{cost}_{t-1},\text{cost}_{t-2}, \text{Sum}, \text{Aut} \text{ and Win}\)</span>) and the constant so df2 = 48-2-8-1=37.</p>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> Note: there are other more elegant ways to construct lagged variables in <strong><em>R</em></strong> which requires the use of time series packages in <strong><em>R</em></strong>, but this is more involved and are left for ECOM30002: Econometrics 2 when time series is covered extensively<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>we assume stationary time series for all Y and X variables in an <br>ADL(p, q1, q2, . . . , qk ) model <em>L9 notes slide 48</em><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
